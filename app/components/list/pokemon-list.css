@@ -1,0 +1,93 @@
+.pokemon-list {
+    display: flex;
+    flex-direction: var(--list-direction);
+    background: var(--list-background);
+    padding: 1rem;
+    height: 100%;
+    flex: 1;
+    overflow: hidden;
+    max-width: 100%;
+
+    @media (min-width: 1500px) {
+        padding: 2rem;
+    }
+}
+
+.pokemon {
+    display: grid;
+    position: relative;
+    box-shadow: var(--pokemon-outer-box-shadow);
+    height: 100%;
+    border-radius: 1px;
+    gap: 1rem;
+    background-color: var(--pokemon-background);
+
+    .pokemon-img {
+        object-fit: contain;
+        object-position: center;
+        height: 100%;
+        width: 100%;
+        max-height: var(--pokemon-height-mobile);
+        max-width: var(--pokemon-width-mobile);
+        aspect-ratio: 1/1;
+        justify-self: center;
+        transition: 300ms opacity;
+        align-self: flex-end;
+        min-height: 100px;
+
+        @media (min-width: 1024px) {
+            height: var(--pokemon-height-desktop);
+            width: var(--pokemon-width-desktop);
+        }
+    }
+
+    .name-id {
+        position: relative;
+        left: 0;
+        display: flex;
+        flex-wrap: wrap;
+        flex-direction: var(--pokemon-name-id-direction-mobile);
+        justify-content: space-around;
+        align-items: center;
+        background-color: var(--pokemon-name-id-background);
+        border-radius: var(--pokemon-name-id-border-radius-right);
+        box-shadow: var(--pokemon-name-id-box-shadow);
+        align-self: flex-end;
+        margin-bottom: 5px;
+        grid-column: 2/-1;
+        color: black;
+        text-decoration: none;
+        transition: 400ms left, 300ms background-color;
+
+        @media (min-width: 1024px) {
+            flex-direction: var(--pokemon-name-id-direction-desktop);
+            border-top-left-radius: var(--pokemon-name-id-border-radius-left);
+            border-bottom-left-radius: var(--pokemon-name-id-border-radius-left);
+            border-top-right-radius: var(--pokemon-name-id-border-radius-right);
+            border-bottom-right-radius: var(--pokemon-name-id-border-radius-right);
+            align-self: unset;
+            margin-bottom: 0;
+        }
+
+        @media (min-height: 1024px) {
+            min-height: 140px;
+        }
+    }
+
+    .pokemon-name {
+        writing-mode: var(--text-direction);
+        text-transform: var(--pokemon-name-style);
+        pointer-events: none;
+    }
+
+    .pokemon-id {
+        font-size: 23px;
+        text-align: center;
+        pointer-events: none;
+    }
+
+    @media (min-width: 1024px) {
+        gap: var(--pokemon-gap);
+        grid-template-columns: 1fr 1fr;
+    }
+}

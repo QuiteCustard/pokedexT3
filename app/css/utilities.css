@@ -1,0 +1,135 @@
+@layer utilities {
+    .button {
+        border-radius: var(--button-radius);
+        border: 0;
+        background-color: var(--button);
+        color: white;
+        padding: 0.8rem 1rem;
+        cursor: pointer;
+        transition: background-color 300ms;
+
+        &:hover,
+        &:focus {
+            background-color: var(--button-hover);
+        }
+    }
+
+    [data-theme="gen4"] {
+        swiper-container {
+            height: calc(95dvh - 168px);
+            overflow: hidden;
+        }
+
+        .pokemon {
+            .img-link {
+                transition: visibility 300ms;
+                
+                &:has(~ .name-id:hover, ~ .name-id:focus) .pokemon-img {
+                    filter: drop-shadow(4px 8px 17px black);
+                }
+
+                &:hover,
+                &:focus {
+                    .pokemon-img {
+                        filter: drop-shadow(4px 8px 17px black);
+                    }
+
+                    ~.name-id {
+                        background-color: var(--header-secondary);
+                    }
+                }
+            }
+
+            .name-id {
+                &:hover,
+                &:focus {
+                    background-color: var(--header-secondary);
+                }
+            }
+        }
+
+        .pokemon-img {
+            transition: filter 300ms;
+
+            @media (min-width: 1024px) {
+                position: absolute;
+                top: 0;
+                left: 0;
+                transform: translate(20%, -40%);
+            }
+
+            @media (min-width: 2200px) {
+                transform: translate(40%, -40%);
+            }
+        }
+
+        @media (min-width: 1024px) {
+            swiper-slide {
+                &:first-of-type {
+                    margin-top: 25vh;
+                }
+
+                &.swiper-slide-active {
+                    .name-id {
+                        left: -10%;
+                        background-color: var(--header-main);
+                    }
+                }
+
+                &:not(.swiper-slide-active) {
+                    .img-link {
+                        visibility: hidden;
+
+                        .pokemon-img {
+                            opacity: 0;
+                        }
+                    }
+                }
+            }
+        }
+    }
+
+    [data-theme="gen9"] {
+        swiper-container {
+            max-height: calc((100dvh - 168px) - 2rem);
+            width: 100%;
+            overflow: hidden;
+        }
+
+        swiper-slide {
+            max-height: 99%;
+        }
+
+        .pokemon {
+            grid-template-rows: 15px 100px 1fr 15px;
+            grid-template-columns: unset;
+            align-items: unset;
+            max-width: 214px;
+
+            &:hover,
+            &:focus {
+                background-color: #D0F447;
+            }
+
+            &::before,
+            &::after {
+                content: '';
+                position: relative;
+                background-color: #D0F447;
+                height: 100%;
+                width: 100%;
+                top: 0;
+                left: 0;
+            }
+
+            .name-id {
+                align-self: unset;
+                margin-bottom: 0;
+
+                .pokemon-name {
+                    flex: 1;
+                }
+            }
+        }
+    }
+}
