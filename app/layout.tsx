@@ -21,5 +21,5 @@ export default function RootLayout({children}: Readonly<{children: React.ReactNo
         <Loading />
       </body>
     </html>
-  );
+  )
 }

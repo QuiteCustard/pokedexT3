@@ -9,7 +9,7 @@ export default function Header() {
     <header>
       <Image src={"/logo.png"} alt="Logo" height="75" width="75" />
       <h1>Pokédex</h1>
-      <PokedexGenChanger defaultTheme={cookies().get('theme')?.value as genValues} />
+      <PokedexGenChanger theme={cookies().get('theme')?.value as genValues} />
     </header>
   )
 }

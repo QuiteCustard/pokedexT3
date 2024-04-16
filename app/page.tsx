@@ -1,4 +1,5 @@
 import { signal } from "@preact/signals-react";
+import PokemonList from "./components/list/PokemonList";
 
 export const GENS = {
   gen9: '9',
@@ -12,7 +13,7 @@ export default function Page() {
 
   return (
    <>
-   
+    <PokemonList />
    </>
   );
 }

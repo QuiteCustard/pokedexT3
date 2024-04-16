@@ -17,10 +17,6 @@ export default function Loading() {
     setTimeout(() => open.value = false, 800)
   }
 
-  useEffect(() => {
-    setInit(true)
-  }, [init])
-  
   return (
     <div id="loading-cover" className={open.value === true ? 'open' : ''}>
       <p>Loading...</p>

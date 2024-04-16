@@ -1,9 +1,9 @@
 "use client";
-import { setCookie } from "@/helpers/setTheme";
+import { setCookie } from "@/helpers/set-theme";
 import { GENS, type genValues, pokedexGen } from "@/page";
 import { useSignals } from "@preact/signals-react/runtime";
 
-export default function PokedexGenChanger({defaultTheme}: {defaultTheme: genValues}) {
+export default function PokedexGenChanger({theme}: {theme: genValues}) {
   useSignals();
 
   async function changeTheme() {
@@ -13,6 +13,6 @@ export default function PokedexGenChanger({defaultTheme}: {defaultTheme: genValu
   }
 
   return (
-    <button onClick={() => changeTheme()} className="button">Gen: {defaultTheme}</button>
+    <button onClick={() => changeTheme()} className="button">{theme}</button>
   )
 }
