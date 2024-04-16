@@ -1,23 +1,15 @@
 "use client";
 import { setCookie } from "@/helpers/setTheme";
 import { GENS, type genValues, pokedexGen } from "@/page";
-import { useSignalEffect, useSignals } from "@preact/signals-react/runtime";
-import { useEffect } from "react";
+import { useSignals } from "@preact/signals-react/runtime";
 
 export default function PokedexGenChanger({defaultTheme}: {defaultTheme: genValues}) {
   useSignals();
 
-  useEffect(() => {
-    pokedexGen.value = document.body.dataset.theme?.slice(3) as genValues ?? '9'
-  }, [])
-
-  useSignalEffect(() => {
-    setTimeout(() => document.body.dataset.theme = `gen${pokedexGen.value}`, 800) 
-  })
-
   async function changeTheme() {
     pokedexGen.value === GENS.gen9 ? pokedexGen.value = GENS.gen4 : pokedexGen.value = GENS.gen9;
-    await setCookie(pokedexGen.value);
+    // eslint-disable-next-line @typescript-eslint/no-misused-promises -- Not a misused promise
+    setTimeout(async () => await setCookie(pokedexGen.value), 800)
   }
 
   return (

@@ -10,14 +10,12 @@ export const metadata: Metadata = {
 };
 
 export default function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
-  const cookieStore = cookies()
-  const theme = cookieStore.get('theme')
+  const cookieStore = cookies();
+  const theme = cookieStore.get('theme');
 
-  console.log(theme)
-  
   return (
     <html lang="en">
-      <body data-theme={`gen${theme?.value}`}>
+      <body data-theme={theme?.value}>
         <Header />
         {children}
         <Loading />
