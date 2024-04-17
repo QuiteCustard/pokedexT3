@@ -88,6 +88,6 @@
 
     @media (min-width: 1024px) {
         gap: var(--pokemon-gap);
-        grid-template-columns: 1fr 1fr;
+        grid-template-columns: var(--pokemon-grid-template-columns);
     }
 }

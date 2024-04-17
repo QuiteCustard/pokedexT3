@@ -1,19 +1,13 @@
 import { signal } from "@preact/signals-react";
 import PokemonList from "./components/list/PokemonList";
+import { type genValues } from "./types";
 
-export const GENS = {
-  gen9: '9',
-  gen4: '4'
-} as const;
+export const pokedexGen = signal<genValues>('gen9');
 
-export type genValues = '9' | '4'
-export const pokedexGen = signal<genValues>('9');
-
-export default function Page() {
-
+export default async function Page() {
   return (
-   <>
-    <PokemonList />
-   </>
+    <>
+      <PokemonList />
+    </>
   );
 }

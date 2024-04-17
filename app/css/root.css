@@ -51,6 +51,7 @@
         --pokemon-name-id-border-radius-left: 0;
         --pokemon-name-id-border-radius-right: 0;
         --pokemon-name-id-box-shadow: none;
+        --pokemon-grid-template-columns: unset;
 
         --button: #DD8040;
         --button-hover: #b46835;

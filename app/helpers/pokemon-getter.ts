@@ -11,7 +11,6 @@ export async function getIndividualPokemon(urls: string[]) {
         const response = await fetch(url, {signal});
         if (!response.ok) throw new Error('Critical error');
         const pokemonData = {...await response.json() as DetailedPokemon, url};
-        console.log(pokemonData)
         return pokemonData;
     }))
 
