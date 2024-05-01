@@ -1,7 +1,7 @@
 "use client";
 import "@/components/loader/loader.css";
-import { loaderActive, pokedexGen } from "@/page";
-import { useComputed, useSignal, useSignalEffect, useSignals } from "@preact/signals-react/runtime";
+import { loaderActive } from "@/page";
+import { useSignals } from "@preact/signals-react/runtime";
 
 export default function Loading() {
   useSignals();

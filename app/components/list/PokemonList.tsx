@@ -7,17 +7,17 @@ import Slide from "./slide/Slide";
 import "@/components/list/pokemon-list.css";
 import { loaderActive, pokedexGen } from "@/page";
 import { type SwiperContainer } from "swiper/element";
-
 import {
 	register
 } from 'swiper/element/bundle';
-import { useComputed, useSignal, useSignalEffect, useSignals } from "@preact/signals-react/runtime";
+import { useComputed, useSignalEffect } from "@preact/signals-react/runtime";
 import { getTheme } from "@/helpers/set-theme";
 
 export default function PokemonList() {
     const swiper = useRef<SwiperContainer>(null);
     const [initSwiper, setSwiper] = useState(false);
 	const [url, setURL] = useState(pokemonURL + pokemonLimit);
+	const {ref, inView} = useInView({rootMargin: "0px 1000px 0px 0px"});
 	const [nextUrl, setNextURL] = useState("");
 	const [pokemon, setPokemon] = useState<Pokemon[]>([]);
 	const [individualPokemonData, setIndividualPokemonData] = useState<DetailedPokemon[]>([]);
@@ -31,6 +31,9 @@ export default function PokemonList() {
 		}
 
 		updateTheme().catch(console.error)
+
+		if (swiper.current === null) return;
+		swiper.current.addEventListener('slidechange', () => swiper.current?.querySelectorAll("swiper-slide").forEach(slide => slide.role === null ? updateSwiper(true) : null));
     }, [])
 
 	useEffect(() => {
@@ -52,6 +55,10 @@ export default function PokemonList() {
 
 		return () => controller.abort();
 	}, [url])
+
+	useEffect(() => {
+		if (inView) setURL(nextUrl);
+	}, [nextUrl, inView])
 
 	useEffect(() => {
 		if (pokemon.length === 0) return
@@ -158,11 +165,16 @@ export default function PokemonList() {
 			setSwiper(true);
 		}, 800)
 	}
+
+	function updateSwiper(val: boolean) {
+		setSwiper(val);
+	}
   
     return (
         <div className="pokemon-list">
             <swiper-container init={false} ref={swiper} keyboard={true} mousewheel={true}>
 				{individualPokemonData.map((data, index) => <Slide key={index} sprites={data.sprites} name={data.name} id={data.id} url={data.url} />)}
+				<swiper-slide ref={ref}></swiper-slide>
             </swiper-container>
         </div>
     )
