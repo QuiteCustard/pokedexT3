@@ -1,6 +1,6 @@
 "use client";
 import { setTheme } from "@/helpers/set-theme";
-import { pokedexGen } from "@/page";
+import { loaderActive, pokedexGen } from "@/page";
 import { GENS, type genValues} from "@/types";
 import { useSignals } from "@preact/signals-react/runtime";
 
@@ -9,9 +9,15 @@ export default function PokedexGenChanger({theme}: {theme:genValues}) {
 
   async function changeTheme() {
     pokedexGen.value === GENS.gen9 ? pokedexGen.value = GENS.gen4 : pokedexGen.value = GENS.gen9;
-    setTimeout(() =>  { 
-      setTheme(pokedexGen.value).catch(console.error)
-     }, 800)
+    loaderActive.value = true;
+
+    setTimeout(() => { 
+      setTheme(pokedexGen.value).catch(console.error);
+
+      setTimeout(() => {
+        loaderActive.value = false;
+      }, 100)
+    }, 800)
   }
 
   return (

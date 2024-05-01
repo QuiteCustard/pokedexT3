@@ -12,7 +12,7 @@
     border: unset;
     display: grid;
     place-items: center;
-    transition: 1s opacity, 1s visibility;
+    transition: 1s opacity ease-in-out, 1s visibility;
     font-size: clamp(40px, 4vh, 120px);
 
     &.open {
