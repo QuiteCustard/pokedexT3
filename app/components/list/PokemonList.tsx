@@ -7,9 +7,7 @@ import Slide from "./slide/Slide";
 import "@/components/list/pokemon-list.css";
 import { loaderActive, pokedexGen } from "@/page";
 import { type SwiperContainer } from "swiper/element";
-import {
-	register
-} from 'swiper/element/bundle';
+import {register} from 'swiper/element/bundle';
 import { useComputed, useSignalEffect } from "@preact/signals-react/runtime";
 import { getTheme } from "@/helpers/set-theme";
 
@@ -26,6 +24,7 @@ export default function PokemonList() {
         register();
 
 		async function updateTheme() {
+			// Updates the signal value to the one stored in cookies
 			const theme = await getTheme();
 			pokedexGen.value = theme ?? pokedexGen.value;
 		}
@@ -33,6 +32,7 @@ export default function PokemonList() {
 		updateTheme().catch(console.error)
 
 		if (swiper.current === null) return;
+		// New slides that are added after initial load do not have a "role" attribute, this forces swiper to update and recognise the new children
 		swiper.current.addEventListener('slidechange', () => swiper.current?.querySelectorAll("swiper-slide").forEach(slide => slide.role === null ? updateSwiper(true) : null));
     }, [])
 
@@ -151,6 +151,7 @@ export default function PokemonList() {
 		swiper.current.initialize();
 
 		if (!swiper.current?.swiper?.params?.breakpoints?.["320"]) return;
+		//Swiper breakpoints don't update unless resize happens - hack to fix it
 		swiper.current.swiper.params.breakpoints["320"].slidesPerView = swiperParams.breakpoints["320"].slidesPerView;
 		swiper.current.swiper.currentBreakpoint = false;
 		swiper.current.swiper.update();
