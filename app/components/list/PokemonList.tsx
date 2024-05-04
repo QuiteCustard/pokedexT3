@@ -8,17 +8,18 @@ import "@/components/list/pokemon-list.css";
 import { loaderActive, pokedexGen } from "@/page";
 import { type SwiperContainer } from "swiper/element";
 import {register} from 'swiper/element/bundle';
-import { useComputed, useSignalEffect } from "@preact/signals-react/runtime";
 import { getTheme } from "@/helpers/set-theme";
+import { useComputed, useSignalEffect } from "@preact/signals-react";
 
 export default function PokemonList() {
-    const swiper = useRef<SwiperContainer>(null);
-    const [initSwiper, setSwiper] = useState(false);
 	const [url, setURL] = useState(pokemonURL + pokemonLimit);
-	const {ref, inView} = useInView({rootMargin: "0px 1000px 0px 0px"});
 	const [nextUrl, setNextURL] = useState("");
 	const [pokemon, setPokemon] = useState<Pokemon[]>([]);
+    const swiper = useRef<SwiperContainer>(null);
 	const [individualPokemonData, setIndividualPokemonData] = useState<DetailedPokemon[]>([]);
+    const [initSwiper, setInitSwiper] = useState(false);
+	const [updateSwiper, setUpdateSwiper] = useState(false);
+	const {ref, inView} = useInView({rootMargin: "0px 1000px 0px 0px"});
 
     useEffect(() => {
         register();
@@ -30,10 +31,6 @@ export default function PokemonList() {
 		}
 
 		updateTheme().catch(console.error)
-
-		if (swiper.current === null) return;
-		// New slides that are added after initial load do not have a "role" attribute, this forces swiper to update and recognise the new children
-		swiper.current.addEventListener('slidechange', () => swiper.current?.querySelectorAll("swiper-slide").forEach(slide => slide.role === null ? updateSwiper(true) : null));
     }, [])
 
 	useEffect(() => {
@@ -45,15 +42,14 @@ export default function PokemonList() {
 
 			const {results, next} = await data.json() as PokemonList;
 
-			if (results) {
-				setNextURL(next);
-				setPokemon((p: Pokemon[] | undefined) => [...(p ?? []), ...results]);
-			}
+			if (!results) return;
+			setNextURL(next);
+			setPokemon((p: Pokemon[] | undefined) => [...(p ?? []), ...results]);
 		}
 
 		getPokemonBatch().catch(console.error);
 
-		return () => controller.abort();
+		return () => controller.abort("fetch abandoned");
 	}, [url])
 
 	useEffect(() => {
@@ -61,23 +57,30 @@ export default function PokemonList() {
 	}, [nextUrl, inView])
 
 	useEffect(() => {
-		if (pokemon.length === 0) return
+		if (pokemon.length === 0) return;
 		const urls = pokemon.map(mon => mon.url);
 
 		async function getData() {
 			setIndividualPokemonData(await getIndividualPokemon(urls));
-			loaderActive.value = false;
+			setTimeout(() => loaderActive.value = false, 200)
 		}
 
 		getData().catch(console.error);
+
+		setInitSwiper(true);
 	}, [pokemon])
 
 	useEffect(() => {
-		if (individualPokemonData.length === 0) return;
-		setSwiper(true);
-	}, [individualPokemonData])
+		if (!swiper.current || initSwiper !== true) return;
+		
+		swiper.current.initialize();
+		swiper.current.swiper.update();
+    }, [initSwiper])
+
 
 	useEffect(() => {
+		if (!swiper.current || updateSwiper !== true) return;
+
 		function getSwiperParams() {
 			if (pokedexGen.value === "gen9") {
 				return {
@@ -86,22 +89,26 @@ export default function PokemonList() {
 						320: {
 							slidesPerView: 2,
 							spaceBetween: 20,
+							slidesOffsetBefore: 0,
+							slidesOffsetAfter: 0,
 						},
 						559: {
 							slidesPerView: 4,
 							spaceBetween: 20,
+							slidesOffsetBefore: 0,
+							slidesOffsetAfter: 0,
 						},
 						1024: {
 							slidesPerView: 6,
 							spaceBetween: 20,
+							slidesOffsetBefore: 0,
+							slidesOffsetAfter: 0,
 						},
 						1400: {
 							slidesPerView: 8,
-							spaceBetween: 5,
-						},
-						2000: {
-							slidesPerView: 10,
-							spaceBetween: 5,
+							spaceBetween: 20,
+							slidesOffsetBefore: 0,
+							slidesOffsetAfter: 0,
 						},
 					},
 					on: {
@@ -117,22 +124,26 @@ export default function PokemonList() {
 						320: {
 							slidesPerView: 1,
 							spaceBetween: 10,
+							slidesOffsetBefore: 0,
+							slidesOffsetAfter: 0,
 						},
 						559: {
 							slidesPerView: 1,
 							spaceBetween: 10,
+							slidesOffsetBefore: 0,
+							slidesOffsetAfter: 0,
 						},
 						1024: {
-							slidesPerView: 5,
-							spaceBetween: 50
+							slidesPerView: 4,
+							spaceBetween: 50,
+							slidesOffsetBefore: 400,
+							slidesOffsetAfter: 400,
 						},
 						1400: {
-							slidesPerView: 5,
-							spaceBetween: 50
-						},
-						2000: {
-							slidesPerView: 5,
-							spaceBetween: 50
+							slidesPerView: 4,
+							spaceBetween: 50,
+							slidesOffsetBefore: 400,
+							slidesOffsetAfter: 400,
 						},
 					},
 					on: {
@@ -144,39 +155,28 @@ export default function PokemonList() {
 			}
 		}
 
-		if (!swiper.current || initSwiper !== true) return;
-
 		const swiperParams = getSwiperParams();
 		Object.assign(swiper.current, swiperParams);
-		swiper.current.initialize();
-
-		if (!swiper.current?.swiper?.params?.breakpoints?.["320"]) return;
-		//Swiper breakpoints don't update unless resize happens - hack to fix it
-		swiper.current.swiper.params.breakpoints["320"].slidesPerView = swiperParams.breakpoints["320"].slidesPerView;
-		swiper.current.swiper.currentBreakpoint = false;
+		console.log(swiper.current.swiper.params)
 		swiper.current.swiper.update();
-		setSwiper(false);
-    }, [initSwiper])
+		setUpdateSwiper(false);
+	}, [updateSwiper])
 
 	const genVal = useComputed(() => pokedexGen.value);
 	useSignalEffect(() => getState(genVal.value))
   
 	function getState(_value: string) {
 		setTimeout(() => { 
-			setSwiper(true);
+			setUpdateSwiper(true);
 		}, 800)
 	}
 
-	function updateSwiper(val: boolean) {
-		setSwiper(val);
-	}
-  
-    return (
-        <div className="pokemon-list">
-            <swiper-container init={false} ref={swiper} keyboard={true} mousewheel={true}>
-				{individualPokemonData.map((data, index) => <Slide key={index} sprites={data.sprites} name={data.name} id={data.id} url={data.url} />)}
+	return (
+		<div className="pokemon-list">
+			<swiper-container init={false} ref={swiper} keyboard={true} mousewheel={true} freeMode={true} observer={true}>
+				{individualPokemonData.map((data) => <Slide key={data.id} sprites={data.sprites} name={data.name} id={data.id} url={data.url} />)}
 				<swiper-slide ref={ref}></swiper-slide>
-            </swiper-container>
-        </div>
-    )
+			</swiper-container>
+		</div>
+	)
 }

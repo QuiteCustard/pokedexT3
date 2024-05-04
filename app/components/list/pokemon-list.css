@@ -7,8 +7,21 @@
     flex: 1;
     overflow: hidden;
     max-width: 100%;
+    height: calc(100dvh - 169px);
 
     @media (min-width: 1500px) {
         padding: 2rem;
+    }
+}
+
+[data-theme="gen4"] .pokemon-list {
+    @media (min-width: 559px) {
+        height: calc(100dvh - 132px);
+    }
+}
+
+[data-theme="gen9"] .pokemon-list {
+    @media (min-width: 559px) {
+        height: calc(100dvh - 212px);
     }
 }
