@@ -8,7 +8,6 @@ import "@/components/list/pokemon-list.css";
 import { loaderActive, pokedexGen } from "@/page";
 import {register} from 'swiper/element/bundle';
 import { getTheme } from "@/helpers/set-theme";
-import { useComputed, useSignalEffect } from "@preact/signals-react";
 
 export default function PokemonList() {
 	const [url, setURL] = useState(pokemonURL + pokemonLimit);
@@ -45,7 +44,7 @@ export default function PokemonList() {
 
 		getPokemonBatch().catch(console.error);
 
-		return () => controller.abort("fetch abandoned");
+		//return () => controller.abort("fetch abandoned");
 	}, [url])
 
 	useEffect(() => {
@@ -64,19 +63,10 @@ export default function PokemonList() {
 		getData().catch(console.error);
 	}, [pokemon])
 
-	const genVal = useComputed(() => pokedexGen.value);
-	useSignalEffect(() => getState(genVal.value))
-  
-	function getState(_value: string) {
-		setTimeout(() => { 
-			//
-		}, 800)
-	}
-
 	return (
 		<div className="pokemon-list">
 			{individualPokemonData.map((data) => <Slide key={data.id} sprites={data.sprites} name={data.name} id={data.id} url={data.url} />)}
-			<div ref={ref} className="intersection-observer"></div>
+			<div ref={ref}></div>
 		</div>
 	)
 }

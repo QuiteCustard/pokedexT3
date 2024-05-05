@@ -9,6 +9,8 @@
     max-width: 100%;
     height: calc(100dvh - 168.59px);
     scroll-padding: 1rem;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255, 255, 255) #0000002f;
 
     @media (min-width: 1500px) {
         padding: 2rem;
@@ -29,6 +31,22 @@
     scroll-snap-type: x mandatory;
 
     @media (min-width: 559px) {
+        height: calc(100dvh - 208px);
+    }
+
+    @media (min-width: 770px) {
+        height: calc(100dvh - 209px);
+    }
+
+    @media (min-width: 773px) {
+        height: calc(100dvh - 210px);
+    }
+
+    @media (min-width: 789px) {
+        height: calc(100dvh - 211px);
+    }
+
+    @media (min-width: 793px) {
         height: calc(100dvh - 212px);
     }
 }
