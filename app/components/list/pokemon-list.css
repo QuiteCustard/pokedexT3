@@ -5,9 +5,11 @@
     padding: 1rem;
     height: 100%;
     flex: 1;
-    overflow: hidden;
+    overflow: auto;
+    gap: 1rem;
     max-width: 100%;
     height: calc(100dvh - 169px);
+    scroll-snap-type: mandatory y proximity;
 
     @media (min-width: 1500px) {
         padding: 2rem;

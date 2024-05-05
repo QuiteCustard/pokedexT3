@@ -18,12 +18,10 @@
         display: grid;
         position: relative;
         box-shadow: var(--pokemon-outer-box-shadow);
-        height: inherit;
         border-radius: 1px;
         gap: 1rem;
         background-color: var(--pokemon-background);
         text-decoration: none;
-        height: 100%;
 
         .pokemon-img {
             object-fit: contain;
@@ -96,11 +94,6 @@
         }
     }
 
-    swiper-container {
-        height: 100%;
-        width: 100%;
-        overflow: hidden;
-    }
 
     [data-theme="gen9"] {
         .pokemon-article {
@@ -138,24 +131,7 @@
     }
 
     [data-theme="gen4"] {
-        swiper-slide {
-            &:not(.swiper-slide-active) {
-                .pokemon-img {
-                    opacity: 0;
-                }
-            }
-
-            &.swiper-slide-active {
-                .name-id {
-                    left: -10%;
-                    background-color: var(--header-main);
-                }
-            }
-    
-        }
-
-        .name-id,
-        .swiper-slide-active .name-id {
+        .name-id {
             &:hover,
             &:focus {
                 background-color: var(--header-secondary);
