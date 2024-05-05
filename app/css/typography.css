@@ -9,6 +9,6 @@
     }
     
     h3 {
-        font-size: clamp(30px, 4vw, 45px);
+        font-size: clamp(23px, 4vw, 30px);
     }
 }

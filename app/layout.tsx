@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "./components/header/Header";
 import Loading from "./components/loader/Loader";
-import { getTheme } from "./helpers/set-theme";
 
 export const metadata: Metadata = {
   title: "Create Next App",
@@ -10,16 +9,11 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
-  const theme = await setTheme();
-
-  async function setTheme() {
-    return await getTheme() ?? 'gen9';
-  }
 
   return (
     <html lang="en">
-      <body data-theme={theme}>
-        <Header theme={theme} />
+      <body>
+        <Header />
         {children}
         <Loading />
       </body>

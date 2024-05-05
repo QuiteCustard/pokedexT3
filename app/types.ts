@@ -1,11 +1,3 @@
-
-export const GENS = {
-    gen9: 'gen9',
-    gen4: 'gen4'
-  } as const;
-  
-export type genValues = 'gen9' | 'gen4';
-
 export type Image = {
     height: number,
     width: number,

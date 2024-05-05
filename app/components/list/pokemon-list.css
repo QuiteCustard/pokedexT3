@@ -1,52 +1,21 @@
 .pokemon-list {
     display: flex;
-    flex-direction: var(--list-direction);
-    background: var(--list-background);
-    padding: 1rem;
-    height: 100%;
-    flex: 1;
+    flex-direction: row;
+    background: url(/material-wood.svg);
+    padding: 2rem 1rem;
     gap: 1rem;
-    max-width: 100%;
-    height: calc(100dvh - 168.59px);
+    height: calc(100dvh - 107px);
     scroll-padding: 1rem;
     scrollbar-width: thin;
     scrollbar-color: rgb(255, 255, 255) #0000002f;
-
-    @media (min-width: 1500px) {
-        padding: 2rem;
-    }
-}
-
-[data-theme="gen4"] .pokemon-list {
-    overflow-y: auto;
-    scroll-snap-type: y mandatory;
-
-    @media (min-width: 559px) {
-        height: calc(100dvh - 132px);
-    }
-}
-
-[data-theme="gen9"] .pokemon-list {
     overflow-x: auto;
     scroll-snap-type: x mandatory;
 
-    @media (min-width: 559px) {
-        height: calc(100dvh - 208px);
+    @media (min-width: 768px) {
+        padding: 3rem 1rem;
     }
 
-    @media (min-width: 770px) {
-        height: calc(100dvh - 209px);
-    }
-
-    @media (min-width: 773px) {
-        height: calc(100dvh - 210px);
-    }
-
-    @media (min-width: 789px) {
-        height: calc(100dvh - 211px);
-    }
-
-    @media (min-width: 793px) {
-        height: calc(100dvh - 212px);
+    @media (min-width: 1200px) {
+        padding: 6rem 1rem;
     }
 }

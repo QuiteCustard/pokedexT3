@@ -3,11 +3,9 @@ import { getIndividualPokemon, pokemonLimit, pokemonURL } from "@/helpers/pokemo
 import { type DetailedPokemon, type Pokemon,  type PokemonList } from "@/types";
 import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
-import Slide from "./slide/Slide";
 import "@/components/list/pokemon-list.css";
-import { loaderActive, pokedexGen } from "@/page";
-import {register} from 'swiper/element/bundle';
-import { getTheme } from "@/helpers/set-theme";
+import { loaderActive } from "@/page";
+import PokemonArticle from "./pokemon-article/PokemonArticle";
 
 export default function PokemonList() {
 	const [url, setURL] = useState(pokemonURL + pokemonLimit);
@@ -16,19 +14,8 @@ export default function PokemonList() {
 	const [individualPokemonData, setIndividualPokemonData] = useState<DetailedPokemon[]>([]);
 	const {ref, inView} = useInView({rootMargin: "0px 1000px 0px 0px"});
 
-    useEffect(() => {
-        register();
-
-		async function updateTheme() {
-			// Updates the signal value to the one stored in cookies
-			const theme = await getTheme();
-			pokedexGen.value = theme ?? pokedexGen.value;
-		}
-
-		updateTheme().catch(console.error)
-    }, [])
-
 	useEffect(() => {
+		loaderActive.value = true;
 		const controller = new AbortController();
 		const signal = controller.signal;
 
@@ -64,9 +51,9 @@ export default function PokemonList() {
 	}, [pokemon])
 
 	return (
-		<div className="pokemon-list">
-			{individualPokemonData.map((data) => <Slide key={data.id} sprites={data.sprites} name={data.name} id={data.id} url={data.url} />)}
+		<main className="pokemon-list">
+			{individualPokemonData.map((data) => <PokemonArticle key={data.id} sprites={data.sprites} name={data.name} id={data.id} url={data.url} />)}
 			<div ref={ref}></div>
-		</div>
+		</main>
 	)
 }
