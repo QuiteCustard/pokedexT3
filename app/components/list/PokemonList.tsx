@@ -76,6 +76,7 @@ export default function PokemonList() {
 	return (
 		<div className="pokemon-list">
 			{individualPokemonData.map((data) => <Slide key={data.id} sprites={data.sprites} name={data.name} id={data.id} url={data.url} />)}
+			<div ref={ref} className="intersection-observer"></div>
 		</div>
 	)
 }
