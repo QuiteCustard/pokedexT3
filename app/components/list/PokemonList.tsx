@@ -1,7 +1,7 @@
 "use client";
 import { getIndividualPokemon, pokemonLimit, pokemonURL } from "@/helpers/pokemon-getter";
 import { type DetailedPokemon, type Pokemon,  type PokemonList } from "@/types";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import { useInView } from "react-intersection-observer";
 import "@/components/list/pokemon-list.css";
 import { loaderActive } from "@/page";
@@ -26,7 +26,6 @@ export default function PokemonList() {
 			const data = await fetch(url, {signal})
 
 			const {results, next} = await data.json() as PokemonList;
-
 			if (!results) return;
 			setNextURL(next);
 			setPokemon((p: Pokemon[] | undefined) => [...(p ?? []), ...results]);
@@ -50,13 +49,12 @@ export default function PokemonList() {
 			setTimeout(() => loaderActive.value = false, 200)
 			observerActive.value = true;
 		}
-
 		getData().catch(console.error);
 	}, [pokemon])
 
 	return (
 		<main className="pokemon-list">
-			{individualPokemonData.map((data) => <PokemonArticle key={data.id} sprites={data.sprites} name={data.name} id={data.id} url={data.url} />)}
+			{individualPokemonData.map((data) => <PokemonArticle key={data.id} sprites={data.sprites} name={data.name} id={data.id} />)}
 			{observerActive.value === true ? <div ref={ref}></div> : null}
 		</main>
 	)

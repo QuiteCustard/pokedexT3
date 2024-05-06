@@ -1,0 +1,22 @@
+.details {
+    >div {
+        display: flex;
+        flex-direction: column-reverse;
+
+        h1 {
+            text-transform: capitalize;
+        }
+    }
+
+    .types {
+        display: flex;
+        gap: 1rem;
+        list-style-type: none;
+
+        li {
+            padding: 0.5rem;
+            border-radius: 0.5rem;
+            text-transform: uppercase;
+        }
+    }
+}

@@ -12,7 +12,8 @@ export type Pokemon = {
 
 export type PokemonList = {
     results: Pokemon[],
-    next: string
+    next: string,
+    count: number
 }
 
 export type Ability = {
@@ -70,7 +71,7 @@ export type OtherSprites = {
 }
 
 export type Sprites = {
-    back_default: string| null;
+    back_default: string | null;
     back_female: string | null;
     back_shiny: string | null;
     back_shiny_female: string | null;
@@ -81,6 +82,14 @@ export type Sprites = {
     other: OtherSprites
 }
 
+export type PokemonType = {
+    slot: number,
+    type: {
+        name: string,
+        url: string
+    }
+}
+
 export type DetailedPokemon = {
     abilities: Ability[]
     baseExperience: number,
@@ -88,11 +97,11 @@ export type DetailedPokemon = {
     forms: Form[],
     height: number,
     weight: number,
-    location_area_encounters: string,
     moves: [],
     name: string,
     id: number,
     sprites: Sprites,
+    types: PokemonType[],
     url: string
 }
 
@@ -100,5 +109,4 @@ export type PokemonSlide = {
     sprites: Sprites,
     name: string,
     id: number
-    url: string
 }

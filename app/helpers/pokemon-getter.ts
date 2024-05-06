@@ -1,7 +1,7 @@
 import type { DetailedPokemon } from "@/types";
 
-export const pokemonURL = `https://pokeapi.co/api/v2/pokemon?`
-export const pokemonLimit = `limit=21`;
+export const pokemonURL = `https://pokeapi.co/api/v2/pokemon`
+export const pokemonLimit = `?limit=21`;
 
 export async function getIndividualPokemon(urls: string[]) {
     const controller = new AbortController();
