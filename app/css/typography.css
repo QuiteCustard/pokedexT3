@@ -8,6 +8,10 @@
         font-family: 'pokemon', sans-serif;
     }
     
+    h1, h2, h3, h4, h5, h6, p, input, button {
+        font-weight: 400;
+    }
+
     h3 {
         font-size: clamp(23px, 4vw, 30px);
     }

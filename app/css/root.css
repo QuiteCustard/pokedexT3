@@ -1,23 +1,23 @@
 @layer root {
     :root {
-        --normal: #a4acaf;
-        --grass: #9bcc50;
-        --fire: #fd7d24;
-        --water: #4592c4;
-        --electric: #eed535;
-        --bug: #628945;
-        --poison: #b97fc9;
-        --flying: #3dc7ef;
-        --psychic: #f366b9;
-        --ground: #f7de3f;
-        --rock: #a38c21;
-        --dragon: #53a4cf;
-        --fairy: #fdb9e9;
-        --ice: #51c4e7;
-        --fighting: #d56723;
-        --dark: #707070;
-        --ghost: #7b62a3;
-        --steel: #9eb7b8;
+        --normal: #e6e6e6;
+        --grass: #3fa129;
+        --fire: #e62829;
+        --water: #2980ef;
+        --electric: #fac000;
+        --bug: #91a119;
+        --poison: #9141cb;
+        --flying: #81b9ef;
+        --psychic: #ef4179;
+        --ground: #915121;
+        --rock: #afa981;
+        --dragon: #5060e1;
+        --fairy: #ef70ef;
+        --ice: #3fd8ff;
+        --fighting: #ff8000;
+        --dark: #50413f;
+        --ghost: #704170;
+        --steel: #60a1b8;
     }
 
     html {

@@ -1,6 +1,7 @@
 import { pokemonURL } from "@/helpers/pokemon-getter";
 import type { DetailedPokemon } from "@/types";
 import "@/pokemon/pokemon.css";
+import Image from "next/image";
 
 async function getData(slug: string) {
   const data = await fetch(`${pokemonURL}/${slug}`);
@@ -22,7 +23,11 @@ export default async function Page({params: {slug}}: {params: {slug: string}}) {
           <h2>No. {id}</h2>
         </div>
         <ul className="types">
-          {types.map((type, index) => <li key={index} className={`type-${type.type.name}`}>{type.type.name}</li>)}
+          {types.map((type, index) => 
+          <li key={index} className={`type-${type.type.name}`}>
+            <Image src={`/types/${type.type.name}.webp`} alt={`${type.type.name} type`} width={40} height={33} />
+            {type.type.name}
+          </li>)}
         </ul>
       </section>
     </main>

@@ -2,10 +2,9 @@ import type { Metadata } from "next";
 import "./globals.css";
 import Header from "./components/header/Header";
 
-import { Inter, Barlow_Condensed } from 'next/font/google'
-const inter = Inter({ subsets: ['latin'] });
+import {Cabin} from 'next/font/google'
 
-const barlow = Barlow_Condensed({
+const cabin = Cabin({
   subsets: ['latin'],
   weight: "500"
 });
@@ -19,7 +18,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({children}: Readonly<{children: React.ReactNode}>) {
   return (
     <html lang="en">
-      <body className={barlow.className}>
+      <body className={cabin.className}>
         <Header />
         {children}
       </body>
