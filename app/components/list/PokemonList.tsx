@@ -6,6 +6,9 @@ import { useInView } from "react-intersection-observer";
 import "@/components/list/pokemon-list.css";
 import { loaderActive } from "@/page";
 import PokemonArticle from "./pokemon-article/PokemonArticle";
+import { signal } from "@preact/signals-react";
+
+const observerActive = signal(false);
 
 export default function PokemonList() {
 	const [url, setURL] = useState(pokemonURL + pokemonLimit);
@@ -31,7 +34,7 @@ export default function PokemonList() {
 
 		getPokemonBatch().catch(console.error);
 
-		//return () => controller.abort("fetch abandoned");
+		return () => controller.abort("fetch abandoned");
 	}, [url])
 
 	useEffect(() => {
@@ -45,6 +48,7 @@ export default function PokemonList() {
 		async function getData() {
 			setIndividualPokemonData(await getIndividualPokemon(urls));
 			setTimeout(() => loaderActive.value = false, 200)
+			observerActive.value = true;
 		}
 
 		getData().catch(console.error);
@@ -53,7 +57,7 @@ export default function PokemonList() {
 	return (
 		<main className="pokemon-list">
 			{individualPokemonData.map((data) => <PokemonArticle key={data.id} sprites={data.sprites} name={data.name} id={data.id} url={data.url} />)}
-			<div ref={ref}></div>
+			{observerActive.value === true ? <div ref={ref}></div> : null}
 		</main>
 	)
 }
