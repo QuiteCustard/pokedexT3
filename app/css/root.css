@@ -32,6 +32,10 @@
         box-sizing: inherit;
     }
 
+    body, .pokemon-list {
+        scrollbar-width: thin;
+        scrollbar-color: rgb(255, 255, 255) #0000002f;
+    }
     .type-normal {
         background-color: var(--normal);
     }

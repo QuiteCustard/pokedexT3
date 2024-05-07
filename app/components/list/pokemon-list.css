@@ -6,8 +6,6 @@
     gap: 1rem;
     height: calc(100dvh - 107px);
     scroll-padding: 1rem;
-    scrollbar-width: thin;
-    scrollbar-color: rgb(255, 255, 255) #0000002f;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
 

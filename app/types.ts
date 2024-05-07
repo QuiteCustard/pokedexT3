@@ -5,7 +5,7 @@ export type Image = {
     src: string
 }
 
-export type Pokemon = {
+type Pokemon = {
     name: string,
     url: string
 }
@@ -16,7 +16,7 @@ export type PokemonList = {
     count: number
 }
 
-export type Ability = {
+type Ability = {
     ability: {
         name: string,
         url: string,
@@ -25,14 +25,9 @@ export type Ability = {
     slot: number
 }
 
-export type Cries = {
+type Cries = {
     latest: string,
     legacy: string
-}
-
-export type Form = {
-    name: string,
-    url: string
 }
 
 type ArtworkSprite = {
@@ -63,7 +58,7 @@ type HomeSprite = {
     front_shiny_female: string | null,
 }
 
-export type OtherSprites = {
+type OtherSprites = {
     dream_world: DreamWorldSprite;
     home: HomeSprite;
     'official-artwork': ArtworkSprite;
@@ -82,7 +77,7 @@ export type Sprites = {
     other: OtherSprites
 }
 
-export type PokemonType = {
+type PokemonType = {
     slot: number,
     type: {
         name: string,
@@ -90,22 +85,96 @@ export type PokemonType = {
     }
 }
 
+type FlavorTextEntry = {
+    flavor_text: string,
+    language: {
+        name: string,
+        url: string
+    },
+    version: {
+        name: string,
+        url: string
+    }
+}
+
+type EggGroup = {
+    name: string,
+    url: string
+}
+
+type Genus = {
+    genus: string,
+    language: {
+        name: string,
+        url: string
+    }
+}
+
+type Variety = {
+    is_default: boolean,
+    pokemon: {
+        name: string,
+        url: string
+    }
+}
+
+type EvolutionChain = {
+    url: string
+}
+
+type GrowthRate = {
+    name: string,
+    url: string
+}
+
 export type DetailedPokemon = {
     abilities: Ability[]
-    baseExperience: number,
+    base_experience: number,
+    base_happiness: number,
+    capture_rate: number,
     cries: Cries,
-    forms: Form[],
+    egg_groups: EggGroup[],
+    evolution_chain?: EvolutionChain,
+    genera?: Genus[],
+    growth_rate: GrowthRate,
     height: number,
     weight: number,
     moves: [],
     name: string,
     id: number,
     sprites: Sprites,
+    stats: [],
     types: PokemonType[],
-    url: string
+    flavor_text_entries?: FlavorTextEntry[],
+    flavor_text?: string,
+    location_area_encounters: string,
+    varieties: Variety[],
 }
 
-export type PokemonSlide = {
+export type CompletedPokemon = {
+    abilities: Ability[],
+    base_experience: number,
+    base_happiness: number,
+    capture_rate: number,
+    cries: Cries,
+    egg_groups: string[],
+    evolution_chain?: string[],
+    flavor_text?: string,
+    genus?: string,
+    growth_rate: string,
+    height: number,
+    id: number,
+    location_area_encounters: string,
+    moves: [],
+    name: string,
+    sprites: Sprites,
+    stats: [],
+    types: PokemonType[],
+    weight: number,
+    varieties: string[]
+}
+
+export type PokemonArticle = {
     sprites: Sprites,
     name: string,
     id: number

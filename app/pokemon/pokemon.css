@@ -1,13 +1,55 @@
 main {
+    background-repeat: no-repeat;
+    background-size: cover;
+    scroll-snap-type: y mandatory;
+    scrollbar-width: thin;
+    scrollbar-color: rgb(255, 255, 255) #0000002f;
+    overflow: auto;
+    height: calc(100vh - 111px);
+}
+
+main > section {
+    display: grid;
+    place-items: center;
+    scroll-snap-align: start;
+    height: calc(100vh - 111px);
+    background-color: red;
+
+    &:has(.basic-info) {
+        background-image: linear-gradient(180deg, #194a83, #21709b);
+    }
+}
+
+.basic-info {
     display: grid;
     --gap: 2rem;
-    grid-template-columns: 1fr min(1400px, calc(100% - (var(--gap) * 2))) 1fr;
-    grid-column-gap: var(--gap);
-    background-image: linear-gradient(180deg, #194a83, #21709b);
     color: white;
+    grid-template-areas: "details"
+        "flavour-text"
+        "main-sprite"
+        "attributes";
+    padding: 1rem;
+    gap: 1rem;
+    max-width: 1600px;
+    width: 100%;
+    height: 100%;
+    max-height: 50dvh;
 
-    >* {
-        grid-column: 2;
+    @media (min-width: 768px) {
+        padding: 2rem;
+        grid-template-areas: "details main-sprite"
+            "details main-sprite"
+            "flavour-text attributes";
+    }
+
+    @media (min-width: 1024px) {
+        padding: 2rem;
+        grid-template-areas: "details main-sprite ."
+            "flavour-text main-sprite attributes";
+            align-items: flex-end;
+            grid-template-columns: 1fr 500px min-content;
+            grid-template-rows: 1fr min-content;
+
     }
 }
 
@@ -16,6 +58,7 @@ main {
     flex-direction: column;
     gap: 1rem;
     padding: 1rem 0;
+    grid-area: details;
 
     >div {
         display: flex;
@@ -24,7 +67,11 @@ main {
 
         h1 {
             text-transform: capitalize;
-            font-size: clamp(24px, 4vw, 40px);
+            font-size: clamp(24px, 4vw, 60px);
+        }
+
+        h2 {
+            font-size: clamp(18px, 4vw, 35px);
         }
     }
 
@@ -42,5 +89,48 @@ main {
             color: white;
             padding-right: 2rem;
         }
+    }
+    
+    p {
+        font-size: clamp(16px, 4vw, 23px);
+    }
+}
+
+.flavour-text {
+    grid-area: flavour-text;
+
+    p {
+        font-size: clamp(18px, 4vw, 23px);
+    }
+}
+
+.main-sprite {
+    grid-area: main-sprite;
+
+    img {
+        width: 100%;
+        height: auto;
+    }
+}
+
+.attributes {
+    grid-area: attributes;
+    display: flex;
+    gap: 1rem;
+    justify-content: center;
+
+    >div {
+        display: flex;
+        flex-direction: column;
+        gap: .3rem;
+    }
+
+    @media (min-width: 768px) {
+        text-align: right;
+        justify-content: flex-end;
+    }
+
+    @media (min-width: 1024px) {
+        flex-direction: column;
     }
 }
