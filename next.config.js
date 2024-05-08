@@ -8,7 +8,10 @@ const config = {
                 permanent: true,
             }
         ]
-    }
+    },
+    images: {
+        domains: ['raw.githubusercontent.com'],
+    },
 };
 
 export default config;

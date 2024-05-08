@@ -5,7 +5,7 @@ export type Image = {
     src: string
 }
 
-type Pokemon = {
+export type Pokemon = {
     name: string,
     url: string
 }
@@ -118,8 +118,10 @@ type Variety = {
     }
 }
 
-type EvolutionChain = {
-    url: string
+export type EvolutionChain = {
+    name: string,
+    sprite?: string,
+    evolution_details: EvolutionDetails[]
 }
 
 type GrowthRate = {
@@ -134,7 +136,9 @@ export type DetailedPokemon = {
     capture_rate: number,
     cries: Cries,
     egg_groups: EggGroup[],
-    evolution_chain?: EvolutionChain,
+    evolution_chain?: {
+        url: string
+    },
     genera?: Genus[],
     growth_rate: GrowthRate,
     height: number,
@@ -151,6 +155,15 @@ export type DetailedPokemon = {
     varieties: Variety[],
 }
 
+export type Stat = {
+    base_stat: number,
+    effort: number,
+    stat: {
+        name: string,
+        url: string
+    }
+}
+
 export type CompletedPokemon = {
     abilities: Ability[],
     base_experience: number,
@@ -158,7 +171,7 @@ export type CompletedPokemon = {
     capture_rate: number,
     cries: Cries,
     egg_groups: string[],
-    evolution_chain?: string[],
+    evolution_chain?: EvolutionChain[],
     flavor_text?: string,
     genus?: string,
     growth_rate: string,
@@ -168,7 +181,7 @@ export type CompletedPokemon = {
     moves: [],
     name: string,
     sprites: Sprites,
-    stats: [],
+    stats: Stat[],
     types: PokemonType[],
     weight: number,
     varieties: string[]
@@ -177,5 +190,45 @@ export type CompletedPokemon = {
 export type PokemonArticle = {
     sprites: Sprites,
     name: string,
+    id: number
+}
+
+export type EvolutionDetails = {
+    gender?: null,
+    held_item?: null | {name: string, url: string},
+    item?: null,
+    known_move?: null,
+    known_move_type?: null,
+    location?: null,
+    min_affection?: null,
+    min_beauty?: null,
+    min_happiness?: null,
+    min_level?: number | null,
+    needs_overworld_rain?: boolean | null,
+    party_species?: null,
+    party_type?: null,
+    relative_physical_stats?: null,
+    time_of_day?: '',
+    trade_species?: null,
+    trigger?: {
+      name: string,
+      url: string
+    } | null,
+    turn_upside_down?: boolean | null
+}
+
+export type Chain = {
+    evolution_details: EvolutionDetails[],
+    evolves_to: Chain[],
+    is_baby: boolean,
+    species: {
+        name: string,
+        url: string
+    }
+}
+
+export type EvolutionChainData = {
+    baby_trigger_item: string | null,
+    chain: Chain,
     id: number
 }
