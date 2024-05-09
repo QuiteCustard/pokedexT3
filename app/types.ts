@@ -194,22 +194,22 @@ export type PokemonArticle = {
 }
 
 export type EvolutionDetails = {
-    gender?: null,
+    gender?: number | null,
     held_item?: null | {name: string, url: string},
-    item?: null,
-    known_move?: null,
-    known_move_type?: null,
-    location?: null,
+    item?: null | {name: string, url: string}
+    known_move?: null | {name: string, url: string}
+    known_move_type?: null | {name: string, url: string}
+    location?: null | {name: string, url: string}
     min_affection?: null,
     min_beauty?: null,
-    min_happiness?: null,
+    min_happiness?: number | null,
     min_level?: number | null,
     needs_overworld_rain?: boolean | null,
-    party_species?: null,
+    party_species?: null | {name: string, url: string}
     party_type?: null,
-    relative_physical_stats?: null,
-    time_of_day?: '',
-    trade_species?: null,
+    relative_physical_stats?: number | null,
+    time_of_day?: string | null,
+    trade_species?: null | {name: string, url: string}
     trigger?: {
       name: string,
       url: string

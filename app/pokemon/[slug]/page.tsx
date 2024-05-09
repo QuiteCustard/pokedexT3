@@ -6,6 +6,7 @@ import Link from "next/link";
 
 type Results = {
   name: string,
+  id?: number,
   evolution_details: EvolutionDetails[]
 }
 
@@ -23,9 +24,12 @@ async function getEvolutionChain(url: string, currentName: string) {
   
     function traverse(node: Chain) {
       if (node.species) {
+        const idMatch = node.species.url.match(/(\d+)\/?$/);
+        const id = idMatch ? Number(idMatch[1]) : undefined;
         result.push({
-          name: node.species.name,
+          id: id,
           evolution_details: node.evolution_details,
+          name: node.species.name
         });
       }
   
@@ -40,28 +44,23 @@ async function getEvolutionChain(url: string, currentName: string) {
   const evolutionData = extractEvolutionData(data.chain);
 
   const evolutions = await Promise.all(
-    evolutionData.map(async ({name, evolution_details}) => {
-      const d = [];
+    evolutionData.map(async ({name, evolution_details, id}) => {
+      const details = evolution_details.map(mon => Object.fromEntries(Object.entries(mon).filter(([_,val]) => val)))
 
-      if (evolution_details.length > 0) {
-        evolution_details.map(mon => {
-          const filteredMon = {};
-          for (const key in mon) {
-            if (Boolean(mon[key])){
-              filteredMon[key] = mon[key];
-            }
-          }
-          d.push(filteredMon);
-        });
-      }
+      if (name === currentName) return { name, ...(details.length > 0 && { evolution_details: details })}
 
-      if (name === currentName) return { name, ...(evolution_details.length > 0 && { evolution_details })}
-      const response = await fetch(`${pokemonURL}/${name}`);
-      if (!response.ok) throw new Error('Critical error');
+      const response = await fetch(`${pokemonURL}/${id}`);
+      if (!response.ok) return {name}
+
       const pokemonData = await response.json() as DetailedPokemon;
-      return { name, sprite: pokemonData.sprites.other.dream_world.front_default ?? pokemonData.sprites.front_default, ...(evolution_details.length > 0 && { evolution_details })};
+      return { 
+        name, 
+        sprite: pokemonData.sprites.other.dream_world.front_default ?? pokemonData.sprites.front_default, 
+        ...(details.length > 0 && { evolution_details: details })
+      };
       })
   )
+
   return evolutions as EvolutionChain[];
 }
 
@@ -84,7 +83,7 @@ async function getData(slug: string) {
   const englishGenusEntry = data[1]?.genera?.find((entry) => entry.language.name === 'en');
   const varieties = data[1]?.varieties?.map((variety) => variety.pokemon.name).filter((name) => name !== data[0]?.name) ?? [];
   const eggGroups = data[1]?.egg_groups?.map((group) => group.name) ?? [];
-  const evolutionChain = await getEvolutionChain(data[1]?.evolution_chain?.url ?? '', data[0].name);
+  const evolutionChain = await getEvolutionChain(data[1]?.evolution_chain?.url ?? '', data[0].name) ?? ''
 
   const completeData: CompletedPokemon = {
     abilities: abilities,
@@ -93,7 +92,7 @@ async function getData(slug: string) {
     capture_rate: capture_rate,
     cries: cries,
     egg_groups: eggGroups,
-    evolution_chain: evolutionChain,
+    evolution_chain: evolutionChain as EvolutionChain[] | undefined,
     flavor_text: englishFlavourText?.flavor_text,
     genus: englishGenusEntry?.genus,
     growth_rate: growth_rate.name,
@@ -101,7 +100,7 @@ async function getData(slug: string) {
     id: id,
     location_area_encounters: location_area_encounters,
     moves: moves,
-    name: name,
+    name: name.replace('-', ' '),
     sprites: sprites,
     stats: stats,
     types: types,
@@ -116,8 +115,6 @@ export default async function Page({params: {slug}}: {params: {slug: string}}) {
   const data: CompletedPokemon = await getData(slug)
   const {name, id, sprites, types, flavor_text, genus, height, weight, base_experience, base_happiness, capture_rate, growth_rate, location_area_encounters, abilities, stats, egg_groups, moves, evolution_chain, varieties} = data;
 
-  console.log(evolution_chain )
-
   const formattedStats: Stat[] = stats.map((stat) => {
     return {
       ...stat,
@@ -128,8 +125,89 @@ export default async function Page({params: {slug}}: {params: {slug: string}}) {
     }
   })
 
+  function getEvolutionDetail(detail: EvolutionDetails, index: number, name: string) {
+
+    function generateDescription() {
+      const triggerFormats = {
+        'level-up': 'Level up',
+        'use-item': 'Use',
+        'trade': 'Trade',
+        'strong-style-move': 'Use a strong style move',
+        'agile-style-move': 'Use an agile style move',
+        'shed': 'Shed',
+        'three-critical-hits': 'Land three critical hits',
+        'take-damage': 'Take damage',
+        'recoil-damage': 'Take recoil damage',
+        'spin': 'Spin your character around',
+        'other': 'Other method of evolution',
+      };
+      
+      const descriptionFormats = {
+        'min_affection': 'with a minimum affection of',
+        'min_beauty': 'with a minimum beauty of',
+        'time_of_day': 'during the',
+        'gender': 'being a',
+        'held_item': 'while holding',
+        'min_level': 'at level',
+        'needs_overworld_rain': 'in the rain',
+        'party_species': 'with',
+        'trade_species': 'for',
+        'location': 'at',
+        'known_move': 'while knowing',
+        'known_move_type': 'knowing a move of type',
+      };
+      
+      const descriptions = [];
+      
+      for (const key in detail) {
+        if (key !== 'trigger' && descriptionFormats[key]) {
+          let value = detail[key];
+          if (key === 'held_item' && value.name) {
+            value = value.name.replace(/-/g, ' ');
+          } else if (key === 'trade_species' && value.name) {
+            value = value.name.replace(/-/g, ' ');
+          } else if (key === 'needs_overworld_rain') {
+            if (value) {
+              descriptions.push(descriptionFormats[key]);
+            }
+            continue;
+          }
+          else if (key === 'location' && value.name) {
+            value = value.name.replace(/-/g, ' ');
+          }
+          else if (key === 'known_move_type' && value.name) {
+            value = value.name.replace(/-/g, ' ');
+          }
+          else if (key === 'known_move' && value.name) {
+            if (detail.trigger && (detail.trigger.name === 'agile-style-move' || detail.trigger.name === 'strong-style-move')) {
+              descriptionFormats[key] = 'Master';
+              value = `${value.name.replace(/-/g, ' ')}`;
+            } else {
+              value = `${value.name.replace(/-/g, ' ')}`;
+            }
+          }
+      
+          descriptions.push(`${descriptionFormats[key]} ${value}`);
+        }
+      }
+      
+      let description = descriptions.join(', ');
+      
+      if (detail.trigger && triggerFormats[detail.trigger.name]) {
+        if (detail.trigger.name === 'use-item' && detail.item && detail.item.name) {
+          description = `${triggerFormats[detail.trigger.name]} ${detail.item.name.replace(/-/g, ' ')} ${description}`;
+        } else if (detail.trigger.name !== 'agile-style-move' && detail.trigger.name !== 'strong-style-move') {
+          description = `${triggerFormats[detail.trigger.name]} ${description}`;
+        }
+      }
+      console.log(detail)
+      return description;
+    }
+    return <p key={index}>{generateDescription()}</p>
+  }
+
   return (
-  <main>
+    <main>
     <section>
       <article className="basic-info">
       <section className="details">
@@ -202,6 +280,7 @@ export default async function Page({params: {slug}}: {params: {slug: string}}) {
                   <Image src={evolution.sprite ?? sprites.other.dream_world.front_default ?? sprites.front_default} alt={`${evolution.name} sprite`} width={100} height={100} />
                 </div>
                 <h2>{evolution.name}</h2>
+                {evolution.evolution_details?.map((detail) => getEvolutionDetail(detail, index, evolution_chain[0]?.name ?? ''))}
               </Link>
             </article>
           ))}

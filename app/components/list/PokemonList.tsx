@@ -1,5 +1,5 @@
 "use client";
-import { getIndividualPokemon, pokemonLimit, pokemonURL } from "@/helpers/pokemon-getter";
+import { getIndividualPokemon, pokemonLimit, speciesURL } from "@/helpers/pokemon-getter";
 import { type DetailedPokemon, type Pokemon,  type PokemonList } from "@/types";
 import { useState, useEffect, use } from "react";
 import { useInView } from "react-intersection-observer";
@@ -11,7 +11,7 @@ import { signal } from "@preact/signals-react";
 const observerActive = signal(false);
 
 export default function PokemonList() {
-	const [url, setURL] = useState(pokemonURL + pokemonLimit);
+	const [url, setURL] = useState(speciesURL + pokemonLimit);
 	const [nextUrl, setNextURL] = useState("");
 	const [pokemon, setPokemon] = useState<Pokemon[]>([]);
 	const [individualPokemonData, setIndividualPokemonData] = useState<DetailedPokemon[]>([]);
@@ -55,7 +55,6 @@ export default function PokemonList() {
 	return (
 		<main className="pokemon-list">
 			{individualPokemonData.map((data) => <PokemonArticle key={data.id} sprites={data.sprites} name={data.name} id={data.id} />)}
-			{observerActive.value === true ? <div ref={ref}></div> : null}
 		</main>
 	)
 }
