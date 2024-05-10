@@ -152,40 +152,47 @@ main>section {
     max-height: 80dvh;
     list-style-type: none;
 
-    .stats {
+    .stats-abilities {
         display: flex;
-        flex-direction: column;
         gap: 1rem;
+        justify-content: space-between;
 
-        h2 {
-            text-shadow: #00000080;
-            font-size: 25px;
-        }
-
-        ul {
+        div {
             display: flex;
             flex-direction: column;
-            gap: .5rem;
-            list-style: none;
+            gap: 1rem;
 
-            li {
+
+            h2 {
+                text-shadow: #00000080;
+                font-size: 25px;
+            }
+
+            ul {
                 display: flex;
-                gap: 1rem;
-                align-items: center;
-                color: white;
-                padding-right: 2rem;
-                filter: drop-shadow(0 2px 3px #00000080);
-                text-transform: capitalize;
+                flex-direction: column;
+                gap: .5rem;
+                list-style: none;
 
-                &.experience {
-                    border-top: 2px solid white;
-                }
+                li {
+                    display: flex;
+                    gap: 1rem;
+                    align-items: center;
+                    color: white;
 
-                p {
-                    font-size: 30px;
+                    text-transform: capitalize;
+
+                    h3 {
+                        text-shadow: 2px 2px #0000002f;
+                    }
+
+                    p {
+                        font-size: 30px;
+                    }
                 }
             }
         }
+
     }
 
     .evolution-chain {

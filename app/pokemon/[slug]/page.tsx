@@ -3,6 +3,8 @@ import type { Chain, CompletedPokemon, DetailedPokemon, EvolutionChain, Evolutio
 import "@/pokemon/pokemon.css";
 import Image from "next/image";
 import Link from "next/link";
+import { descriptionFormats, keysToReplace, triggerFormats } from "@/helpers/description-formats";
+import { notFound } from "next/navigation";
 
 type Results = {
   name: string,
@@ -15,7 +17,7 @@ async function getEvolutionChain(url: string, currentName: string) {
 
   const f = await fetch(url);
 
-  if (!f) throw new Error('Critical error');
+  if (!f) notFound();
 
   const data = await f.json() as EvolutionChainData;
 
@@ -67,48 +69,48 @@ async function getEvolutionChain(url: string, currentName: string) {
 async function getData(slug: string) {
   const controller = new AbortController();
   const signal = controller.signal;
-  const urls = [`${pokemonURL}/${slug}`, `${speciesURL}/${slug}`];
-  
-  const data: DetailedPokemon[] = await Promise.all(urls.map(async url => {
-    const response = await fetch(url, {signal});
-    if (!response.ok) throw new Error('Critical error');
-    const pokemonData = await response.json() as DetailedPokemon;
-    return pokemonData;
-  }))
 
-  if (data[0] === undefined || data[1] === undefined) throw new Error('Pokemon not found');
-  const {abilities, base_experience, height, id, location_area_encounters, moves, name, sprites, stats, types, weight, cries} = data[0];
-  const {base_happiness, capture_rate, growth_rate} = data[1];
-  const englishFlavourText = [...data[1]?.flavor_text_entries ?? []].reverse().find((entry) => entry.language.name === 'en');
-  const englishGenusEntry = data[1]?.genera?.find((entry) => entry.language.name === 'en');
-  const varieties = data[1]?.varieties?.map((variety) => variety.pokemon.name).filter((name) => name !== data[0]?.name) ?? [];
-  const eggGroups = data[1]?.egg_groups?.map((group) => group.name) ?? [];
-  const evolutionChain = await getEvolutionChain(data[1]?.evolution_chain?.url ?? '', data[0].name) ?? ''
-
-  const completeData: CompletedPokemon = {
-    abilities: abilities,
-    base_experience: base_experience,
-    base_happiness: base_happiness,
-    capture_rate: capture_rate,
-    cries: cries,
-    egg_groups: eggGroups,
-    evolution_chain: evolutionChain as EvolutionChain[] | undefined,
-    flavor_text: englishFlavourText?.flavor_text,
-    genus: englishGenusEntry?.genus,
-    growth_rate: growth_rate.name,
-    height: height,
-    id: id,
-    location_area_encounters: location_area_encounters,
-    moves: moves,
-    name: name.replace('-', ' '),
-    sprites: sprites,
-    stats: stats,
-    types: types,
-    weight: weight,
-    varieties: varieties
+  async function fetchData(url: string, signal: AbortSignal) {
+    const data = await fetch(url, {signal});
+    return await data.json() as DetailedPokemon;
   }
 
-  return completeData;
+  try {
+    const {id, base_happiness, capture_rate, growth_rate, flavor_text_entries, genera, egg_groups, evolution_chain, varieties, name: speciesName} = await fetchData(`${speciesURL}/${slug.toLowerCase()}`, signal);
+    const {abilities, base_experience, height, location_area_encounters, moves, name: monName, sprites, stats, types, weight, cries} = await fetchData(`${pokemonURL}/${id}`, signal);
+    const englishFlavourText = [...flavor_text_entries ?? []].reverse().find((entry) => entry.language.name === 'en');
+    const englishGenusEntry = genera?.find((entry) => entry.language.name === 'en');
+    const filteredVarieties = varieties?.map(variety => variety.pokemon.name) ?? [];
+    const eggGroups = egg_groups?.map((group) => group.name) ?? [];
+    const evolutionChain = await getEvolutionChain(evolution_chain?.url ?? '', monName) ?? '';
+  
+    const completeData: CompletedPokemon = {
+      abilities: abilities,
+      base_experience: base_experience,
+      base_happiness: base_happiness,
+      capture_rate: capture_rate,
+      cries: cries,
+      egg_groups: eggGroups,
+      evolution_chain: evolutionChain as EvolutionChain[] | undefined,
+      flavor_text: englishFlavourText?.flavor_text,
+      genus: englishGenusEntry?.genus,
+      growth_rate: growth_rate.name,
+      height: height,
+      id: id,
+      location_area_encounters: location_area_encounters,
+      moves: moves,
+      name: speciesName.replace(/-/g, ' '),
+      sprites: sprites,
+      stats: stats,
+      types: types,
+      weight: weight,
+      varieties: filteredVarieties
+    }
+ 
+    return completeData;
+  } catch (error) {
+    notFound();
+  }
 }
  
 export default async function Page({params: {slug}}: {params: {slug: string}}) {
@@ -120,173 +122,151 @@ export default async function Page({params: {slug}}: {params: {slug: string}}) {
       ...stat,
       stat: {
         ...stat.stat,
-        name: stat.stat.name.includes('-') ? stat.stat.name.replace('-', ' ') : stat.stat.name,
+        name: stat.stat.name.includes('-') ? stat.stat.name.replace(/-/g, ' ') : stat.stat.name,
       },
     }
   })
 
-  function getEvolutionDetail(detail: EvolutionDetails, index: number, name: string) {
-
-    function generateDescription() {
-      const triggerFormats = {
-        'level-up': 'Level up',
-        'use-item': 'Use',
-        'trade': 'Trade',
-        'strong-style-move': 'Use a strong style move',
-        'agile-style-move': 'Use an agile style move',
-        'shed': 'Shed',
-        'three-critical-hits': 'Land three critical hits',
-        'take-damage': 'Take damage',
-        'recoil-damage': 'Take recoil damage',
-        'spin': 'Spin your character around',
-        'other': 'Other method of evolution',
-      };
-      
-      const descriptionFormats = {
-        'min_affection': 'with a minimum affection of',
-        'min_beauty': 'with a minimum beauty of',
-        'time_of_day': 'during the',
-        'gender': 'being a',
-        'held_item': 'while holding',
-        'min_level': 'at level',
-        'needs_overworld_rain': 'in the rain',
-        'party_species': 'with',
-        'trade_species': 'for',
-        'location': 'at',
-        'known_move': 'while knowing',
-        'known_move_type': 'knowing a move of type',
-      };
-      
-      const descriptions = [];
-      
-      for (const key in detail) {
-        if (key !== 'trigger' && descriptionFormats[key]) {
-          let value = detail[key];
-          if (key === 'held_item' && value.name) {
-            value = value.name.replace(/-/g, ' ');
-          } else if (key === 'trade_species' && value.name) {
-            value = value.name.replace(/-/g, ' ');
-          } else if (key === 'needs_overworld_rain') {
-            if (value) {
-              descriptions.push(descriptionFormats[key]);
-            }
-            continue;
-          }
-          else if (key === 'location' && value.name) {
-            value = value.name.replace(/-/g, ' ');
-          }
-          else if (key === 'known_move_type' && value.name) {
-            value = value.name.replace(/-/g, ' ');
-          }
-          else if (key === 'known_move' && value.name) {
-            if (detail.trigger && (detail.trigger.name === 'agile-style-move' || detail.trigger.name === 'strong-style-move')) {
-              descriptionFormats[key] = 'Master';
-              value = `${value.name.replace(/-/g, ' ')}`;
-            } else {
-              value = `${value.name.replace(/-/g, ' ')}`;
-            }
-          }
-      
-          descriptions.push(`${descriptionFormats[key]} ${value}`);
+  function getEvolutionDetail(detail: EvolutionDetails, index: number) {
+    function formatValue<K extends keyof EvolutionDetails>(value: EvolutionDetails[K], key: K, detail: EvolutionDetails) {
+      if (typeof value === 'object' && value !== null && 'name' in value) {
+        if (keysToReplace.includes(key.toString())) {
+          const prefix = key === 'known_move' && detail.trigger && ['agile-style-move', 'strong-style-move'].includes(detail.trigger.name) ? 'Master ' : '';
+          return `${prefix}${value.name.replace(/-/g, ' ')}`;
         }
+      } else if (typeof value === 'boolean') {
+        return value ? '' : null;
       }
-      
+      return value?.toString();
+    };
+    
+    function generateDescription() {
+      const descriptions = Object.entries(detail).reduce((acc, [key, value]) => {
+        if (key !== 'trigger' && descriptionFormats[key]) {
+          const formattedValue = formatValue(value, key, detail);
+          if (formattedValue !== null) acc.push(`${descriptionFormats[key]} ${formattedValue}`);
+        }
+        return acc;
+      }, [] as string[]);
+    
       let description = descriptions.join(', ');
-      
+    
       if (detail.trigger && triggerFormats[detail.trigger.name]) {
-        if (detail.trigger.name === 'use-item' && detail.item && detail.item.name) {
+        if (detail.trigger.name === 'use-item' && detail.item?.name) {
           description = `${triggerFormats[detail.trigger.name]} ${detail.item.name.replace(/-/g, ' ')} ${description}`;
-        } else if (detail.trigger.name !== 'agile-style-move' && detail.trigger.name !== 'strong-style-move') {
+        } else if (!['agile-style-move', 'strong-style-move'].includes(detail.trigger.name)) {
           description = `${triggerFormats[detail.trigger.name]} ${description}`;
         }
       }
-      console.log(detail)
+    
       return description;
     }
+    
     return <p key={index}>{generateDescription()}</p>
   }
 
+  console.log(egg_groups)
+
   return (
     <main>
-    <section>
-      <article className="basic-info">
-      <section className="details">
-          <div>
-            <h1>{name}</h1>
-            <h2>No. {id}</h2>
-          </div>
-          <p>{genus}</p>
-          <ul className="types">
-            {types.map((type, index) => 
-            <li key={index} className={`type-${type.type.name}`}>
-              <Image src={`/types/${type.type.name}.webp`} alt={`${type.type.name} type`} width={40} height={33} />
-              {type.type.name}
-            </li>)}
-          </ul>
-        </section>
-        <section className="flavour-text">
-          <p>{flavor_text}</p>
-        </section>
-        <section className="main-sprite">
-          <Image src={sprites.other.dream_world.front_default ?? sprites.front_default} alt={`${name} sprite`} width={300} height={300} />
-        </section>
-        <section className="attributes">
-          <div>
-            <h3>Height</h3>
-            <p>{height / 10} meters</p>
-          </div>
-          <div>
-            <h3>Weight</h3>
-            <p>{weight / 10} Kilograms</p>
-          </div>
-        </section>
-      </article>
-    </section>
-    <section>
-      <article className="advanced-info">
-        <section className="stats">
-          <h2>Base Stats</h2>
-          <ul>
-            {formattedStats.map((stat, index) => 
-            <li key={index}>
-              <h3>{stat.stat.name}</h3>
-              <p>{stat.base_stat}</p>
-            </li>)}
-            <li className="experience">
-              <h3>Base Experience</h3>
-              <p>{base_experience}</p>
-            </li>
-            <li>
-              <h3>Base Happiness</h3>
-              <p>{base_happiness}</p>
-            </li>
-          </ul>
-        </section>
-        <section>
-          <h2>Abilities</h2>
-          <ul>
-            {abilities.map((ability, index) => 
-            <li key={index}>
-              <h3>{ability.ability.name}</h3>
-              <p>{ability.is_hidden ? 'Hidden' : 'Standard'}</p>
-            </li>)}
-          </ul>
-        </section>
-        <section className="evolution-chain">
-          {evolution_chain?.map((evolution, index) => (
-            <article key={index}>
-              <Link href={`/pokemon/${evolution.name}`}>
-                <div className="img-wrapper">
-                  <Image src={evolution.sprite ?? sprites.other.dream_world.front_default ?? sprites.front_default} alt={`${evolution.name} sprite`} width={100} height={100} />
-                </div>
-                <h2>{evolution.name}</h2>
-                {evolution.evolution_details?.map((detail) => getEvolutionDetail(detail, index, evolution_chain[0]?.name ?? ''))}
-              </Link>
-            </article>
-          ))}
-        </section>
-      </article>
-    </section>
+      <section>
+        <article className="basic-info">
+          <section className="details">
+            <div>
+              <h1>{name}</h1>
+              <h2>No. {id}</h2>
+            </div>
+            <p>{genus}</p>
+            <ul className="types">
+              {types.map((type, index) => 
+              <li key={index} className={`type-${type.type.name}`}>
+                <Image src={`/types/${type.type.name}.webp`} alt={`${type.type.name} type`} width={40} height={33} />
+                {type.type.name}
+              </li>)}
+            </ul>
+          </section>
+          <section className="flavour-text">
+            <p>{flavor_text}</p>
+          </section>
+          <section className="main-sprite">
+            <Image src={sprites.other.dream_world.front_default ?? sprites.front_default} alt={`${name} sprite`} width={300} height={300} />
+          </section>
+          <section className="attributes">
+            <div>
+              <h3>Height</h3>
+              <p>{height / 10} meters</p>
+            </div>
+            <div>
+              <h3>Weight</h3>
+              <p>{weight / 10} Kilograms</p>
+            </div>
+          </section>
+        </article>
+      </section>
+      <section>
+        <article className="advanced-info">
+          <section className="stats-abilities">
+            <div className="base-stats">
+              <h2>Base Stats</h2>
+              <ul>
+                {formattedStats.map((stat, index) => 
+                <li key={index}>
+                  <h3>{stat.stat.name}</h3>
+                  <p>{stat.base_stat}</p>
+                </li>)}
+              </ul>
+            </div>
+           <div>
+            <h2>General data</h2>
+            <ul>
+              <li className="experience">
+                <h3>Base Experience</h3>
+                <p>{base_experience}</p>
+              </li>
+              <li>
+                <h3>Base Happiness</h3>
+                <p>{base_happiness}</p>
+              </li>
+              <li>
+                <h3>Capture Rate</h3>
+                <p>{capture_rate}</p>
+              </li>
+              <li>
+                <h3>Growth Rate</h3>
+                <p>{growth_rate.replace(/-/g, " ")}</p>
+              </li>
+              <li>
+                <h3>Egg Group{egg_groups.length > 0 ? 's' : ''}</h3>
+                <p>{egg_groups.join(', ')}</p>
+              </li>
+            </ul>
+           </div>
+           <div>
+            <h2>Abilities</h2>
+            <ul>
+                {abilities.map((ability, index) => 
+                <li key={index}>
+                  <h3>{ability.ability.name}</h3>
+                  <p>{ability.is_hidden ? 'Hidden' : 'Standard'}</p>
+                </li>)}
+              </ul>
+           </div>
+          </section>
+          <section className="evolution-chain">
+            {evolution_chain?.map((evolution, index) => (
+              <article key={index}>
+                <Link href={`/pokemon/${evolution.name}`}>
+                  <div className="img-wrapper">
+                    <Image src={evolution.sprite ?? sprites.other.dream_world.front_default ?? sprites.front_default} alt={`${evolution.name} sprite`} width={100} height={100} />
+                  </div>
+                  <h2>{evolution.name}</h2>
+                  {evolution.evolution_details?.map((detail) => getEvolutionDetail(detail, index))}
+                </Link>
+              </article>
+            ))}
+          </section>
+        </article>
+      </section>
     </main>
   )
 }

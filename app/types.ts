@@ -193,27 +193,30 @@ export type PokemonArticle = {
     id: number
 }
 
+export type NameUrlPair = {
+    name: string,
+    url: string
+}
+
 export type EvolutionDetails = {
+    [key: string]: string | number | boolean | NameUrlPair | null | undefined;
     gender?: number | null,
-    held_item?: null | {name: string, url: string},
-    item?: null | {name: string, url: string}
-    known_move?: null | {name: string, url: string}
-    known_move_type?: null | {name: string, url: string}
-    location?: null | {name: string, url: string}
+    held_item?: null | NameUrlPair,
+    item?: null | NameUrlPair,
+    known_move?: null | NameUrlPair,
+    known_move_type?: null | NameUrlPair,
+    location?: null | NameUrlPair,
     min_affection?: null,
     min_beauty?: null,
     min_happiness?: number | null,
     min_level?: number | null,
     needs_overworld_rain?: boolean | null,
-    party_species?: null | {name: string, url: string}
+    party_species?: null | NameUrlPair,
     party_type?: null,
     relative_physical_stats?: number | null,
     time_of_day?: string | null,
-    trade_species?: null | {name: string, url: string}
-    trigger?: {
-      name: string,
-      url: string
-    } | null,
+    trade_species?: null | NameUrlPair,
+    trigger?: NameUrlPair | null,
     turn_upside_down?: boolean | null
 }
 
@@ -231,4 +234,21 @@ export type EvolutionChainData = {
     baby_trigger_item: string | null,
     chain: Chain,
     id: number
+}
+
+export type DescriptionFormats = Record<string, string>;
+
+export type TriggerFormats = Record<string, string>;
+  
+export interface Detail {
+trigger?: {
+    name: string;
+};
+item?: {
+    name: string;
+};
+}
+
+export interface Value {
+    name?: string;
 }
