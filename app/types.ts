@@ -118,6 +118,12 @@ export type Variety = {
     }
 }
 
+export type FilteredVariety = {
+    name: string,
+    id: number,
+    sprite?: string
+}
+
 export type EvolutionChain = {
     name: string,
     sprite?: string,
@@ -184,7 +190,7 @@ export type CompletedPokemon = {
     stats: Stat[],
     types: PokemonType[],
     weight: number,
-    varieties?: Variety[]
+    varieties?: FilteredVariety[]
 }
 
 export type BasicInfo = {
@@ -204,13 +210,16 @@ export type AdvancedInfo = {
     base_happiness?: number,
     capture_rate?: number,
     egg_groups?: string[],
-    evolution_chain?: EvolutionChain[] | null,
     flavor_text?: string,
     genus?: string,
     growth_rate?: string,
-    sprites: Sprites,
     stats: Stat[],
-    varieties?: Variety[]
+}
+
+export type EvolutionVarieties = {
+    evolution_chain?: EvolutionChain[] | null,
+    varieties?: FilteredVariety[],
+    sprites: Sprites,
 }
 
 export type PokemonArticle = {

@@ -1,4 +1,4 @@
-import type { Chain, CompletedPokemon, DetailedPokemon, EvolutionChain, EvolutionChainData, EvolutionDetails, Variety } from "@/types";
+import type { Chain, CompletedPokemon, DetailedPokemon, EvolutionChain, EvolutionChainData, EvolutionDetails, FilteredVariety, Variety } from "@/types";
 import { notFound } from "next/navigation";
 import { keysToReplace, descriptionFormats, triggerFormats } from "./description-formats";
 
@@ -10,7 +10,7 @@ type Results = {
 
   
 export const pokemonURL = `https://pokeapi.co/api/v2/pokemon`
-export const pokemonLimit = `?limit=1&offset=901`;
+export const pokemonLimit = `?limit=21`;
 export const speciesURL = `https://pokeapi.co/api/v2/pokemon-species`;
 
 export async function getIndividualPokemon(urls: string[]) {
@@ -21,7 +21,7 @@ export async function getIndividualPokemon(urls: string[]) {
         const response = await fetch(url, {signal});
         if (!response.ok) throw new Error('Critical error');
         const pokemonSpecies = await response.json() as DetailedPokemon;
-        const monURL = pokemonSpecies.varieties[0]?.pokemon.url;
+        const monURL = pokemonSpecies.varieties?.[0]?.pokemon.url;
         if (!monURL) return {...pokemonSpecies, url};
         const f = await fetch(monURL, {signal});
         const {sprites} = await f.json() as DetailedPokemon;
@@ -86,11 +86,18 @@ async function getEvolutionChain(url: string, currentName: string) {
     return evolutions as EvolutionChain[];
 }
   
-export function getVariationData(variety: Variety) {
-    return;
+export async function getVariationData(variety: Variety) {
+    const matchResult = variety.pokemon.url.match(/(\d+)\/?$/);
+    const id = matchResult ? Number(matchResult[1]) : undefined;
+    if (id) {
+        const data = await fetch(`${pokemonURL}/${id}`);
+        if (!data.ok) return { name: variety.pokemon.name, id } as FilteredVariety;
+        const pokemonData = await data.json() as DetailedPokemon;
+        return { name: variety.pokemon.name, id, sprite: pokemonData.sprites.other.dream_world.front_default ?? pokemonData.sprites.front_default } as FilteredVariety;
+    }
 }
   
-export function getEvolutionDetail(detail: EvolutionDetails, index: number) {
+export function getEvolutionDetail(detail: EvolutionDetails) {
     function formatValue<K extends keyof EvolutionDetails>(value: EvolutionDetails[K], key: K, detail: EvolutionDetails) {
         if (typeof value === 'object' && value !== null && 'name' in value) {
         if (keysToReplace.includes(key.toString())) {
@@ -138,7 +145,7 @@ async function formatData(pokemonData: DetailedPokemon, speciesData?: DetailedPo
 
     const englishFlavourText = [...speciesData?.flavor_text_entries ?? []].reverse().find((entry) => entry.language.name === 'en');
     const englishGenusEntry = speciesData?.genera?.find((entry) => entry.language.name === 'en');
-    const filteredVarieties = speciesData?.varieties?.filter(variety => variety.pokemon.name !== speciesData?.name ? getVariationData(variety) : null) ?? [];
+    const filteredVarieties = speciesData?.varieties?.map(variety => variety.pokemon.name !== speciesData?.name ? getVariationData(variety) : undefined) ?? [];
     const eggGroups = speciesData?.egg_groups?.map((group) => group.name) ?? [];
     const evolutionChain = await getEvolutionChain(speciesData?.evolution_chain?.url ?? '', monName);
 
@@ -162,7 +169,7 @@ async function formatData(pokemonData: DetailedPokemon, speciesData?: DetailedPo
         stats: stats,
         types: types,
         weight: weight,
-        varieties: filteredVarieties
+        varieties: await Promise.all(filteredVarieties.filter((variety) => variety !== undefined) as Promise<FilteredVariety>[])
     }
     
     return completeData;

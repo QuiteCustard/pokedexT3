@@ -3,6 +3,7 @@ import type {CompletedPokemon, Stat } from "@/types";
 import "@/pokemon/pokemon.css";
 import BasicInfo from "@/components/basic-info/BasicInfo";
 import AdvancedInfo from "@/components/advanced-info/AdvancedInfo";
+import EvolutionVarieties from "@/components/evolution-varieties/EvolutionVarieties";
 
 export default async function Page({params: {slug}}: {params: {slug: string}}) {
   const data: CompletedPokemon = await getPokemonPageData(slug)
@@ -21,7 +22,8 @@ export default async function Page({params: {slug}}: {params: {slug: string}}) {
   return (
     <main>
       <BasicInfo name={name} id={id} genus={genus} types={types} flavor_text={flavor_text} sprites={sprites} height={height} weight={weight} />
-      <AdvancedInfo base_experience={base_experience} base_happiness={base_happiness} capture_rate={capture_rate} growth_rate={growth_rate} egg_groups={egg_groups} abilities={abilities} evolution_chain={evolution_chain} stats={formattedStats} sprites={sprites} />
+      <EvolutionVarieties evolution_chain={evolution_chain} varieties={varieties} sprites={sprites}/>
+      <AdvancedInfo base_experience={base_experience} base_happiness={base_happiness} capture_rate={capture_rate} growth_rate={growth_rate} egg_groups={egg_groups} abilities={abilities} stats={formattedStats} />
     </main>
   )
 }

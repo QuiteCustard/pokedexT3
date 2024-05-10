@@ -8,7 +8,7 @@ export default function Loading() {
 
   return (
     <div id="loading-cover" className={loaderActive.value === true ? 'open' : ''}>
-      <p>Loading...</p>
+      <p className="pokedex-title">Loading...</p>
     </div>
   )
 }

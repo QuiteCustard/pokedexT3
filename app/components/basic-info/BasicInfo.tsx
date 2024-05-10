@@ -3,8 +3,8 @@ import Image from "next/image";
 
 export default function BasicInfo({name, id, genus, types, flavor_text, sprites, height, weight}: BasicInfo) {
   return (
-    <section>
-      <article className="basic-info">
+    <section className="basic-info">
+      <article>
         <section className="details">
           <div>
             <h1>{name}</h1>
