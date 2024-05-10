@@ -93,6 +93,7 @@ main>section {
         img {
             width: 100%;
             height: auto;
+            max-height: 400px;
         }
     }
 
@@ -192,7 +193,6 @@ main>section {
                 }
             }
         }
-
     }
 
     .evolution-chain {

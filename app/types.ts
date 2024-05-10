@@ -110,7 +110,7 @@ type Genus = {
     }
 }
 
-type Variety = {
+export type Variety = {
     is_default: boolean,
     pokemon: {
         name: string,
@@ -152,7 +152,7 @@ export type DetailedPokemon = {
     flavor_text_entries?: FlavorTextEntry[],
     flavor_text?: string,
     location_area_encounters: string,
-    varieties: Variety[],
+    varieties?: Variety[],
 }
 
 export type Stat = {
@@ -167,14 +167,14 @@ export type Stat = {
 export type CompletedPokemon = {
     abilities: Ability[],
     base_experience: number,
-    base_happiness: number,
-    capture_rate: number,
+    base_happiness?: number,
+    capture_rate?: number,
     cries: Cries,
-    egg_groups: string[],
-    evolution_chain?: EvolutionChain[],
+    egg_groups?: string[],
+    evolution_chain?: EvolutionChain[] | null,
     flavor_text?: string,
     genus?: string,
-    growth_rate: string,
+    growth_rate?: string,
     height: number,
     id: number,
     location_area_encounters: string,
@@ -184,7 +184,33 @@ export type CompletedPokemon = {
     stats: Stat[],
     types: PokemonType[],
     weight: number,
-    varieties: string[]
+    varieties?: Variety[]
+}
+
+export type BasicInfo = {
+    name: string,
+    id: number,
+    genus?: string,
+    types: PokemonType[],
+    flavor_text?: string,
+    sprites: Sprites,
+    height: number,
+    weight: number,
+}
+
+export type AdvancedInfo = {
+    abilities: Ability[],
+    base_experience: number,
+    base_happiness?: number,
+    capture_rate?: number,
+    egg_groups?: string[],
+    evolution_chain?: EvolutionChain[] | null,
+    flavor_text?: string,
+    genus?: string,
+    growth_rate?: string,
+    sprites: Sprites,
+    stats: Stat[],
+    varieties?: Variety[]
 }
 
 export type PokemonArticle = {
