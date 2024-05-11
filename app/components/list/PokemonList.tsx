@@ -1,10 +1,10 @@
 "use client";
 import { getIndividualPokemon, pokemonLimit, speciesURL } from "@/helpers/pokemon-getter";
 import { type DetailedPokemon, type Pokemon,  type PokemonList } from "@/types";
-import { useState, useEffect, use } from "react";
+import { useState, useEffect } from "react";
 import { useInView } from "react-intersection-observer";
 import "@/components/list/pokemon-list.css";
-import { loaderActive } from "@/page";
+import { loaderActive } from "@/components/loader/Loader";
 import PokemonArticle from "./pokemon-article/PokemonArticle";
 import { signal } from "@preact/signals-react";
 

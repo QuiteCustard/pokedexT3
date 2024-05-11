@@ -1,7 +1,10 @@
 "use client";
 import "@/components/loader/loader.css";
-import { loaderActive } from "@/page";
+import { signal } from "@preact/signals-react";
+
 import { useSignals } from "@preact/signals-react/runtime";
+
+export const loaderActive = signal(true);
 
 export default function Loading() {
   useSignals();

@@ -57,7 +57,7 @@ export default async function page() {
     return (
         <main>
             <BasicInfo name={"Missing-no"} id={0} genus={"The missing number pokémon"} types={types} flavor_text={"As an anomaly, it thrives on the glitches and errors within the game's code, morphing and changing its form. Its existence is a testament to the unpredictable nature of the digital world."} sprites={sprites} height={3} weight={3507} />
-            <AdvancedInfo base_experience={0} base_happiness={0} capture_rate={29} growth_rate={"?"} abilities={abilities} stats={stats} sprites={sprites} />
+            <AdvancedInfo base_experience={0} base_happiness={0} capture_rate={29} growth_rate={"?"} abilities={abilities} stats={stats} />
         </main>
     )
 }
