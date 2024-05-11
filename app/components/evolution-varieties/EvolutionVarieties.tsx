@@ -7,24 +7,26 @@ export default function EvolutionVarieties({evolution_chain, varieties, sprites}
   return (
     <section className="evolution-varieties">
         <article>
-            <section className="evolution-chain">
-                <h2>Evolution Chain</h2>
-                <ul>
-                {evolution_chain?.map((evolution, index) => (
-                    <li key={index}>
-                        <article>
-                            <Link href={`/pokemon/${evolution.name}`}>
-                            <div className="img-wrapper">
-                                <Image src={evolution.sprite ?? sprites.other.dream_world.front_default ?? sprites.front_default} alt={`${evolution.name} sprite`} width={100} height={100} />
-                            </div>
-                            </Link>
-                            <h3>{evolution.name}</h3>
-                            {evolution.evolution_details?.map((detail, index) => <p key={index}>{getEvolutionDetail(detail)}</p>)}
-                        </article>
-                    </li>
-                    ))}
-                </ul>
-            </section>
+            {evolution_chain && evolution_chain.length > 0 ? 
+                <section className="evolution-chain">
+                    <h2>Evolution Chain</h2>
+                    <ul>
+                    {evolution_chain?.map((evolution, index) => (
+                        <li key={index}>
+                            <article>
+                                <Link href={`/pokemon/${evolution.name}`}>
+                                <div className="img-wrapper">
+                                    <Image src={evolution.sprite ?? sprites.other.dream_world.front_default ?? sprites.front_default} alt={`${evolution.name} sprite`} width={100} height={100} />
+                                </div>
+                                </Link>
+                                <h3>{evolution.name}</h3>
+                                {evolution.evolution_details?.map((detail, index) => <p key={index}>{getEvolutionDetail(detail)}</p>)}
+                            </article>
+                        </li>
+                        ))}
+                    </ul>
+                </section> 
+            : null}
             {varieties && varieties?.length > 0 ? 
                 <section className="varieties">
                     <h2>Other Varieties</h2>
@@ -43,8 +45,7 @@ export default function EvolutionVarieties({evolution_chain, varieties, sprites}
                         )}
                     </ul>
                 </section> 
-            :   null
-            }
+            : null}
         </article>
     </section>
   )

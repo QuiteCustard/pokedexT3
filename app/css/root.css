@@ -36,8 +36,14 @@
         scrollbar-width: thin;
         scrollbar-color: rgb(255, 255, 255) #0000002f;
     }
-    .type-normal {
+
+    .type {
+        color: white;
+    }
+
+    .type.type-normal {
         background-color: var(--normal);
+        color: black;
     }
     
     .type-grass {
@@ -106,5 +112,9 @@
     
     .type-steel {
         background-color: var(--steel);
+    }
+
+    .type-bird {
+        background-image: linear-gradient(90deg, #872121, #bd8514);
     }
 }

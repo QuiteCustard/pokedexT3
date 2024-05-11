@@ -13,7 +13,7 @@ export default function BasicInfo({name, id, genus, types, flavor_text, sprites,
           <p>{genus}</p>
           <ul className="types">
             {types.map((type, index) => 
-            <li key={index} className={`type-${type.type.name}`}>
+            <li key={index} className={`type type-${type.type.name}`}>
               <Image src={`/types/${type.type.name}.webp`} alt={`${type.type.name} type`} width={40} height={33} />
               {type.type.name}
             </li>)}

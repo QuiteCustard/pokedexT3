@@ -206,7 +206,7 @@ export type BasicInfo = {
 
 export type AdvancedInfo = {
     abilities: Ability[],
-    base_experience: number,
+    base_experience?: number,
     base_happiness?: number,
     capture_rate?: number,
     egg_groups?: string[],

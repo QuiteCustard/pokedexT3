@@ -3,7 +3,7 @@ import BasicInfo from "@/components/basic-info/BasicInfo";
 import AdvancedInfo from "@/components/advanced-info/AdvancedInfo";
 
 export default async function page() {
-    const types = [{slot: 0,type: {name: "Normal",url: "none"}}, {slot: 1,type: {name: "Bird",url: "none"},}]
+    const types = [{slot: 0,type: {name: "normal",url: "none"}}, {slot: 1,type: {name: "bird",url: "none"},}]
     const sprites = {
         back_default:  null,
         back_female: null,

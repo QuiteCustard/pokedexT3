@@ -12,8 +12,7 @@ main {
 }
 
 h2 {
-    text-shadow: 4px 5px 6px #00000080;
-    font-size: clamp(25px, 4vw, 34px);
+
 }
 
 .basic-info,
@@ -58,9 +57,13 @@ h2 {
                 flex-direction: column-reverse;
                 gap: 1rem;
 
+                h1, h2 {
+                    text-shadow: 1px 7px 5px #00000021
+                }
+
                 h1 {
                     text-transform: capitalize;
-                    font-size: clamp(24px, 4vw, 60px);
+                    font-size: clamp(32px, 4vw, 60px);
                 }
 
                 h2 {
@@ -80,9 +83,8 @@ h2 {
                     display: flex;
                     gap: 1rem;
                     align-items: center;
-                    color: white;
                     padding-right: 2rem;
-                    filter: drop-shadow(0 2px 3px rgba(0, 0, 0, 0.5));
+                    box-shadow: 1px 3px 7px 0px #00000047;
                 }
             }
 
@@ -191,7 +193,6 @@ h2 {
                         align-items: center;
                         text-align: center;
                         gap: 5px;
-
                     }
 
                     .img-wrapper {
@@ -210,8 +211,11 @@ h2 {
                         text-align: center;
                     }
 
-                    p {
+                    h3 {
+                        text-transform: capitalize;
+                    }
 
+                    p {
                         font-size: 16px;
                     }
                 }
@@ -248,11 +252,15 @@ h2 {
                         text-transform: capitalize;
 
                         h3 {
-                            text-shadow: 2px 2px #0000002f;
+                            
                         }
 
                         p {
                             font-size: 30px;
+
+                            &.small-text {
+                                font-size: 16px;
+                            }
                         }
                     }
                 }

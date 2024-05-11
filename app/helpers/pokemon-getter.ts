@@ -164,14 +164,14 @@ async function formatData(pokemonData: DetailedPokemon, speciesData?: DetailedPo
         id: speciesData?.id ?? id,
         location_area_encounters: location_area_encounters,
         moves: moves,
-        name: speciesData?.name.replace(/-/g, ' ') ?? monName,
+        name: speciesData?.name ?? monName,
         sprites: sprites,
         stats: stats,
         types: types,
         weight: weight,
         varieties: await Promise.all(filteredVarieties.filter((variety) => variety !== undefined) as Promise<FilteredVariety>[])
     }
-    
+
     return completeData;
 }
 
@@ -183,7 +183,7 @@ export async function getPokemonPageData(slug: string) {
         const data = await fetch(`${speciesURL}/${slug.toLowerCase()}`, {signal});
         const speciesData = await data.json() as DetailedPokemon;
         const pokemonData = await getPokemonData(speciesData.id.toString(), signal)
-        return await formatData(pokemonData, speciesData)
+        return await formatData(pokemonData, speciesData);
     }
     catch (error) {
         try {

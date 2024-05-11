@@ -27,6 +27,8 @@ export const descriptionFormats: DescriptionFormats = {
     'location': 'at',
     'known_move': 'while knowing',
     'known_move_type': 'knowing a move of type',
+    'min_friendship': 'with a minimum friendship of',
+    'min_happiness': 'with a minimum happiness of',
 };
 
 export const keysToReplace = ['held_item', 'trade_species', 'location', 'known_move_type', 'known_move']
