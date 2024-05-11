@@ -42,7 +42,7 @@ h2 {
         grid-template-areas: "details main-sprite"
             "flavour-text flavour-text"
             "attributes attributes";
-        grid-template-columns: min-content 1fr;
+        grid-template-columns: 1fr 1fr;
 
         grid-template-rows: max-content max-content min-content;
 
@@ -70,6 +70,7 @@ h2 {
 
             .types {
                 display: flex;
+                flex-wrap: wrap;
                 gap: 1rem;
                 list-style-type: none;
 
