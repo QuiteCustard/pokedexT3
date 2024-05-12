@@ -5,10 +5,13 @@ import BasicInfo from "@/components/basic-info/BasicInfo";
 import AdvancedInfo from "@/components/advanced-info/AdvancedInfo";
 import EvolutionVarieties from "@/components/evolution-varieties/EvolutionVarieties";
 import Moves from "@/components/moves/Moves";
+import Locations from "@/components/locations/Locations";
+
 
 export default async function Page({params: {slug}}: {params: {slug: string}}) {
   const data: CompletedPokemon = await getPokemonPageData(slug)
   const {name, id, sprites, types, flavor_text, genus, height, weight, base_experience, base_happiness, capture_rate, growth_rate, location_area_encounters, abilities, stats, egg_groups, moves, evolution_chain, varieties} = data;
+
   
   const formattedStats: Stat[] = stats.map((stat) => {
     return {
@@ -26,6 +29,7 @@ export default async function Page({params: {slug}}: {params: {slug: string}}) {
       {(evolution_chain && evolution_chain.length > 0) ?? (varieties && varieties?.length > 0) ? <EvolutionVarieties evolution_chain={evolution_chain} varieties={varieties} sprites={sprites}/> : null}
       <AdvancedInfo base_experience={base_experience} base_happiness={base_happiness} capture_rate={capture_rate} growth_rate={growth_rate} egg_groups={egg_groups} abilities={abilities} stats={formattedStats} />
       <Moves moves={moves} />
+      <Locations location={location_area_encounters} />
     </main>
   )
 }

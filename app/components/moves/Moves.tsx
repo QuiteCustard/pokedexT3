@@ -40,7 +40,6 @@ async function getMoveData(moves: Move[]) {
 }
 
 export default async function Moves({moves}: {moves: Move[]} ) {
-    console.log(moves[1]?.version_group_details[0]?.version_group)
     const formattedMoves = await getMoveData(moves)
     const levelUpMoves = formattedMoves.filter(move => move.learnMethod === 'level-up');
     const machineMoves = formattedMoves.filter(move => move.learnMethod === 'machine');

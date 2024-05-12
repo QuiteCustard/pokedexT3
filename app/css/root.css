@@ -40,7 +40,6 @@
     .type {
         color: white;
         
-        
         &:not(.type-ground, .type-dark, .type-ghost) {
             color: black;
         }
@@ -48,7 +47,6 @@
 
     .type-normal {
         background-color: var(--normal);
-
     }
     
     .type-grass {

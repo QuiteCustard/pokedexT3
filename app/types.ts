@@ -219,6 +219,42 @@ export type Stat = {
     }
 }
 
+export type LocalisedLocation = {
+    location: {
+        name: string,
+        url: string
+    }
+}
+
+export type Location = {
+    location_area: {
+        name: string,
+        url: string
+    },
+    version_details: VersionDetails[]
+}
+
+export type EncounterDetails = {
+    chance: number,
+    condition_values: { name: string; url: string }[],
+    max_level: number,
+    min_level: number
+}
+
+export type VersionDetails = {
+    encounter_details: EncounterDetails[],
+    max_chance: number,
+    version: {
+        name: string,
+        url: string
+    }
+}
+
+export type FormattedLocation = {
+    name: string,
+    version_details: VersionDetails[]
+}
+
 export type CompletedPokemon = {
     abilities: Ability[],
     base_experience: number,
@@ -325,12 +361,12 @@ export type DescriptionFormats = Record<string, string>;
 export type TriggerFormats = Record<string, string>;
   
 export interface Detail {
-trigger?: {
-    name: string;
-};
-item?: {
-    name: string;
-};
+    trigger?: {
+        name: string;
+    };
+    item?: {
+        name: string;
+    };
 }
 
 export interface Value {
