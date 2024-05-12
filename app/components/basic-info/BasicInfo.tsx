@@ -28,7 +28,7 @@ export default function BasicInfo({name, id, genus, types, flavor_text, sprites,
         <section className="attributes">
           <div>
             <h3>Height</h3>
-            <p>{height / 10} meters</p>
+            <p>{height / 10} meter{(height / 10) > 1  ? 's' : ''}</p>
           </div>
           <div>
             <h3>Weight</h3>
