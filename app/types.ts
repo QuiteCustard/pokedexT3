@@ -135,6 +135,55 @@ type GrowthRate = {
     url: string
 }
 
+export type VersionGroupDetails =  {
+    level_learned_at: number,
+    move_learn_method: {
+        name: string,
+        url: string
+    },
+    version_group: {
+        name: string,
+        url: string
+    }
+}
+
+export type Move = {
+    move: {
+        name: string,
+        url: string,
+    },
+    version_group_details: VersionGroupDetails[]
+}
+
+export type MoveData = {
+    accuracy: number,
+    damage_class: {
+        name: string,
+        url: string
+    },
+    name: string,
+    power: number,
+    pp: number,
+    meta: {
+        crit_rate: number,
+    },
+    type: {
+        name: string,
+        url: string
+    }
+}
+
+export type FormattedMove = {
+    name: string,
+    method: string,
+    level?: number,
+    accuracy: number,
+    category: string,
+    power: number,
+    type: string,
+    learnMethod: string
+}
+
 export type DetailedPokemon = {
     abilities: Ability[]
     base_experience: number,
@@ -149,7 +198,7 @@ export type DetailedPokemon = {
     growth_rate: GrowthRate,
     height: number,
     weight: number,
-    moves: [],
+    moves: Move[],
     name: string,
     id: number,
     sprites: Sprites,

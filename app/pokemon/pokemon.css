@@ -11,18 +11,16 @@ main {
     }
 }
 
-h2 {
-
-}
+h2 {}
 
 .basic-info,
 .evolution-varieties,
-.advanced-info {
+.advanced-info,
+.moves {
     display: grid;
     place-items: center;
     scroll-snap-align: start;
     min-height: calc(100vh - 111px);
-
 
     >article {
         display: grid;
@@ -57,7 +55,8 @@ h2 {
                 flex-direction: column-reverse;
                 gap: 1rem;
 
-                h1, h2 {
+                h1,
+                h2 {
                     text-shadow: 1px 7px 5px #00000021
                 }
 
@@ -154,7 +153,8 @@ h2 {
 }
 
 .evolution-varieties,
-.advanced-info {
+.advanced-info,
+.moves {
     background-image: linear-gradient(90deg, #192f4f, #1e7a8d);
 }
 
@@ -258,7 +258,8 @@ h2 {
                             color: white;
                             transition: 200ms ease-in-out text-shadow;
 
-                            &:focus, &:hover {
+                            &:focus,
+                            &:hover {
                                 text-shadow: 1px 1px 12px black;
                             }
                         }
@@ -274,6 +275,68 @@ h2 {
                     }
                 }
             }
+        }
+    }
+}
+
+.moves {
+    h2 {
+        text-align: center;
+    }
+    
+    .tables {
+        display: grid;
+        grid-template-areas:
+            "level"
+            "machine"
+            "egg";
+        gap: 2rem;
+
+        table {
+            display: block;
+            width: 100%;
+            overflow: auto;
+            border-collapse: collapse;
+
+            caption {
+                text-transform: capitalize;
+                margin-bottom: 1rem;
+                font-size: 23px;
+            }
+
+            td,
+            th {
+                width: calc(100% / 4);
+                padding: 0.4rem;
+                border: 1px solid white;
+                text-align: center;
+                text-transform: capitalize;
+                font-size: 18px;
+
+                span {
+                    padding: 2px .5rem;
+                    border-radius: 25px;
+                }
+            }
+
+            &.level {
+                grid-area: level;
+            }
+
+            &.machine {
+                grid-area: machine;
+            }
+
+            &.egg {
+                grid-area: egg;
+            }
+        }
+
+        @media (min-width: 768px) {
+            grid-template-areas:
+                "level machine"
+                "egg machine"
+                ". machine";
         }
     }
 }

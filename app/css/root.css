@@ -39,11 +39,16 @@
 
     .type {
         color: white;
+        
+        
+        &:not(.type-ground, .type-dark, .type-ghost) {
+            color: black;
+        }
     }
 
-    .type.type-normal {
+    .type-normal {
         background-color: var(--normal);
-        color: black;
+
     }
     
     .type-grass {
