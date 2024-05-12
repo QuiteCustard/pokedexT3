@@ -8,6 +8,7 @@ import EvolutionVarieties from "@/components/evolution-varieties/EvolutionVariet
 export default async function Page({params: {slug}}: {params: {slug: string}}) {
   const data: CompletedPokemon = await getPokemonPageData(slug)
   const {name, id, sprites, types, flavor_text, genus, height, weight, base_experience, base_happiness, capture_rate, growth_rate, location_area_encounters, abilities, stats, egg_groups, moves, evolution_chain, varieties} = data;
+  
   const formattedStats: Stat[] = stats.map((stat) => {
     return {
       ...stat,
