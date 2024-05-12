@@ -269,7 +269,7 @@ export type CompletedPokemon = {
     height: number,
     id: number,
     location_area_encounters: string,
-    moves: [],
+    moves: Move[],
     name: string,
     sprites: Sprites,
     stats: Stat[],
