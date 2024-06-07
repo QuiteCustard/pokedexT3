@@ -15,6 +15,11 @@
     transition: 1s opacity ease-in-out, 1s visibility;
     font-size: clamp(40px, 4vh, 120px);
   }
+
+  #loading-cover p:not(.pokedex-title) {
+    font-size: 16px;
+  }
+
   #loading-cover a {
     color: white;
     text-decoration: underline;
