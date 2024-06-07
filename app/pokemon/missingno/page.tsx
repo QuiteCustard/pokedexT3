@@ -5,39 +5,12 @@ import AdvancedInfo from "@/components/advanced-info/AdvancedInfo";
 export default async function page() {
     const types = [{slot: 0,type: {name: "normal",url: "none"}}, {slot: 1,type: {name: "bird",url: "none"},}]
     const sprites = {
-        back_default:  null,
-        back_female: null,
-        back_shiny: null,
-        back_shiny_female: null,
-        front_default: "/MissingNo.png",
-        front_female: null,
-        front_shiny: null,
-        front_shiny_female: null,
+        front_default: "none",
         other: {
-            dream_world: {
-                front_default: null,
-                front_female: null,
-            },
             home: {
-                front_default: null,
-                front_female: null,
-                front_shiny: null,
-                front_shiny_female: null,
-            },
-            'official-artwork': {
-                front_default: null,
-                front_shiny: null,
-            },
-            showdown: {
-                back_default: null,
-                back_female:  null,
-                back_shiny:  null,
-                back_shiny_female: null,
-                front_default:  null,
-                front_female:  null,
-                front_shiny:  null,
-                front_shiny_female: null
-            },
+                front_default: "/MissingNo.png",
+                front_shiny: "/MissingNo.png"
+            }
         }
     }
     const stats = [
