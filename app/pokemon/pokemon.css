@@ -100,12 +100,25 @@ main {
 
         .main-sprite {
             grid-area: main-sprite;
+            display: grid;
+            place-items: center;
 
             img {
                 width: 100%;
                 height: auto;
                 max-height: 330px;
                 object-fit: contain;
+                grid-area: 1/1/1/-1;
+                position: relative;
+                transition: opacity 300ms;
+
+                &:first-of-type {
+                    z-index: 1;
+
+                    &:hover {
+                        opacity: 0;
+                    }
+                }
             }
         }
 
@@ -290,25 +303,6 @@ main {
             "egg";
         gap: 2rem;
 
-        table {
-
-            th, td {
-                width: calc(100% / 4);
-            }
-            
-            &.level {
-                grid-area: level;
-            }
-
-            &.machine {
-                grid-area: machine;
-            }
-
-            &.egg {
-                grid-area: egg;
-            }
-        }
-
         @media (min-width: 768px) {
             grid-template-areas:
                 "level machine"
@@ -327,6 +321,24 @@ table {
     overflow: auto;
     border-collapse: collapse;
 
+    &.level {
+        grid-area: level;
+    }
+
+    &.machine {
+        grid-area: machine;
+    }
+
+    &.egg {
+        grid-area: egg;
+    }
+
+    &.locations-table {
+        td, th {
+            width: calc(100% / 3);
+        }
+    }
+
     caption {
         text-transform: capitalize;
         margin-bottom: 1rem;
@@ -335,12 +347,12 @@ table {
 
     td,
     th {
-
         padding: 0.4rem;
         border: 1px solid white;
         text-align: center;
         text-transform: capitalize;
         font-size: 18px;
+        width: calc(100% / 4);
 
         span {
             padding: 2px .5rem;

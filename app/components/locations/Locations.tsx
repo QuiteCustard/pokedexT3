@@ -23,15 +23,14 @@ export default async function Locations({location}: {location: string}) {
             <section className="locations">
                 <article>
                     <h2>Locations</h2>
-                    <table>
+                    <table className="locations-table">
                         <caption>Where to find this Pokémon</caption>
                         <thead>
                             <tr>
                                 <th>Game</th>
                                 <th>Area</th>
-                                <th>Chance</th>
-                                <th>Min Level</th>
-                                <th>Max Level</th>
+                                <th>Chance (%)</th>
+                                <th>Level range</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -40,8 +39,7 @@ export default async function Locations({location}: {location: string}) {
                                     <td>{location.version_details[0]?.version.name}</td>
                                     <td>{location.name.replace(/-/g, ' ')}</td>
                                     <td>{location.version_details[0]?.max_chance}</td>
-                                    <td>{location.version_details[0]?.encounter_details[0]?.min_level}</td>
-                                    <td>{location.version_details[0]?.encounter_details[0]?.max_level}</td>
+                                    <td>{location.version_details[0]?.encounter_details[0]?.min_level === location.version_details[0]?.encounter_details[0]?.max_level ? location.version_details[0]?.encounter_details[0]?.max_level : location.version_details[0]?.encounter_details[0]?.min_level + ' - ' + location.version_details[0]?.encounter_details[0]?.max_level}</td>
                                 </tr>
                             ))}
                         </tbody>

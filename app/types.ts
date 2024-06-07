@@ -30,51 +30,14 @@ type Cries = {
     legacy: string
 }
 
-type ArtworkSprite = {
-    front_default: string | null;
-    front_shiny: string | null;
-}
-  
-type ShowdownSprite = {
-    back_default: string | null;
-    back_female: string | null;
-    back_shiny: string | null;
-    back_shiny_female: string | null;
-    front_default: string | null;
-    front_female: string | null;
-    front_shiny: string | null;
-    front_shiny_female: string | null;
-}
-
-type DreamWorldSprite = {
-    front_default: string | null;
-    front_female: string | null;
-}
-
-type HomeSprite = {
-    front_default: string | null,
-    front_female: string | null,
-    front_shiny: string | null,
-    front_shiny_female: string | null,
-}
-
-type OtherSprites = {
-    dream_world: DreamWorldSprite;
-    home: HomeSprite;
-    'official-artwork': ArtworkSprite;
-    showdown: ShowdownSprite;
-}
-
 export type Sprites = {
-    back_default: string | null;
-    back_female: string | null;
-    back_shiny: string | null;
-    back_shiny_female: string | null;
-    front_default: string;
-    front_female: string | null;
-    front_shiny: string | null;
-    front_shiny_female: string | null;
-    other: OtherSprites
+    front_default: string,
+    other: {
+        home: {
+            front_default: string,
+            front_shiny: string,
+        }
+    }
 }
 
 type PokemonType = {
@@ -208,6 +171,10 @@ export type DetailedPokemon = {
     flavor_text?: string,
     location_area_encounters: string,
     varieties?: Variety[],
+    species: {
+        name: string,
+        url: string,
+    }
 }
 
 export type Stat = {
@@ -275,7 +242,8 @@ export type CompletedPokemon = {
     stats: Stat[],
     types: PokemonType[],
     weight: number,
-    varieties?: FilteredVariety[]
+    varieties?: FilteredVariety[],
+    species?: string
 }
 
 export type BasicInfo = {

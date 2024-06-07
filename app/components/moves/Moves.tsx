@@ -1,4 +1,5 @@
-import type { FormattedMove, Move, MoveData } from "@/types"
+import type { EvolutionChain, FormattedMove, Move, MoveData } from "@/types";
+import { getPokemonData } from "@/helpers/pokemon-getter";
 
 function renderTable(moves: FormattedMove[], isLevelUp: boolean, type: string) {
     return <table className={type}>
@@ -29,7 +30,7 @@ function renderTable(moves: FormattedMove[], isLevelUp: boolean, type: string) {
 }
 
 async function getMoveData(moves: Move[]) {
-    const data = Promise.all(moves.map(async move => {
+    const data = await Promise.all(moves.map(async move => {
         const {move: {name}, version_group_details: [versionDetails]} = move;
         const response = await fetch(move.move.url);
         const {accuracy, damage_class: {name: category}, power, type: {name: type}} = await response.json() as MoveData;
@@ -39,20 +40,31 @@ async function getMoveData(moves: Move[]) {
     return data;
 }
 
-export default async function Moves({moves}: {moves: Move[]} ) {
+export default async function Moves({moves, evolutions}: {moves: Move[], evolutions: EvolutionChain[]} ) {
     const formattedMoves = await getMoveData(moves)
     const levelUpMoves = formattedMoves.filter(move => move.learnMethod === 'level-up');
     const machineMoves = formattedMoves.filter(move => move.learnMethod === 'machine');
     const eggMoves = formattedMoves.filter(move => move.learnMethod === 'egg');
+
+    if (eggMoves.length === 0 && evolutions.length > 0) {
+        const controller = new AbortController();
+		const signal = controller.signal;
+        if (evolutions[0]?.name) {
+            const {moves} = await getPokemonData(evolutions[0].name, signal)
+            const  evoFormattedMoves = await getMoveData(moves)
+            const evoEggMoves = evoFormattedMoves.filter(move => move.learnMethod === 'egg');
+            eggMoves.push(...evoEggMoves)
+        }
+    }
 
     return (
         <section className="moves">
             <article>
                 <h2>Moves</h2>
                 <div className="tables">
-                    {renderTable(levelUpMoves, true, "level")}
-                    {renderTable(machineMoves, false, "machine")}
-                    {renderTable(eggMoves, false, "egg")}
+                    {levelUpMoves.length > 0 ? renderTable(levelUpMoves, true, "level") : null}
+                    {machineMoves.length > 0 ? renderTable(machineMoves, false, "machine") : null}
+                    {eggMoves.length > 0 ? renderTable(eggMoves, false, "egg") : null}
                 </div>
             </article>
         </section>
