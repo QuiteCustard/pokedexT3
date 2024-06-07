@@ -1,383 +1,379 @@
 main {
-    background-repeat: no-repeat;
-    background-size: cover;
-    scrollbar-width: thin;
-    scrollbar-color: rgb(255, 255, 255) #0000002f;
-    overflow: auto;
-    height: calc(100vh - 107px);
+  background-repeat: no-repeat;
+  background-size: cover;
+  scrollbar-width: thin;
+  scrollbar-color: rgb(255, 255, 255) #0000002f;
+  overflow: auto;
+  height: calc(100vh - 107px);
+}
 
-    @media (min-width: 768px) {
-        scroll-snap-type: y mandatory;
-    }
+@media (min-width: 768px) {
+  main {
+    scroll-snap-type: y mandatory;
+  }
 }
 
 .basic-info,
 .evolution-varieties,
 .advanced-info,
-.moves, .locations {
-    display: grid;
-    place-items: center;
-    scroll-snap-align: start;
-    min-height: calc(100vh - 111px);
+.moves,
+.locations {
+  display: grid;
+  place-items: center;
+  scroll-snap-align: start;
+  min-height: calc(100vh - 111px);
+}
 
-    >article {
-        display: grid;
-        color: white;
-        padding: 1rem;
-        gap: 1rem;
-        max-width: 1600px;
-        width: 100%;
-    }
+.basic-info > article,
+.evolution-varieties > article,
+.advanced-info > article,
+.moves > article,
+.locations > article {
+  display: grid;
+  color: white;
+  padding: 1rem;
+  gap: 1rem;
+  max-width: 1600px;
+  width: 100%;
 }
 
 .basic-info {
-    background-image: linear-gradient(180deg, #194a83, #21709b);
-
-    article {
-        grid-template-areas: "details main-sprite"
-            "flavour-text flavour-text"
-            "attributes attributes";
-        grid-template-columns: 1fr 1fr;
-
-        grid-template-rows: max-content max-content min-content;
-
-        .details {
-            display: flex;
-            flex-direction: column;
-            gap: 1rem;
-            padding: 1rem 0;
-            grid-area: details;
-
-            >div {
-                display: flex;
-                flex-direction: column-reverse;
-                gap: 1rem;
-
-                h1,
-                h2 {
-                    text-shadow: 1px 7px 5px #00000021
-                }
-
-                h1 {
-                    text-transform: capitalize;
-                    font-size: clamp(32px, 4vw, 60px);
-                }
-
-                h2 {
-                    font-size: clamp(18px, 4vw, 35px);
-                }
-            }
-
-            .types {
-                display: flex;
-                flex-wrap: wrap;
-                gap: 1rem;
-                list-style-type: none;
-
-                li {
-                    border-radius: 2rem;
-                    text-transform: uppercase;
-                    display: flex;
-                    gap: 1rem;
-                    align-items: center;
-                    padding-right: 2rem;
-                    box-shadow: 1px 3px 7px 0px #00000047;
-                }
-            }
-
-            p {
-                font-size: clamp(16px, 4vw, 23px);
-            }
-        }
-
-        .flavour-text {
-            grid-area: flavour-text;
-
-            p {
-                font-size: clamp(18px, 4vw, 23px);
-            }
-        }
-
-        .main-sprite {
-            grid-area: main-sprite;
-
-            img {
-                width: 100%;
-                height: auto;
-                object-fit: contain;
-                max-height: 512px;
-            }
-        }
-
-        .attributes {
-            grid-area: attributes;
-            display: flex;
-            gap: 1rem;
-            justify-content: center;
-
-            >div {
-                display: flex;
-                flex-direction: column;
-                gap: .3rem;
-            }
-
-            @media (min-width: 768px) {
-                text-align: right;
-                justify-content: flex-end;
-            }
-
-            @media (min-width: 1024px) {
-                flex-direction: column;
-            }
-        }
-
-        @media (min-width: 768px) {
-            padding: 2rem;
-            grid-template-areas: "details main-sprite"
-                "details main-sprite"
-                "flavour-text attributes";
-            grid-template-columns: 1fr 1fr;
-        }
-
-        @media (min-width: 1024px) {
-            padding: 2rem;
-            grid-template-areas: "details main-sprite ."
-                "flavour-text main-sprite attributes";
-            align-items: flex-end;
-            grid-template-columns: 1fr 500px min-content;
-            grid-template-rows: 1fr min-content;
-        }
-    }
+  background-image: linear-gradient(180deg, #194a83, #21709b);
 }
-
+.basic-info article {
+  grid-template-areas: "details main-sprite" "flavour-text flavour-text" "attributes attributes";
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: max-content max-content min-content;
+}
+.basic-info article .details {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 0;
+  grid-area: details;
+}
+.basic-info article .details > div {
+  display: flex;
+  flex-direction: column-reverse;
+  gap: 1rem;
+}
+.basic-info article .details > div h1,
+.basic-info article .details > div h2 {
+  text-shadow: 1px 7px 5px #00000021;
+}
+.basic-info article .details > div h1 {
+  text-transform: capitalize;
+  font-size: clamp(32px, 4vw, 60px);
+}
+.basic-info article .details > div h2 {
+  font-size: clamp(18px, 4vw, 35px);
+}
+.basic-info article .details .types {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  list-style-type: none;
+}
+.basic-info article .details .types li {
+  border-radius: 2rem;
+  text-transform: uppercase;
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  padding-right: 2rem;
+  box-shadow: 1px 3px 7px 0px #00000047;
+}
+.basic-info article .details p {
+  font-size: clamp(16px, 4vw, 23px);
+}
+.basic-info article .flavour-text {
+  grid-area: flavour-text;
+}
+.basic-info article .flavour-text p {
+  font-size: clamp(18px, 4vw, 23px);
+}
+.basic-info article .main-sprite {
+  grid-area: main-sprite;
+}
+.basic-info article .main-sprite img {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  max-height: 512px;
+}
+.basic-info article .attributes {
+  grid-area: attributes;
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+}
+.basic-info article .attributes > div {
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+}
+@media (min-width: 768px) {
+  .basic-info article .attributes {
+    text-align: right;
+    justify-content: flex-end;
+  }
+}
+@media (min-width: 1024px) {
+  .basic-info article .attributes {
+    flex-direction: column;
+  }
+}
+@media (min-width: 768px) {
+  .basic-info article {
+    padding: 2rem;
+    grid-template-areas: "details main-sprite" "details main-sprite" "flavour-text attributes";
+    grid-template-columns: 1fr 1fr;
+  }
+}
+@media (min-width: 1024px) {
+  .basic-info article {
+    padding: 2rem;
+    grid-template-areas: "details main-sprite ." "flavour-text main-sprite attributes";
+    align-items: flex-end;
+    grid-template-columns: 1fr 500px min-content;
+    grid-template-rows: 1fr min-content;
+  }
+}
 .evolution-varieties,
 .advanced-info,
-.moves, .locations {
-    background-image: linear-gradient(90deg, #192f4f, #1e7a8d);
+.moves,
+.locations {
+  background-image: linear-gradient(90deg, #192f4f, #1e7a8d);
 }
 
-.evolution-varieties>article {
-    place-items: center;
-    gap: 2rem;
-
-    .evolution-chain,
-    .varieties {
-        h2 {
-            text-align: center;
-            margin-bottom: 2rem;
-        }
-
-        >ul {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2rem 3rem;
-            list-style: none;
-            justify-content: center;
-            margin: auto;
-            width: 100%;
-            max-width: 1200px;
-
-            li {
-                article {
-                    display: flex;
-                    flex-direction: column;
-                    max-width: 139px;
-                    justify-content: center;
-                    gap: 5px;
-
-                    a {
-                        text-decoration: none;
-                        display: flex;
-                        flex-direction: column;
-                        align-items: center;
-                        text-align: center;
-                        gap: 5px;
-                        color: white;
-
-                        &:hover, &:focus {
-                            text-decoration: underline;
-
-                            .sprites-wrapper img:first-of-type {
-                                opacity: 0;
-                            }
-                        }
-                    }
-
-                    .img-wrapper {
-                        background: white;
-                        border-radius: 4rem;
-                        padding: 1rem;
-
-                        img {
-                            object-fit: contain;
-                        }
-                    }
-
-                    h3,
-                    p {
-                        color: white;
-                        text-align: center;
-                    }
-
-                    h3 {
-                        text-transform: capitalize;
-                    }
-
-                    p {
-                        font-size: 16px;
-                    }
-                }
-            }
-        }
-    }
+.evolution-varieties > article {
+  place-items: center;
+  gap: 2rem;
+}
+.evolution-varieties > article .evolution-chain h2,
+.evolution-varieties > article .varieties h2 {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+.evolution-varieties > article .evolution-chain > ul,
+.evolution-varieties > article .varieties > ul {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem 3rem;
+  list-style: none;
+  justify-content: center;
+  margin: auto;
+  width: 100%;
+  max-width: 1200px;
+}
+.evolution-varieties > article .evolution-chain > ul li article,
+.evolution-varieties > article .varieties > ul li article {
+  display: flex;
+  flex-direction: column;
+  max-width: 139px;
+  justify-content: center;
+  gap: 5px;
+}
+.evolution-varieties > article .evolution-chain > ul li article a,
+.evolution-varieties > article .varieties > ul li article a {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 5px;
+  color: white;
+}
+.evolution-varieties > article .evolution-chain > ul li article a:hover,
+.evolution-varieties > article .evolution-chain > ul li article a:focus,
+.evolution-varieties > article .varieties > ul li article a:hover,
+.evolution-varieties > article .varieties > ul li article a:focus {
+  text-decoration: underline;
+}
+.evolution-varieties
+  > article
+  .evolution-chain
+  > ul
+  li
+  article
+  a:hover
+  .sprites-wrapper
+  img:first-of-type,
+.evolution-varieties
+  > article
+  .evolution-chain
+  > ul
+  li
+  article
+  a:focus
+  .sprites-wrapper
+  img:first-of-type,
+.evolution-varieties
+  > article
+  .varieties
+  > ul
+  li
+  article
+  a:hover
+  .sprites-wrapper
+  img:first-of-type,
+.evolution-varieties
+  > article
+  .varieties
+  > ul
+  li
+  article
+  a:focus
+  .sprites-wrapper
+  img:first-of-type {
+  opacity: 0;
+}
+.evolution-varieties > article .evolution-chain > ul li article .img-wrapper,
+.evolution-varieties > article .varieties > ul li article .img-wrapper {
+  background: white;
+  border-radius: 4rem;
+  padding: 1rem;
+}
+.evolution-varieties
+  > article
+  .evolution-chain
+  > ul
+  li
+  article
+  .img-wrapper
+  img,
+.evolution-varieties > article .varieties > ul li article .img-wrapper img {
+  object-fit: contain;
+}
+.evolution-varieties > article .evolution-chain > ul li article h3,
+.evolution-varieties > article .evolution-chain > ul li article p,
+.evolution-varieties > article .varieties > ul li article h3,
+.evolution-varieties > article .varieties > ul li article p {
+  color: white;
+  text-align: center;
+}
+.evolution-varieties > article .evolution-chain > ul li article h3,
+.evolution-varieties > article .varieties > ul li article h3 {
+  text-transform: capitalize;
+}
+.evolution-varieties > article .evolution-chain > ul li article p,
+.evolution-varieties > article .varieties > ul li article p {
+  font-size: 16px;
 }
 
-.advanced-info {
-    >article {
-        .stats-abilities {
-            display: flex;
-            gap: 2rem 1rem;
-            flex-wrap: wrap;
-            justify-content: space-between;
-
-            div {
-                display: flex;
-                flex-direction: column;
-                gap: 1rem;
-
-                ul {
-                    display: flex;
-                    flex-direction: column;
-                    gap: .5rem;
-                    list-style: none;
-
-                    li {
-                        display: flex;
-                        gap: 1rem;
-                        align-items: center;
-                        color: white;
-                        text-transform: capitalize;
-
-                        a {
-                            display: flex;
-                            gap: 1rem;
-                            align-items: center;
-                            color: white;
-                            transition: 200ms ease-in-out text-shadow;
-
-                            &:focus,
-                            &:hover {
-                                text-shadow: 1px 1px 12px black;
-                            }
-                        }
-
-                        p {
-                            font-size: clamp(20px, 4vw, 40px);
-                            text-shadow: 1px 7px 5px #00000021;
-
-                            &.small-text {
-                                font-size: 16px;
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    }
+.advanced-info > article .stats-abilities {
+  display: flex;
+  gap: 2rem 1rem;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.advanced-info > article .stats-abilities div {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+}
+.advanced-info > article .stats-abilities div ul {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  list-style: none;
+}
+.advanced-info > article .stats-abilities div ul li {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  color: white;
+  text-transform: capitalize;
+}
+.advanced-info > article .stats-abilities div ul li a {
+  display: flex;
+  gap: 1rem;
+  align-items: center;
+  color: white;
+  transition: 200ms ease-in-out text-shadow;
+}
+.advanced-info > article .stats-abilities div ul li a:focus,
+.advanced-info > article .stats-abilities div ul li a:hover {
+  text-shadow: 1px 1px 12px black;
+}
+.advanced-info > article .stats-abilities div ul li p {
+  font-size: clamp(20px, 4vw, 40px);
+  text-shadow: 1px 7px 5px #00000021;
+}
+.advanced-info > article .stats-abilities div ul li p.small-text {
+  font-size: 16px;
+}
+.moves h2 {
+  text-align: center;
+}
+.moves .tables {
+  display: grid;
+  grid-template-areas: "level" "machine" "egg";
+  gap: 2rem;
+}
+@media (min-width: 768px) {
+  .moves .tables {
+    grid-template-areas: "level machine" "egg machine" ". machine";
+  }
 }
 
-.moves {
-    h2 {
-        text-align: center;
-    }
-
-    .tables {
-        display: grid;
-        grid-template-areas:
-            "level"
-            "machine"
-            "egg";
-        gap: 2rem;
-
-        @media (min-width: 768px) {
-            grid-template-areas:
-                "level machine"
-                "egg machine"
-                ". machine";
-        }
-    }
-}
-
-.locations > article{
-    place-items: center;
+.locations > article {
+  place-items: center;
 }
 
 table {
-    display: block;
-    overflow: auto;
-    border-collapse: collapse;
-
-    &.level {
-        grid-area: level;
-    }
-
-    &.machine {
-        grid-area: machine;
-    }
-
-    &.egg {
-        grid-area: egg;
-    }
-
-    &.locations-table {
-        td, th {
-            width: calc(100% / 3);
-        }
-    }
-
-    caption {
-        text-transform: capitalize;
-        margin-bottom: 1rem;
-        font-size: 23px;
-    }
-
-    td,
-    th {
-        padding: 0.4rem;
-        border: 1px solid white;
-        text-align: center;
-        text-transform: capitalize;
-        font-size: 18px;
-        width: calc(100% / 4);
-
-        span {
-            padding: 2px .5rem;
-            border-radius: 25px;
-        }
-    }
+  display: block;
+  overflow: auto;
+  border-collapse: collapse;
+}
+table.level {
+  grid-area: level;
+}
+table.machine {
+  grid-area: machine;
+}
+table.egg {
+  grid-area: egg;
+}
+table.locations-table td,
+table.locations-table th {
+  width: calc(100% / 3);
+}
+table caption {
+  text-transform: capitalize;
+  margin-bottom: 1rem;
+  font-size: 23px;
+}
+table td,
+table th {
+  padding: 0.4rem;
+  border: 1px solid white;
+  text-align: center;
+  text-transform: capitalize;
+  font-size: 18px;
+  width: calc(100% / 4);
+}
+table td span,
+table th span {
+  padding: 2px 0.5rem;
+  border-radius: 25px;
 }
 
 .sprites-wrapper {
-    display: grid;
-    place-items: center;
-
-    &:focus {
-        img:first-of-type {
-            opacity: 0;
-        }
-    }
-
-    img {
-        grid-area: 1/1/1/-1;
-        position: relative;
-        transition: opacity 300ms;
-
-        &:first-of-type {
-            z-index: 1;
-
-            &:hover {
-                opacity: 0;
-            }
-        }
-    }
+  display: grid;
+  place-items: center;
+}
+.sprites-wrapper:focus img:first-of-type {
+  opacity: 0;
+}
+.sprites-wrapper img {
+  grid-area: 1/1/1/-1;
+  position: relative;
+  transition: opacity 300ms;
+}
+.sprites-wrapper img:first-of-type {
+  z-index: 1;
+}
+.sprites-wrapper img:first-of-type:hover {
+  opacity: 0;
 }

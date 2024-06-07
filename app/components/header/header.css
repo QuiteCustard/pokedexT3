@@ -6,26 +6,27 @@ header {
     box-shadow: 2px 4px 5px 1px black;
     padding: 1rem;
     gap: 10px;
+}
 
-    a {
-        display: flex;
-        align-items: center;
-        text-decoration: none;
-        max-width: 250px;
-        gap: 1rem;
-    }
 
-    img {
-        border-radius: 0;
-        flex: 75px 0;
-    }
+header a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+    max-width: 250px;
+    gap: 1rem;
+}
 
-    h1 {
-        text-align: center;
-        color: black;
-        height: 100%;
-        border-top-right-radius: 0;
-        border-bottom-right-radius: 0;
-        font-size: 30px;
-    }
+header img {
+    border-radius: 0;
+    flex: 75px 0;
+}
+
+header h1 {
+    text-align: center;
+    color: black;
+    height: 100%;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+    font-size: 30px;
 }

@@ -14,9 +14,12 @@
     place-items: center;
     transition: 1s opacity ease-in-out, 1s visibility;
     font-size: clamp(40px, 4vh, 120px);
-
-    &.open {
-        opacity: 1;
-        visibility: visible;
-    }
-}
+  }
+  #loading-cover a {
+    color: white;
+    text-decoration: underline;
+  }
+  #loading-cover.open {
+    opacity: 1;
+    visibility: visible;
+  }

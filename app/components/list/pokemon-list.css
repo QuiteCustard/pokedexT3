@@ -8,12 +8,14 @@
     scroll-padding: 1rem;
     overflow-x: auto;
     scroll-snap-type: x mandatory;
-
-    @media (min-width: 768px) {
-        padding: 3rem 1rem;
+  }
+  @media (min-width: 768px) {
+    .pokemon-list {
+      padding: 3rem 1rem;
     }
-
-    @media (min-width: 1200px) {
-        padding: 6rem 1rem;
+  }
+  @media (min-width: 1200px) {
+    .pokemon-list {
+      padding: 6rem 1rem;
     }
-}
+  }

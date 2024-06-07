@@ -1,123 +1,122 @@
 @layer root {
     :root {
-        --normal: #e6e6e6;
-        --grass: #3fa129;
-        --fire: #e62829;
-        --water: #2980ef;
-        --electric: #fac000;
-        --bug: #91a119;
-        --poison: #9141cb;
-        --flying: #81b9ef;
-        --psychic: #ef4179;
-        --ground: #915121;
-        --rock: #afa981;
-        --dragon: #5060e1;
-        --fairy: #ef70ef;
-        --ice: #3fd8ff;
-        --fighting: #ff8000;
-        --dark: #50413f;
-        --ghost: #704170;
-        --steel: #60a1b8;
+      --normal: #e6e6e6;
+      --grass: #3fa129;
+      --fire: #e62829;
+      --water: #2980ef;
+      --electric: #fac000;
+      --bug: #91a119;
+      --poison: #9141cb;
+      --flying: #81b9ef;
+      --psychic: #ef4179;
+      --ground: #915121;
+      --rock: #afa981;
+      --dragon: #5060e1;
+      --fairy: #ef70ef;
+      --ice: #3fd8ff;
+      --fighting: #ff8000;
+      --dark: #50413f;
+      --ghost: #704170;
+      --steel: #60a1b8;
     }
-
+  
     html {
-        box-sizing: border-box;
+      box-sizing: border-box;
     }
-
+  
     *,
-    *::before,
-    *::after {
-        padding: 0;
-        margin: 0;
-        box-sizing: inherit;
+  *::before,
+  *::after {
+      padding: 0;
+      margin: 0;
+      box-sizing: inherit;
     }
-
+  
     body, .pokemon-list {
-        scrollbar-width: thin;
-        scrollbar-color: rgb(255, 255, 255) #0000002f;
+      scrollbar-width: thin;
+      scrollbar-color: white #0000002f;
     }
-
+  
     .type {
-        color: white;
-        
-        &:not(.type-ground, .type-dark, .type-ghost) {
-            color: black;
-        }
+      color: white;
     }
-
+    .type:not(.type-ground, .type-dark, .type-ghost) {
+      color: black;
+    }
+  
     .type-normal {
-        background-color: var(--normal);
+      background-color: var(--normal);
     }
-    
+  
     .type-grass {
-        background-color: var(--grass);
+      background-color: var(--grass);
     }
-    
+  
     .type-fire {
-        background-color: var(--fire);
+      background-color: var(--fire);
     }
-    
+  
     .type-water {
-        background-color: var(--water);
+      background-color: var(--water);
     }
-    
+  
     .type-electric {
-        background-color: var(--electric);
+      background-color: var(--electric);
     }
-    
+  
     .type-bug {
-        background-color: var(--bug);
+      background-color: var(--bug);
     }
-    
+  
     .type-poison {
-        background-color: var(--poison);
+      background-color: var(--poison);
     }
-    
+  
     .type-flying {
-        background-color: var(--flying);
+      background-color: var(--flying);
     }
-    
+  
     .type-psychic {
-        background-color: var(--psychic);
+      background-color: var(--psychic);
     }
-    
+  
     .type-ground {
-        background-color: var(--ground);
+      background-color: var(--ground);
     }
-    
+  
     .type-rock {
-        background-color: var(--rock);
+      background-color: var(--rock);
     }
-    
+  
     .type-dragon {
-        background-color: var(--dragon);
+      background-color: var(--dragon);
     }
-    
+  
     .type-fairy {
-        background-color: var(--fairy);
+      background-color: var(--fairy);
     }
-    
+  
     .type-ice {
-        background-color: var(--ice);
+      background-color: var(--ice);
     }
-    
+  
     .type-fighting {
-        background-color: var(--fighting);
+      background-color: var(--fighting);
     }
-    
+  
     .type-dark {
-        background-color: var(--dark);
+      background-color: var(--dark);
     }
-    
+  
     .type-ghost {
-        background-color: var(--ghost);
+      background-color: var(--ghost);
     }
-    
+  
     .type-steel {
-        background-color: var(--steel);
+      background-color: var(--steel);
     }
-
+  
     .type-bird {
-        background-image: linear-gradient(90deg, #872121, #bd8514);
+      background-image: linear-gradient(90deg, #872121, #bd8514);
     }
-}
+  }
