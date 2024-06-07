@@ -1,12 +1,9 @@
 import { getEvolutionDetail } from "@/helpers/pokemon-getter";
 import type { EvolutionVarieties } from "@/types";
 import Link from "next/link";
-import Image from "next/image";
+import Sprites from "../sprites/Sprites";
 
-export default function EvolutionVarieties({
-  evolution_chain,
-  varieties,
-  sprites,
+export default function EvolutionVarieties({evolution_chain,varieties,
 }: EvolutionVarieties) {
   return (
     <section className="evolution-varieties">
@@ -20,19 +17,10 @@ export default function EvolutionVarieties({
                   <article>
                     <Link href={`/pokemon/${evolution.name}`}>
                       <div className="img-wrapper">
-                        <Image
-                          src={
-                            evolution.sprite ??
-                            sprites.other.home.front_default ??
-                            sprites.front_default
-                          }
-                          alt={`${evolution.name} sprite`}
-                          width={100}
-                          height={100}
-                        />
+                        <Sprites sprites={[{src: evolution.sprites.other.home.front_default, alt: `${evolution.name} sprite`}, {src: evolution.sprites.other.home.front_shiny, alt: `${evolution.name} shiny sprite`}]} name={evolution.name} height={100} width={100} />
                       </div>
+                      <h3>{evolution.name}</h3>
                     </Link>
-                    <h3>{evolution.name}</h3>
                     {evolution.evolution_details?.map((detail, index) => (
                       <p key={index}>{getEvolutionDetail(detail)}</p>
                     ))}
@@ -51,12 +39,7 @@ export default function EvolutionVarieties({
                   <article key={index}>
                     <Link href={`/pokemon/${variety.id}`}>
                       <div className="img-wrapper">
-                        <Image
-                          src={variety.sprite ?? sprites.front_default}
-                          alt={`${variety.name} sprite`}
-                          width={100}
-                          height={100}
-                        />
+                        <Sprites sprites={[{src: variety.sprites.other.home.front_default, alt: `${variety.name} sprite`}, {src: variety.sprites.other.home.front_shiny, alt: `${variety.name} shiny sprite`}]} name={variety.name} height={100} width={100} />
                       </div>
                       <h3>{variety.name}</h3>
                     </Link>

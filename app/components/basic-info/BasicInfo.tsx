@@ -1,6 +1,6 @@
 import type { BasicInfo } from "@/types";
 import Image from "next/image";
-import Sprites from "./sprite-slider/Sprites";
+import Sprites from "../sprites/Sprites";
 
 export default function BasicInfo({
   name,
@@ -39,8 +39,7 @@ export default function BasicInfo({
           <p>{flavor_text}</p>
         </section>
         <section className="main-sprite">
-          <Image src={sprites.other.home.front_default} alt={`${name} sprite`} width={512} height={512} priority />
-          <Image src={sprites.other.home.front_shiny} alt={`${name} shiny sprite`} width={512} height={512} priority />
+          <Sprites sprites={[{src: sprites.other.home.front_default, alt: `${name} sprite`}, {src: sprites.other.home.front_shiny, alt: `${name} shiny sprite`}]} name={name} height={512} width={512} priority={true} tabbable={true} />
         </section>
         <section className="attributes">
           <div>

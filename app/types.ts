@@ -84,12 +84,12 @@ export type Variety = {
 export type FilteredVariety = {
     name: string,
     id: number,
-    sprite?: string
+    sprites: Sprites
 }
 
 export type EvolutionChain = {
     name: string,
-    sprite?: string,
+    sprites: Sprites,
     evolution_details: EvolutionDetails[]
 }
 
@@ -272,7 +272,6 @@ export type AdvancedInfo = {
 export type EvolutionVarieties = {
     evolution_chain?: EvolutionChain[] | null,
     varieties?: FilteredVariety[],
-    sprites: Sprites,
 }
 
 export type PokemonArticle = {

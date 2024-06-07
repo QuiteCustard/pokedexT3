@@ -4,7 +4,7 @@ import Image from "next/image";
 import { register } from "swiper/element";
 register();
 
-export default function Sprites({sprites, name}: {sprites: Sprites, name: string}) {
+export default function SpritesSlider({sprites, name}: {sprites: Sprites, name: string}) {
     return (
         <swiper-container>
            <swiper-slide>

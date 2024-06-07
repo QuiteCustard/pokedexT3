@@ -6,6 +6,7 @@ import type {
   EvolutionChainData,
   EvolutionDetails,
   FilteredVariety,
+  Sprites,
   Variety,
 } from "@/types";
 import { notFound } from "next/navigation";
@@ -19,6 +20,7 @@ type Results = {
   name: string;
   id?: number;
   evolution_details: EvolutionDetails[];
+  sprites?: Sprites;
 };
 
 export const pokemonURL = `https://pokeapi.co/api/v2/pokemon`;
@@ -83,13 +85,7 @@ async function getEvolutionChain(url: string, currentName: string) {
     evolutionData.map(async ({ name, evolution_details, id }) => {
       const details = evolution_details.map((mon) =>
         Object.fromEntries(Object.entries(mon).filter(([_, val]) => val))
-      );
-
-      if (name === currentName)
-        return {
-          name,
-          ...(details.length > 0 && { evolution_details: details }),
-        };
+      )
 
       const response = await fetch(`${pokemonURL}/${id}`);
       if (!response.ok) return { name };
@@ -98,9 +94,15 @@ async function getEvolutionChain(url: string, currentName: string) {
 
       return {
         name,
-        sprite:
-          pokemonData.sprites.other.home.front_default ??
-          pokemonData.sprites.front_default,
+        sprites: {
+          front_default: pokemonData.sprites.front_default,
+          other: {
+            home: {
+              front_default: pokemonData.sprites.other.home.front_default,
+              front_shiny: pokemonData.sprites.other.home.front_shiny,
+            },
+          }
+        } as Sprites,
         ...(details.length > 0 && { evolution_details: details }),
       };
     })
@@ -120,9 +122,15 @@ export async function getVariationData(variety: Variety) {
     return {
       name: variety.pokemon.name,
       id,
-      sprite:
-        pokemonData.sprites.other.home.front_default ??
-        pokemonData.sprites.front_default,
+      sprites: {
+        front_default: pokemonData.sprites.front_default,
+        other: {
+          home: {
+            front_default: pokemonData.sprites.other.home.front_default,
+            front_shiny: pokemonData.sprites.other.home.front_shiny,
+          },
+        }
+      } as Sprites,
     } as FilteredVariety;
   }
 }
@@ -205,8 +213,6 @@ async function formatData(
     cries,
   } = pokemonData;
 
-
-  //console.log(speciesData.name, pokemonData.name)
   const englishFlavourText = [...(speciesData?.flavor_text_entries ?? [])].reverse().find((entry) => entry.language.name === "en");
 
   const englishGenusEntry = speciesData?.genera?.find((entry) => entry.language.name === "en");
@@ -218,7 +224,6 @@ async function formatData(
     speciesData?.evolution_chain?.url ?? "",
     name
   )
-
   if (moves.length === 0) {
     const data = await fetch(`${pokemonURL}/${speciesData?.id}`);
     const pokemonData = await data.json() as DetailedPokemon;

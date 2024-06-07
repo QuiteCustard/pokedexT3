@@ -100,25 +100,11 @@ main {
 
         .main-sprite {
             grid-area: main-sprite;
-            display: grid;
-            place-items: center;
 
             img {
                 width: 100%;
                 height: auto;
-                max-height: 330px;
                 object-fit: contain;
-                grid-area: 1/1/1/-1;
-                position: relative;
-                transition: opacity 300ms;
-
-                &:first-of-type {
-                    z-index: 1;
-
-                    &:hover {
-                        opacity: 0;
-                    }
-                }
             }
         }
 
@@ -205,6 +191,15 @@ main {
                         align-items: center;
                         text-align: center;
                         gap: 5px;
+                        color: white;
+
+                        &:hover, &:focus {
+                            text-decoration: underline;
+
+                            .sprites-wrapper img:first-of-type {
+                                opacity: 0;
+                            }
+                        }
                     }
 
                     .img-wrapper {
@@ -357,6 +352,31 @@ table {
         span {
             padding: 2px .5rem;
             border-radius: 25px;
+        }
+    }
+}
+
+.sprites-wrapper {
+    display: grid;
+    place-items: center;
+
+    &:focus {
+        img:first-of-type {
+            opacity: 0;
+        }
+    }
+
+    img {
+        grid-area: 1/1/1/-1;
+        position: relative;
+        transition: opacity 300ms;
+
+        &:first-of-type {
+            z-index: 1;
+
+            &:hover {
+                opacity: 0;
+            }
         }
     }
 }
