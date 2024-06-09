@@ -27,8 +27,8 @@ export default function BasicInfo({
                 <Image
                   src={`/types/${type.type.name}.webp`}
                   alt={`${type.type.name} type`}
-                  width={40}
-                  height={33}
+                  width={48}
+                  height={42}
                 />
                 {type.type.name}
               </li>
