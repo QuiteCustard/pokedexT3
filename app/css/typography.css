@@ -1,18 +1,19 @@
 @font-face {
     font-family: "pokemon";
     src: url("/fonts/FOT-KafuTechnoStd-H_1.otf");
+    font-display: swap;
 }
 
 @layer typography {
     .pokedex-title {
-        font-family: 'pokemon', sans-serif;
+        font-family: 'pokemon', Arial, Helvetica, sans-serif;
     }
     
     h1, h2, h3, h4, h5, h6, p, input, button {
         font-weight: 400;
     }
 
-    h3 {
+    h2, h3 {
         font-size: clamp(23px, 4vw, 30px);
     }
 }
