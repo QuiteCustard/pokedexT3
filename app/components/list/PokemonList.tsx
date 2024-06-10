@@ -1,12 +1,12 @@
 "use client";
 import { getIndividualPokemon, pokemonLimit, speciesURL } from "@/helpers/pokemon-getter";
 import { type DetailedPokemon, type Pokemon,  type PokemonList } from "@/types";
-import { useState, useEffect } from "react";
+import { useState, useEffect, Suspense } from "react";
 import { useInView } from "react-intersection-observer";
 import "@/components/list/pokemon-list.css";
-import { loaderActive } from "@/components/loader/Loader";
 import PokemonArticle from "./pokemon-article/PokemonArticle";
 import { signal } from "@preact/signals-react";
+import Loading from "../loader/Loader";
 
 const observerActive = signal(false);
 
@@ -18,7 +18,6 @@ export default function PokemonList() {
 	const {ref, inView} = useInView({rootMargin: "0px 1000px 0px 0px"});
 
 	useEffect(() => {
-		loaderActive.value = true;
 		const controller = new AbortController();
 		const signal = controller.signal;
 
@@ -46,7 +45,6 @@ export default function PokemonList() {
 
 		async function getData() {
 			setIndividualPokemonData(await getIndividualPokemon(urls));
-			setTimeout(() => loaderActive.value = false, 200)
 			observerActive.value = true;
 		}
 		getData().catch(console.error);
@@ -54,7 +52,9 @@ export default function PokemonList() {
 
 	return (
 		<main className="pokemon-list">
-			{individualPokemonData.map((data) => <PokemonArticle key={data.id} sprites={data.sprites} name={data.name} id={data.id} />)}
+			<Suspense fallback={<Loading />}>
+				{individualPokemonData.map((data) => <PokemonArticle key={data.id} sprites={data.sprites} name={data.name} id={data.id} />)}
+			</Suspense>
 			{observerActive.value === true ? <div ref={ref}></div> : null}
 		</main>
 	)

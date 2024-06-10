@@ -6,6 +6,8 @@ import AdvancedInfo from "@/components/advanced-info/AdvancedInfo";
 import EvolutionVarieties from "@/components/evolution-varieties/EvolutionVarieties";
 import Moves from "@/components/moves/Moves";
 import Locations from "@/components/locations/Locations";
+import { Suspense } from "react";
+import Loading from "@/components/loader/Loader";
 
 
 export default async function Page({params: {slug}}: {params: {slug: string}}) {
@@ -25,11 +27,13 @@ export default async function Page({params: {slug}}: {params: {slug: string}}) {
 
   return (
     <main>
-      <BasicInfo name={name} id={id} genus={genus} types={types} flavor_text={flavor_text} sprites={sprites} height={height} weight={weight} />
-      {(evolution_chain && evolution_chain.length > 0) ?? (varieties && varieties?.length > 0) ? <EvolutionVarieties evolution_chain={evolution_chain} varieties={varieties} /> : null}
-      <AdvancedInfo base_experience={base_experience} base_happiness={base_happiness} capture_rate={capture_rate} growth_rate={growth_rate} egg_groups={egg_groups} abilities={abilities} stats={formattedStats} />
-      <Moves moves={moves} evolutions={evolution_chain ?? []} />
-      <Locations location={location_area_encounters} />
+      <Suspense fallback={<Loading />}>
+        <BasicInfo name={name} id={id} genus={genus} types={types} flavor_text={flavor_text} sprites={sprites} height={height} weight={weight} />
+        {(evolution_chain && evolution_chain.length > 0) ?? (varieties && varieties?.length > 0) ? <EvolutionVarieties evolution_chain={evolution_chain} varieties={varieties} /> : null}
+        <AdvancedInfo base_experience={base_experience} base_happiness={base_happiness} capture_rate={capture_rate} growth_rate={growth_rate} egg_groups={egg_groups} abilities={abilities} stats={formattedStats} />
+        <Moves moves={moves} evolutions={evolution_chain ?? []} />
+        <Locations location={location_area_encounters} />
+      </Suspense>
     </main>
   )
 }
