@@ -48,9 +48,7 @@ export async function getIndividualPokemon(urls: string[]) {
   return data;
 }
 
-async function getEvolutionChain(url: string, currentName: string) {
-  if (url === "") return;
-
+async function getEvolutionChain(url: string) {
   const f = await fetch(url);
 
   if (!f) notFound();
@@ -220,10 +218,7 @@ async function formatData(
   const filteredVarieties = speciesData?.varieties?.map((variety) => variety.pokemon.name !== speciesData?.name ? getVariationData(variety) : undefined) ?? [];
 
   const eggGroups = speciesData?.egg_groups?.map((group) => group.name) ?? [];
-  const evolutionChain = await getEvolutionChain(
-    speciesData?.evolution_chain?.url ?? "",
-    name
-  )
+  const evolutionChain = speciesData?.evolution_chain?.url ? await getEvolutionChain(speciesData?.evolution_chain?.url) : null;
   if (moves.length === 0) {
     const data = await fetch(`${pokemonURL}/${speciesData?.id}`);
     const pokemonData = await data.json() as DetailedPokemon;
