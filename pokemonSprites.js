@@ -7,6 +7,7 @@ const targetDir = './public/pokemon-sprites';
 async function copyFiles() {
     try {
         await fs.copy(sourceDir, targetDir)
+        console.log('Success! Sprites copied')
     } catch (err) {
         console.error(err)
     }

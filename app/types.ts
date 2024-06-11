@@ -89,6 +89,7 @@ export type FilteredVariety = {
 
 export type EvolutionChain = {
     name: string,
+    id: number,
     sprites: Sprites,
     evolution_details: EvolutionDetails[]
 }

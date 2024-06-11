@@ -92,6 +92,7 @@ async function getEvolutionChain(url: string) {
 
       return {
         name,
+        id,
         sprites: {
           front_default: pokemonData.sprites.front_default,
           other: {
