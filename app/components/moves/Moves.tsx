@@ -49,6 +49,7 @@ export default async function Moves({moves, evolutions}: {moves: Move[], evoluti
     if (eggMoves.length === 0 && evolutions.length > 0) {
         const controller = new AbortController();
 		const signal = controller.signal;
+        
         if (evolutions[0]?.name) {
             const {moves} = await getPokemonData(evolutions[0].name, signal)
             const  evoFormattedMoves = await getMoveData(moves)

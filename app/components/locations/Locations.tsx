@@ -9,7 +9,8 @@ async function getLocationData(location: string) {
     const locations = await Promise.all(data.map(async (location) => {
         const f = await fetch(location.location_area.url, {signal})
         const {location: {name}} = await f.json() as LocalisedLocation;
-        return { name, version_details: location.version_details  } as FormattedLocation;
+
+        return {name, version_details: location.version_details} as FormattedLocation;
     }))
 
     return locations;
@@ -17,36 +18,37 @@ async function getLocationData(location: string) {
 
 export default async function Locations({location}: {location: string}) {
     const locationData = await getLocationData(location)
+
     return (
         <>
-         {locationData.length > 0 ?
-            <section className="locations">
-                <article>
-                    <h2>Locations</h2>
-                    <table className="locations-table">
-                        <caption>Where to find this Pokémon</caption>
-                        <thead>
-                            <tr>
-                                <th>Game</th>
-                                <th>Area</th>
-                                <th>Chance (%)</th>
-                                <th>Level range</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            {locationData.map((location, index) => (
-                                <tr key={index}>
-                                    <td>{location.version_details[0]?.version.name}</td>
-                                    <td>{location.name.replace(/-/g, ' ')}</td>
-                                    <td>{location.version_details[0]?.max_chance}</td>
-                                    <td>{location.version_details[0]?.encounter_details[0]?.min_level === location.version_details[0]?.encounter_details[0]?.max_level ? location.version_details[0]?.encounter_details[0]?.max_level : location.version_details[0]?.encounter_details[0]?.min_level + ' - ' + location.version_details[0]?.encounter_details[0]?.max_level}</td>
+            {locationData.length > 0 ?
+                <section className="locations">
+                    <article>
+                        <h2>Locations</h2>
+                        <table className="locations-table">
+                            <caption>Where to find this Pokémon</caption>
+                            <thead>
+                                <tr>
+                                    <th>Game</th>
+                                    <th>Area</th>
+                                    <th>Chance (%)</th>
+                                    <th>Level range</th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
-                </article>
-            </section>
-        : null}
+                            </thead>
+                            <tbody>
+                                {locationData.map((location, index) => (
+                                    <tr key={index}>
+                                        <td>{location.version_details[0]?.version.name}</td>
+                                        <td>{location.name.replace(/-/g, ' ')}</td>
+                                        <td>{location.version_details[0]?.max_chance}</td>
+                                        <td>{location.version_details[0]?.encounter_details[0]?.min_level === location.version_details[0]?.encounter_details[0]?.max_level ? location.version_details[0]?.encounter_details[0]?.max_level : location.version_details[0]?.encounter_details[0]?.min_level + ' - ' + location.version_details[0]?.encounter_details[0]?.max_level}</td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </article>
+                </section>
+            : null}
         </>
     )
 }
