@@ -6,7 +6,6 @@
   "scripts": {
     "dev": "next dev",
     "build": "next build",
-    "postbuild":"node pokemonSprites.js",
     "start": "next start",
     "lint": "next lint"
   },

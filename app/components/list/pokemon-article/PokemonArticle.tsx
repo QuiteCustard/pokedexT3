@@ -7,7 +7,7 @@ export default function Pokemon({sprites, name, id}: PokemonArticle) {
   return (
 	<article className="pokemon-article">
 		<Link href={`/pokemon/${id}`}>
-			<Sprite sprites={sprites} name={name} id={id} />
+			<Sprite sprites={sprites} name={name} />
 			<h2 className="pokemon-name">{name}</h2>
 			<p className="pokemon-id">{id}</p>
 		</Link>
