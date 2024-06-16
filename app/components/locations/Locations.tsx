@@ -21,7 +21,7 @@ export default async function Locations({location}: {location: string}) {
 
     return (
         <>
-            {locationData.length > 0 ?
+            {locationData && locationData.length > 0 ?
                 <section className="locations">
                     <article>
                         <h2>Locations</h2>

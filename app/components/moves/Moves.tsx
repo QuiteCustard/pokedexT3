@@ -1,44 +1,16 @@
 import type { EvolutionChain, FormattedMove, Move, MoveData } from "@/types";
 import { getPokemonData } from "@/helpers/pokemon-getter";
-import { Suspense } from "react";
-import Loading from "../loader/Loader";
-
-function renderTable(moves: FormattedMove[], isLevelUp: boolean, type: string) {
-    return <table className={type}>
-        <caption>{type} moves</caption>
-        <thead>
-            <tr>
-                <th>Name</th>
-                {isLevelUp ? <th>Level</th> : null}
-                <th>Type</th>
-                <th>Category</th>
-                <th>Power</th>
-                <th>Accuracy (%)</th>
-            </tr>
-        </thead>
-        <tbody>
-            {moves.map((move, index) => 
-                <tr key={index}>
-                    <td>{move.name}</td>
-                    {isLevelUp ? <td>{move.level}</td> : null}
-                    <td><span className={`type type-${move.type}`}>{move.type ?? '-'}</span></td>
-                    <td>{move.category ?? '-'}</td>
-                    <td>{move.power ?? '-'}</td>
-                    <td>{move.accuracy ?? '-'}</td>
-                </tr>
-            )}
-        </tbody>
-    </table>
-}
+import Table from "./Table";
 
 async function getMoveData(moves: Move[]) {
+    await new Promise(resolve => setTimeout(resolve, 4000))
     const data = await Promise.all(moves.map(async move => {
-        const {move: {name}, version_group_details: [versionDetails]} = move;
+        const {move: {name}, version_group_details} = move;
         const response = await fetch(move.move.url);
         if (!response.ok) return;
         const {accuracy, damage_class: {name: category}, power, type: {name: type}} = await response.json() as MoveData;
-        
-        return {name: name.replace(/-/g, ' '), accuracy, category, power, learnMethod: versionDetails?.move_learn_method.name, type, method: "", level: versionDetails?.level_learned_at} as FormattedMove;
+        const count = version_group_details?.length - 1;
+        return {name: name.replace(/-/g, ' '), accuracy, category, power, learnMethod: version_group_details[count]?.move_learn_method.name, type, method: "", level: version_group_details[count]?.level_learned_at} as FormattedMove;
         }))
 
     return data.filter(move => move !== undefined);
@@ -63,17 +35,18 @@ export default async function Moves({moves, evolutions}: {moves: Move[], evoluti
     }
 
     return (
-        <Suspense fallback={<p>Moves loading</p>}>
-            {(levelUpMoves && levelUpMoves.length > 0) ?? (machineMoves && machineMoves.length > 0) ?? (eggMoves && eggMoves.length > 0) ? <section className="moves">
+        <>
+            {(levelUpMoves && levelUpMoves.length > 0) ?? (machineMoves && machineMoves.length > 0) ?? (eggMoves && eggMoves.length > 0) ? 
+            <section className="moves">
                 <article>
                     <h2>Moves</h2>
                     <div className="tables"> 
-                        {levelUpMoves && machineMoves.length > 0 && renderTable(levelUpMoves, true, "level")}
-                        {machineMoves && machineMoves.length > 0 && renderTable(machineMoves, false, "machine")}
-                        {eggMoves && eggMoves.length > 0 && renderTable(eggMoves, false, "egg")}
+                        {levelUpMoves && machineMoves.length > 0 && <Table type="level-up" moves={levelUpMoves} isLevelUp={true} /> }
+                        {machineMoves && machineMoves.length > 0 && <Table type="machine" moves={machineMoves} isLevelUp={false} />}
+                        {eggMoves && eggMoves.length > 0 && <Table type="egg" moves={eggMoves} isLevelUp={false} />}
                     </div>
                 </article>
             </section> : null}
-        </Suspense>
+        </>
     )
 }

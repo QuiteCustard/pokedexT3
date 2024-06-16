@@ -7,7 +7,7 @@ import EvolutionVarieties from "@/components/evolution-varieties/EvolutionVariet
 import Moves from "@/components/moves/Moves";
 import Locations from "@/components/locations/Locations";
 import { Suspense } from "react";
-import Loading from "@/components/loader/Loader";
+import Loader from "@/components/loader/Loader";
 
 export default async function Page({params: {slug}}: {params: {slug: string}}) {
 	const data: CompletedPokemon = await getPokemonPageData(slug)
@@ -28,8 +28,12 @@ export default async function Page({params: {slug}}: {params: {slug: string}}) {
 			<BasicInfo name={name} id={id} genus={genus} types={types} flavor_text={flavor_text} sprites={sprites} height={height} weight={weight} />
 			{(evolution_chain && evolution_chain.length > 0) ?? (varieties && varieties?.length > 0) ? <EvolutionVarieties evolution_chain={evolution_chain} varieties={varieties} /> : null}
 			<AdvancedInfo base_experience={base_experience} base_happiness={base_happiness} capture_rate={capture_rate} growth_rate={growth_rate} egg_groups={egg_groups} abilities={abilities} stats={formattedStats} />
-			{moves ?? evolution_chain ? <Moves moves={moves} evolutions={evolution_chain ?? []} /> : null}
-			<Locations location={location_area_encounters} />
+			<Suspense fallback={<section className="moves"><Loader /></section>}>
+				{moves ? <Moves moves={moves} evolutions={evolution_chain ?? []} /> : null}
+			</Suspense>
+			<Suspense fallback={<section className="locations"><Loader /></section>}>
+				<Locations location={location_area_encounters} />
+			</Suspense>
 		</main>
 	)
 }

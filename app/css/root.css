@@ -40,7 +40,8 @@
     .type {
       color: white;
     }
-    .type:not(.type-ground, .type-dark, .type-ghost, .type-dragon) {
+    
+    .type:not(.type-ground, .type-dark, .type-ghost, .type-dragon, .type-poison) {
       color: black;
     }
   
