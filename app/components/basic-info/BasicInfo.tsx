@@ -23,7 +23,7 @@ export default function BasicInfo({name, id, genus, types, flavor_text, sprites,
 				</section>
 				<section className="flavour-text">
 					<p>{flavor_text}</p>
-					{cries.legacy ?? cries.legacy ? 
+					{cries?.legacy ?? cries?.legacy ? 
 						<div>
 							<audio controls>
 								{cries.latest ? <source src={cries.latest} type="audio/ogg" /> : null}
