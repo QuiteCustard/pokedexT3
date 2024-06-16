@@ -1,7 +1,7 @@
 "use client";
 import { getIndividualPokemon, pokemonLimit, speciesURL } from "@/helpers/pokemon-getter";
 import { type DetailedPokemon, type Pokemon,  type PokemonList } from "@/types";
-import { useState, useEffect } from "react";
+import { useState, useEffect} from "react";
 import { useInView } from "react-intersection-observer";
 import "@/components/list/pokemon-list.css";
 import PokemonArticle from "./pokemon-article/PokemonArticle";
@@ -50,9 +50,9 @@ export default function PokemonList() {
 	}, [pokemon])
 
 	return (
-		<>
+		<main className="pokemon-list">
 			{individualPokemonData.map((data) => <PokemonArticle key={data.id} sprites={data.sprites} name={data.name} id={data.id} />)}
 			{observerActive.value === true ? <div ref={ref}></div> : null}
-		</>
+		</main>
 	)
 }
