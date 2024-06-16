@@ -263,7 +263,14 @@ export async function getPokemonPageData(slug: string) {
   try {
     const data = await fetch(`${speciesURL}/${slug.toLowerCase()}`, { signal });
     const speciesData = await data.json() as DetailedPokemon;
-    const pokemonData = await getPokemonData(speciesData.species.name.toString(), signal);
+    let name = '';
+    if (speciesData?.species?.name) {
+      name = speciesData.species.name.toString();
+    } else if (speciesData?.varieties?.[0]?.pokemon?.name) {
+      name = speciesData.varieties[0].pokemon.name;
+    }
+    const pokemonData = await getPokemonData(name, signal);
+
     return await formatData(pokemonData, speciesData);
   } catch (error) {
     try {

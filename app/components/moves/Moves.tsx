@@ -26,10 +26,15 @@ export default async function Moves({moves, evolutions}: {moves: Move[], evoluti
 		const signal = controller.signal;
         
         if (evolutions[0]?.name) {
-            const {moves} = await getPokemonData(evolutions[0].name, signal)
-            const  evoFormattedMoves = await getMoveData(moves)
-            const evoEggMoves = evoFormattedMoves.filter(move => move?.learnMethod === 'egg') as FormattedMove[];
-            eggMoves.push(...evoEggMoves)
+            try {
+                const {moves} = await getPokemonData(evolutions[0].name, signal)
+                const  evoFormattedMoves = await getMoveData(moves)
+                const evoEggMoves = evoFormattedMoves.filter(move => move?.learnMethod === 'egg') as FormattedMove[];
+                eggMoves.push(...evoEggMoves)
+            }
+            catch (error) {
+                console.error(error)
+            }
         }
     }
 

@@ -256,7 +256,7 @@ export type BasicInfo = {
     sprites: Sprites,
     height: number,
     weight: number,
-    cries: Cries
+    cries?: Cries
 }
 
 export type AdvancedInfo = {
