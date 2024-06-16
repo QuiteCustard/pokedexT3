@@ -8,8 +8,12 @@
     place-items: center;
     transition: 1s opacity ease-in-out, 1s visibility;
     font-size: clamp(40px, 4vh, 120px);
-    min-height: 100dvh;
-    background: inherit;
+    min-height: calc(100vh - 107px);
+    background-image: linear-gradient(180deg, #194a83, #21709b);
+  }
+
+  #loading-cover.no-bg {
+    background-image: unset;
   }
 
   #loading-cover p:not(.pokedex-title) {
