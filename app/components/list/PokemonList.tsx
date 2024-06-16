@@ -51,9 +51,9 @@ export default function PokemonList() {
 	}, [pokemon])
 
 	return (
-		<main className="pokemon-list">
+		<>
 			{individualPokemonData.map((data) => <PokemonArticle key={data.id} sprites={data.sprites} name={data.name} id={data.id} />)}
 			{observerActive.value === true ? <div ref={ref}></div> : null}
-		</main>
+		</>
 	)
 }

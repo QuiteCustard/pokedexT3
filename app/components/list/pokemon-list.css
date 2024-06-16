@@ -1,7 +1,8 @@
 .pokemon-list {
     display: flex;
     flex-direction: row;
-    background: url(/material-wood.svg);
+    background-image: url(/material-wood.svg);
+    background-color: #96642c;
     padding: 2rem 1rem;
     gap: 1rem;
     height: calc(100dvh - 107px);
