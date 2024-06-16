@@ -25,7 +25,7 @@ type Ability = {
     slot: number
 }
 
-type Cries = {
+export type Cries = {
     latest: string,
     legacy: string
 }
@@ -256,6 +256,7 @@ export type BasicInfo = {
     sprites: Sprites,
     height: number,
     weight: number,
+    cries: Cries
 }
 
 export type AdvancedInfo = {

@@ -82,6 +82,9 @@ main {
 }
 .basic-info article .flavour-text {
   grid-area: flavour-text;
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
 }
 .basic-info article .flavour-text p {
   font-size: clamp(18px, 4vw, 23px);
