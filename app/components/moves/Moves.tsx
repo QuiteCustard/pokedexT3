@@ -3,7 +3,6 @@ import { getPokemonData } from "@/helpers/pokemon-getter";
 import Table from "./Table";
 
 async function getMoveData(moves: Move[]) {
-    await new Promise(resolve => setTimeout(resolve, 4000))
     const data = await Promise.all(moves.map(async move => {
         const {move: {name}, version_group_details} = move;
         const response = await fetch(move.move.url);
