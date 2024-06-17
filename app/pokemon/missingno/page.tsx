@@ -6,6 +6,7 @@ export default async function page() {
     const types = [{slot: 0,type: {name: "normal",url: "none"}}, {slot: 1,type: {name: "bird",url: "none"},}]
     const sprites = {
         front_default: "none",
+        front_shiny: "none",
         other: {
             home: {
                 front_default: "/MissingNo.png",
