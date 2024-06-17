@@ -61,6 +61,7 @@ header h1 {
     top: 100%;
     scrollbar-color: rgb(183, 183, 183) white;
     scrollbar-width: thin;
+    width: 100%;
 }
 
 

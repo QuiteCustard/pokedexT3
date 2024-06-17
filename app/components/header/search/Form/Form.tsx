@@ -12,14 +12,14 @@ export default function Form({pokemon}: {pokemon: Pokemon[]}) {
 
   function filterSearch(event: ChangeEvent<HTMLInputElement>) {
     const search = event.target.value.toLowerCase();
+    if (search === "") return filteredList.value = [];
     const filteredPokemon = pokemon.filter(pokemon => pokemon.name.includes(search));
-    if (search === "") filteredList.value = [];
-    else filteredList.value = filteredPokemon
+    filteredList.value = filteredPokemon
   }
 
   return (
     <div className="search-wrapper">
-      <input type="text" placeholder="Search" onChange={(event) => filterSearch(event)} />
+      <input type="text" placeholder="Search" onChange={(event) => filterSearch(event)} onFocus={(event) => filterSearch(event)}/>
       <div className="search">
         {filteredList.value.map(pokemon => (
           <Link href={`/pokemon/${pokemon.name}`} key={pokemon.name} onClick={() => filteredList.value = []}>{pokemon.name}</Link>
