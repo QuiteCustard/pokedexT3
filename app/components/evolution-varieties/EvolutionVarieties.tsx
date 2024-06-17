@@ -3,7 +3,7 @@ import type { EvolutionVarieties } from "@/types";
 import Link from "next/link";
 import Sprites from "../sprites/Sprites";
 
-export default function EvolutionVarieties({evolution_chain,varieties}: EvolutionVarieties) {
+export default function EvolutionVarieties({evolution_chain, varieties, sprites}: EvolutionVarieties) {
 	return (
 		<section className="evolution-varieties">
 			<article>
@@ -16,7 +16,7 @@ export default function EvolutionVarieties({evolution_chain,varieties}: Evolutio
 								<article>
 									<Link href={`/pokemon/${evolution.name}`}>
 										<div className="img-wrapper">
-											<Sprites sprites={[{src: evolution.sprites.other.home.front_default, alt: `${evolution.name} sprite`}, {src: evolution.sprites.other.home.front_shiny, alt: `${evolution.name} shiny sprite`}]} name={evolution.name} height={100} width={100} />
+											<Sprites sprites={[{src: evolution.sprites.other.home.front_default ?? sprites?.other.home.front_default, alt: `${evolution.name} sprite`}, {src: evolution.sprites.other.home.front_shiny ?? sprites?.other.home.front_shiny, alt: `${evolution.name} shiny sprite`}]} name={evolution.name} height={100} width={100} />
 										</div>
 										<h3>{evolution.name}</h3>
 									</Link>
@@ -38,7 +38,7 @@ export default function EvolutionVarieties({evolution_chain,varieties}: Evolutio
 								<article key={index}>
 									<Link href={`/pokemon/${variety.id}`}>
 										<div className="img-wrapper">
-											<Sprites sprites={[{src: variety.sprites.other.home.front_default, alt: `${variety.name} sprite`}, {src: variety.sprites.other.home.front_shiny, alt: `${variety.name} shiny sprite`}]} name={variety.name} height={100} width={100} />
+											<Sprites sprites={[{src: variety.sprites.other.home?.front_default ?? sprites?.other.home.front_default ?? sprites?.front_default, alt: `${variety.name} sprite`}, {src: variety.sprites.other.home?.front_shiny ?? sprites?.other.home.front_shiny ?? sprites?.front_shiny, alt: `${variety.name} shiny sprite`}]} name={variety.name} height={100} width={100} />
 										</div>
 										<h3>{variety.name}</h3>
 									</Link>

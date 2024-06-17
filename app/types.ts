@@ -32,6 +32,7 @@ export type Cries = {
 
 export type Sprites = {
     front_default: string,
+    front_shiny: string,
     other: {
         home: {
             front_default: string,
@@ -274,6 +275,7 @@ export type AdvancedInfo = {
 export type EvolutionVarieties = {
     evolution_chain?: EvolutionChain[] | null,
     varieties?: FilteredVariety[],
+    sprites?: Sprites
 }
 
 export type PokemonArticle = {

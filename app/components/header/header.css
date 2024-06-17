@@ -6,10 +6,19 @@ header {
     box-shadow: 2px 4px 5px 1px black;
     padding: 1rem;
     gap: 10px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
 }
 
+@media (min-width: 500px) {
+    header {
+        flex-direction: row;
+    }
+}
 
-header a {
+header > a {
     display: flex;
     align-items: center;
     text-decoration: none;
@@ -29,4 +38,39 @@ header h1 {
     border-top-right-radius: 0;
     border-bottom-right-radius: 0;
     font-size: 30px;
+}
+
+.search-wrapper {
+    position: relative;
+}
+
+.search-wrapper input {
+    padding: 0.5rem 1rem;
+    border: 1px solid #6c6c6c;
+    border-radius: 3px;
+}
+
+.search {
+    background-color: white;
+    overflow-y: auto;
+    max-height: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    position: absolute;
+    top: 100%;
+    scrollbar-color: rgb(183, 183, 183) white;
+    scrollbar-width: thin;
+}
+
+
+.search > a {
+    padding: 5px;
+    color: black;
+    text-decoration: none;
+}
+
+.search > a:hover, .search > a:focus {
+    background-color: #f0f0f0;
+    text-decoration: underline;
 }

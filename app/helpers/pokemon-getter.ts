@@ -118,15 +118,16 @@ export async function getVariationData(variety: Variety) {
     const data = await fetch(`${pokemonURL}/${id}`);
     if (!data.ok) return { name: variety.pokemon.name, id } as FilteredVariety;
     const pokemonData = (await data.json()) as DetailedPokemon;
+
     return {
       name: variety.pokemon.name,
       id,
       sprites: {
-        front_default: pokemonData.sprites.front_default,
+        front_default: pokemonData.sprites?.front_default,
         other: {
           home: {
-            front_default: pokemonData.sprites.other.home.front_default,
-            front_shiny: pokemonData.sprites.other.home.front_shiny,
+            front_default: pokemonData.sprites.other.home?.front_default,
+            front_shiny: pokemonData.sprites.other.home?.front_shiny,
           },
         }
       } as Sprites,
