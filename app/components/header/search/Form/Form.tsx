@@ -1,30 +1,31 @@
 "use client";
 
-import { type Pokemon } from "@/types";
+import type { Data } from "@/types";
 import { signal } from "@preact/signals-react";
-import { useComputed, useSignals } from "@preact/signals-react/runtime";
+import { useSignals } from "@preact/signals-react/runtime";
 import Link from "next/link";
 import { type ChangeEvent } from "react";
-const filteredList = signal<Pokemon[]>([]);
 
-export default function Form({pokemon}: {pokemon: Pokemon[]}) {
-  useSignals();
+const filteredList = signal<Data[]>([]);
 
-  function filterSearch(event: ChangeEvent<HTMLInputElement>) {
-    const search = event.target.value.toLowerCase();
-    if (search === "") return filteredList.value = [];
-    const filteredPokemon = pokemon.filter(pokemon => pokemon.name.includes(search));
-    filteredList.value = filteredPokemon
-  }
+export default function Form({data}: {data: Data[]}) {
+	useSignals();
 
-  return (
-    <div className="search-wrapper">
-      <input type="text" placeholder="Search" onChange={(event) => filterSearch(event)} onFocus={(event) => filterSearch(event)}/>
-      <div className="search">
-        {filteredList.value.map(pokemon => (
-          <Link href={`/pokemon/${pokemon.name}`} key={pokemon.name} onClick={() => filteredList.value = []}>{pokemon.name}</Link>
-        ))}
-      </div>
-      </div>
-  )
+	function filterSearch(event: ChangeEvent<HTMLInputElement>) {
+		const search = event.target.value.toLowerCase();
+		if (search === "") return filteredList.value = [];
+		const filtered = data.filter(dt => dt.name.includes(search));
+		filteredList.value = filtered
+	}
+
+	return (
+		<div className="search-wrapper">
+			<input type="text" placeholder="Search" onChange={(event) => filterSearch(event)} onFocus={(event) => filterSearch(event)} />
+			<div className="search">
+				{filteredList.value.map(dt => (
+					<Link href={`/${dt.type}/${dt.name}`} key={dt.name} onClick={() => filteredList.value = []}>{dt.name}</Link>
+				))}
+			</div>
+		</div>
+	)
 }

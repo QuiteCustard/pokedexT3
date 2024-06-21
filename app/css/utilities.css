@@ -1,3 +1,85 @@
+main:not(.pokemon-list) {
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: calc(100vh - 107px);
+    background-image: linear-gradient(180deg, #194a83, #21709b);
+}
+
+.custom-grid {
+    --gap: 2rem;
+    display: grid;
+    grid-template-columns: 1fr min(1400px, calc(100% - var(--gap))) 1fr;
+    grid-column-gap: var(--gap);
+    padding: 2rem 0;
+    gap: 4rem 0;
+}
+
+.focus-heading {
+    text-shadow: 1px 7px 5px #00000021;
+    font-size: clamp(32px, 4vw, 60px);
+}
+
+.custom-grid > * {
+    grid-column: 2;
+}
+
+.pokemon-img-wrapper {
+    background: white;
+    border-radius: 4rem;
+    padding: 1rem;
+}
+
+.sprites-wrapper {
+    display: grid;
+    place-items: center;
+}
+
+.sprites-wrapper:focus img:first-of-type {
+    opacity: 0;
+}
+
+.sprites-wrapper img {
+    grid-area: 1/1/1/-1;
+    position: relative;
+    transition: opacity 300ms;
+}
+
+.sprites-wrapper img:first-of-type {
+    z-index: 1;
+}
+
+.sprites-wrapper img:first-of-type:hover {
+    opacity: 0;
+}
+
+.sprite-link {
+  text-decoration: none;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 5px;
+  color: white;
+}
+
+.sprite-link:hover,
+.sprite-link:focus,
+.sprite-link:hover,
+.sprite-link:focus {
+  text-decoration: underline;
+}
+
+.sprite-link:hover .sprites-wrapper img:first-of-type,
+.sprite-link:focus .sprites-wrapper img:first-of-type,
+.sprite-link:hover .sprites-wrapper img:first-of-type,
+.sprite-link:focus .sprites-wrapper img:first-of-type {
+  opacity: 0;
+}
+
+.pokemon-img-wrapper img,
+.pokemon-img-wrapper img {
+  object-fit: contain;
+}
 /* @layer utilities {
     .pokemon-article {
         display: grid;

@@ -5,13 +5,14 @@ export type Image = {
     src: string
 }
 
-export type Pokemon = {
+export type Data = {
     name: string,
     url: string
+    type?: string
 }
 
-export type PokemonList = {
-    results: Pokemon[],
+export type ApiGroupData = {
+    results: Data[],
     next: string,
     count: number
 }
@@ -342,4 +343,33 @@ export interface Detail {
 
 export interface Value {
     name?: string;
+}
+
+export type DetailedAbility = {
+    effect_changes: [];
+    effect_entries: {
+        effect: string;
+        language: NameUrlPair
+    }[],
+    flavor_text_entries?: FlavorTextEntry[],
+    flavor_text?: string,
+    generation: NameUrlPair,
+    id: number,
+    name: string,
+    pokemon: {
+        is_hidden: boolean,
+        pokemon: NameUrlPair,
+    }[]
+}
+
+export type CompletedAbility = {
+    effect_changes: [],
+    effect_entries?: string,
+    flavor_text?: string,
+    name: string,
+    pokemon: {
+        is_hidden: boolean,
+        name: string
+        sprites: Sprites
+    }[]
 }

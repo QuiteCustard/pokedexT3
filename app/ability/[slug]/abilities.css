@@ -1,0 +1,50 @@
+.ability h1,
+.ability p {
+    text-transform: capitalize;
+    color: white;
+}
+
+.ability h1 {
+    font-size: clamp(32px, 4vw, 60px);
+}
+
+.ability p {
+    font-size: 20px;
+}
+
+.ability-details {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+}
+
+.ability-details div {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    color: white;
+}
+
+.pokemon-with-ability {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    align-items: center;
+}
+
+.pokemon-with-ability h2 {
+    color: white;
+}
+
+.pokemon-with-ability ul {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 2rem;
+    list-style-type: none;
+}
+
+.pokemon-with-ability h3 {
+    text-transform: capitalize;
+}

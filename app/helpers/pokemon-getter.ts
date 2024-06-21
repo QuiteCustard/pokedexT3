@@ -1,6 +1,8 @@
 import type {
   Chain,
+  CompletedAbility,
   CompletedPokemon,
+  DetailedAbility,
   DetailedPokemon,
   EvolutionChain,
   EvolutionChainData,
@@ -23,9 +25,10 @@ type Results = {
   sprites?: Sprites;
 };
 
-export const pokemonURL = `https://pokeapi.co/api/v2/pokemon`;
+export const baseURL = `https://pokeapi.co/api/v2/`;
+export const pokemonURL = `pokemon`;
 export const pokemonLimit = `?limit=21`;
-export const speciesURL = `https://pokeapi.co/api/v2/pokemon-species`;
+export const speciesURL = `pokemon-species`;
 
 export async function getIndividualPokemon(urls: string[]) {
   const controller = new AbortController();
@@ -85,7 +88,7 @@ async function getEvolutionChain(url: string) {
         Object.fromEntries(Object.entries(mon).filter(([_, val]) => val))
       )
 
-      const response = await fetch(`${pokemonURL}/${id}`);
+      const response = await fetch(`${baseURL}/${pokemonURL}/${id}`);
       if (!response.ok) return { name };
 
       const pokemonData = (await response.json()) as DetailedPokemon;
@@ -115,7 +118,7 @@ export async function getVariationData(variety: Variety) {
   const id = matchResult ? Number(matchResult[1]) : undefined;
 
   if (id) {
-    const data = await fetch(`${pokemonURL}/${id}`);
+    const data = await fetch(`${baseURL}/${pokemonURL}/${id}`);
     if (!data.ok) return { name: variety.pokemon.name, id } as FilteredVariety;
     const pokemonData = (await data.json()) as DetailedPokemon;
 
@@ -190,7 +193,7 @@ export function getEvolutionDetail(detail: EvolutionDetails) {
 }
 
 export async function getPokemonData(slug: string, signal: AbortSignal) {
-  const d = await fetch(`${pokemonURL}/${slug}`, { signal });
+  const d = await fetch(`${baseURL}/${pokemonURL}/${slug}`, { signal });
   return (await d.json()) as DetailedPokemon;
 }
 
@@ -222,7 +225,7 @@ async function formatData(
   const eggGroups = speciesData?.egg_groups?.map((group) => group.name) ?? [];
   const evolutionChain = speciesData?.evolution_chain?.url ? await getEvolutionChain(speciesData?.evolution_chain?.url) : null;
   if (moves.length === 0) {
-    const data = await fetch(`${pokemonURL}/${speciesData?.id}`);
+    const data = await fetch(`${baseURL}/${pokemonURL}/${speciesData?.id}`);
     const pokemonData = await data.json() as DetailedPokemon;
     moves.push(...pokemonData.moves);
   }
@@ -262,7 +265,7 @@ export async function getPokemonPageData(slug: string) {
   const signal = controller.signal;
 
   try {
-    const data = await fetch(`${speciesURL}/${slug.toLowerCase()}`, { signal });
+    const data = await fetch(`${baseURL}/${speciesURL}/${slug.toLowerCase()}`, { signal });
     const speciesData = await data.json() as DetailedPokemon;
     let name = '';
     if (speciesData?.species?.name) {
@@ -276,7 +279,7 @@ export async function getPokemonPageData(slug: string) {
   } catch (error) {
     try {
       const pokemonData = await getPokemonData(slug.toString(), signal)
-      const data = await fetch(`${speciesURL}/${pokemonData.species.name.toLowerCase()}`, { signal });
+      const data = await fetch(`${baseURL}/${speciesURL}/${pokemonData.species.name.toLowerCase()}`, { signal });
       const speciesData = await data.json() as DetailedPokemon;
       return await formatData(pokemonData, speciesData);
     } catch (error) {
@@ -284,4 +287,37 @@ export async function getPokemonPageData(slug: string) {
       notFound();
     }
   }
+}
+
+export async function getAbilityData(slug: string) {
+	const controller = new AbortController();
+	const signal = controller.signal;
+
+	const data = await fetch(`${baseURL}/ability/${slug}`, { signal });
+	const {effect_changes, effect_entries, flavor_text_entries, name, pokemon} = await data.json() as DetailedAbility;
+	const englishFlavourText = [...(flavor_text_entries ?? [])].reverse().find((entry) => entry.language.name === "en");
+	const englishEffectEntry = [...(effect_entries ?? [])].reverse().find((entry) => entry.language.name === "en"); 
+
+	const pokemonData = await Promise.all(pokemon.map(async (poke) => {
+		const response = await fetch(poke.pokemon.url, { signal });
+		const {sprites} = await response.json() as DetailedPokemon;
+
+		return {
+			name: poke.pokemon.name,
+			is_hidden: poke.is_hidden,
+			sprites: {
+				front_default: sprites.front_default,
+				front_shiny: sprites.front_shiny,
+				other: {
+				home: {
+					front_default: sprites.other.home.front_default,
+					front_shiny: sprites.other.home.front_shiny,
+				},
+				}
+			}
+		}
+	}))
+
+  const ability: CompletedAbility = {effect_changes, effect_entries: englishEffectEntry?.effect, flavor_text: englishFlavourText?.flavor_text, name, pokemon: pokemonData}
+  return ability;
 }
