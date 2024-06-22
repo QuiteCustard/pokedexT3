@@ -8,7 +8,7 @@ export default function AdvancedInfo({base_experience, base_happiness, capture_r
             <section className="stats-abilities">
                 <div className="base-stats">
                     <h2>Base Stats</h2>
-                    <ul>
+                    <ul className="stats">
                         {stats.map((stat, index) => 
                         <li key={index}>
                         <h3>{stat.stat.name}</h3>
@@ -19,7 +19,7 @@ export default function AdvancedInfo({base_experience, base_happiness, capture_r
                 {base_experience ?? base_happiness ?? capture_rate ?? growth_rate ?? (egg_groups && egg_groups.length > 0) ? 
                     <div>
                         <h2>General data</h2>
-                        <ul>
+                        <ul className="stats">
                             {base_experience ? 
                                 <li className="experience">
                                     <h3>Base Experience</h3>
@@ -55,7 +55,7 @@ export default function AdvancedInfo({base_experience, base_happiness, capture_r
                 : null}
                 <div>
                     <h2>Abilities</h2>
-                    <ul>
+                    <ul className="stats">
                         {abilities.map((ability, index) => 
                             <li key={index}>
                                 <Link href={`/ability/${ability.ability.name}`}>

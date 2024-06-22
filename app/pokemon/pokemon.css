@@ -61,16 +61,6 @@
   list-style-type: none;
 }
 
-.basic-info article .details .types li {
-  border-radius: 2rem;
-  text-transform: uppercase;
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  padding-right: 2rem;
-  box-shadow: 1px 3px 7px 0px #00000047;
-}
-
 .basic-info article .details p {
   font-size: clamp(16px, 4vw, 23px);
 }
@@ -211,43 +201,6 @@
   gap: 1rem;
 }
 
-.advanced-info>article .stats-abilities div ul {
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  list-style: none;
-}
-
-.advanced-info>article .stats-abilities div ul li {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  color: white;
-  text-transform: capitalize;
-}
-
-.advanced-info>article .stats-abilities div ul li a {
-  display: flex;
-  gap: 1rem;
-  align-items: center;
-  color: white;
-  transition: 200ms ease-in-out text-shadow;
-}
-
-.advanced-info>article .stats-abilities div ul li a:focus,
-.advanced-info>article .stats-abilities div ul li a:hover {
-  text-shadow: 1px 1px 12px black;
-}
-
-.advanced-info>article .stats-abilities div ul li p {
-  font-size: clamp(20px, 4vw, 40px);
-  text-shadow: 1px 7px 5px #00000021;
-}
-
-.advanced-info>article .stats-abilities div ul li p.small-text {
-  font-size: 16px;
-}
-
 .moves h2 {
   text-align: center;
 }
@@ -272,6 +225,10 @@ table {
   display: block;
   overflow: auto;
   border-collapse: collapse;
+}
+
+table a {
+  color: white;
 }
 
 table.level {

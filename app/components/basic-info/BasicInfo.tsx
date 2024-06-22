@@ -8,7 +8,7 @@ export default function BasicInfo({name, id, genus, types, flavor_text, sprites,
 			<article>
 				<section className="details">
 					<div>
-						<h1>{name}</h1>
+						<h1 className="focus-heading">{name}</h1>
 						<h2>No. {id}</h2>
 					</div>
 					<p>{genus}</p>

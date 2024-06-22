@@ -373,3 +373,82 @@ export type CompletedAbility = {
         sprites: Sprites
     }[]
 }
+
+type ContestComboDetail = {
+    use_after: NameUrlPair[] | null,
+    use_before: NameUrlPair[] | null
+}
+
+type contest_combos = {
+    normal: ContestComboDetail,
+    super: ContestComboDetail
+}
+
+type MoveMeta = {
+    ailment: NameUrlPair,
+    ailment_chance: number,
+    category: NameUrlPair,
+    crit_rate: number,
+    drain: number,
+    flinch_chance: number,
+    healing: number,
+    max_hits: number | null,
+    max_turns: number | null,
+    min_hits: number | null,
+    min_turns: number | null,
+    stat_chance: number
+}
+type Machine = {
+    machine: NameUrlPair,
+    version_group: NameUrlPair
+}
+
+export type DetailedMove = {
+    accuracy: number | null,
+    contest_combos: contest_combos | null,
+    contest_effect: {url: string} | null,
+    contest_type: NameUrlPair | null,
+    damage_class: NameUrlPair,
+    effect_chance: number | null,
+    effect_changes: [],
+    effect_entries: {
+        effect: string,
+        language: NameUrlPair,
+        short_effect: string
+    }[],
+    flavor_text_entries: FlavorTextEntry[],
+    generation: NameUrlPair,
+    id: number,
+    learned_by_pokemon: NameUrlPair[],
+    machines: Machine[],
+    meta: MoveMeta,
+    name: string,
+    past_values: [],
+    power: number | null,
+    pp: number,
+    priority: number,
+    stat_changes: [],
+    super_contest_effect: null,
+    target: NameUrlPair,
+    type: NameUrlPair,
+}
+
+export type CompletedMove = {
+    accuracy: number | null,
+    contest_combos: contest_combos | null,
+    contest_type?: string,
+    damage_class?: string,
+    effect_entries?: string,
+    flavor_text?: string,
+    name: string,
+    pokemon: {
+        name: string
+        sprites: Sprites
+    }[],
+    meta: MoveMeta,
+    power: number | null,
+    pp: number,
+    priority: number,
+    target: string
+    type: string
+}

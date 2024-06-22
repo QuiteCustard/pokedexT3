@@ -1,8 +1,10 @@
 import type {
   Chain,
   CompletedAbility,
+  CompletedMove,
   CompletedPokemon,
   DetailedAbility,
+  DetailedMove,
   DetailedPokemon,
   EvolutionChain,
   EvolutionChainData,
@@ -265,7 +267,7 @@ export async function getPokemonPageData(slug: string) {
   const signal = controller.signal;
 
   try {
-    const data = await fetch(`${baseURL}/${speciesURL}/${slug.toLowerCase()}`, { signal });
+    const data = await fetch(`${baseURL}/${speciesURL}/${slug}`, { signal });
     const speciesData = await data.json() as DetailedPokemon;
     let name = '';
     if (speciesData?.species?.name) {
@@ -320,4 +322,50 @@ export async function getAbilityData(slug: string) {
 
   const ability: CompletedAbility = {effect_changes, effect_entries: englishEffectEntry?.effect, flavor_text: englishFlavourText?.flavor_text, name, pokemon: pokemonData}
   return ability;
+}
+
+export async function getMoveData(slug: string) {
+    const controller = new AbortController();
+    const signal = controller.signal;
+
+    const data = await fetch(`${baseURL}move/${slug}`, { signal });
+	const {accuracy, contest_combos, contest_effect, contest_type, damage_class, effect_chance, effect_entries, flavor_text_entries, learned_by_pokemon, meta, name, power, pp, priority, stat_changes, super_contest_effect, target, type} = await data.json() as DetailedMove;
+	const englishFlavourText = [...(flavor_text_entries ?? [])].reverse().find((entry) => entry.language.name === "en");
+
+	const pokemonData = await Promise.all(learned_by_pokemon.map(async (poke) => {
+		const response = await fetch(poke.url, { signal });
+		const {sprites} = await response.json() as DetailedPokemon;
+
+		return {
+			name: poke.name,
+			sprites: {
+				front_default: sprites.front_default,
+				front_shiny: sprites.front_shiny,
+				other: {
+					home: {
+						front_default: sprites.other.home.front_default,
+						front_shiny: sprites.other.home.front_shiny,
+					},
+				}
+			}
+		}
+	}))
+
+	const move: CompletedMove = {
+		flavor_text: englishFlavourText?.flavor_text, name,
+		pokemon: pokemonData,
+		accuracy,
+		power,
+		pp,
+		type: type.name,
+		contest_combos,
+		effect_entries: effect_entries[0]?.effect,
+		meta,
+		priority,
+		target: target.name,
+		contest_type: contest_type?.name,
+		damage_class: damage_class?.name
+	}
+
+  	return move;
 }

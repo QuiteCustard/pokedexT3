@@ -10,18 +10,16 @@ import { Suspense } from "react";
 import Loader from "@/components/loader/Loader";
 
 export default async function Page({params: {slug}}: {params: {slug: string}}) {
-	const data: CompletedPokemon = await getPokemonPageData(slug)
+	const data: CompletedPokemon = await getPokemonPageData(slug.toLowerCase())
 	const {name, id, sprites, types, flavor_text, genus, height, weight, base_experience, base_happiness, capture_rate, growth_rate, location_area_encounters, abilities, stats, egg_groups, moves, evolution_chain, varieties, cries} = data;
 
-	const formattedStats: Stat[] = stats.map((stat) => {
-		return {
-			...stat,
-			stat: {
-				...stat.stat,
-				name: stat.stat.name.includes('-') ? stat.stat.name.replace(/-/g, ' ') : stat.stat.name,
-			},
-		}
-	})
+	const formattedStats: Stat[] = stats.map((stat) => ({
+		...stat,
+		stat: {
+			...stat.stat,
+			name: stat.stat.name.includes('-') ? stat.stat.name.replace(/-/g, ' ') : stat.stat.name,
+		},
+	}))
 
 	return (
 		<main>

@@ -14,8 +14,9 @@ export default function Form({data}: {data: Data[]}) {
 	function filterSearch(event: ChangeEvent<HTMLInputElement>) {
 		const search = event.target.value.toLowerCase();
 		if (search === "") return filteredList.value = [];
-		const filtered = data.filter(dt => dt.name.includes(search));
-		filteredList.value = filtered
+		const uniqueData = Array.from(new Set(data.map(dt => dt.name))).map(name => data.find(dt => dt.name === name))
+		const filtered = uniqueData.filter(dt => dt?.name.includes(search));
+		if (filtered.length > 0) filteredList.value = filtered as Data[];
 	}
 
 	return (

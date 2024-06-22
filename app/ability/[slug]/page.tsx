@@ -1,19 +1,18 @@
 import Sprites from "@/components/sprites/Sprites"
 import { getAbilityData } from "@/helpers/pokemon-getter"
 import Link from "next/link";
-import "./abilities.css";
 
 export default async function page({params: {slug}}: {params: {slug: string}}) {
-	const {effect_changes, effect_entries, flavor_text, name, pokemon} = await getAbilityData(slug)
+	const {effect_changes, effect_entries, flavor_text, name, pokemon} = await getAbilityData(slug.toLowerCase())
 
   	return (
-		<main className="custom-grid ability">
-			<section className="ability-details">
-				<h1>{name}</h1>
+		<main className="custom-grid ability-move">
+			<section className="ability-move-details">
+				<h1 className="focus-heading">{name}</h1>
 				<p>{flavor_text}</p>
 				<p>{effect_entries}</p>
 			</section>
-			<section className="pokemon-with-ability">
+			<section className="pokemon-with-ability-move">
 				<h2>Pokemon with this ability</h2>
 				<ul>
 					{pokemon.map((poke) => (
