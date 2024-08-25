@@ -150,10 +150,10 @@ export function getEvolutionDetail(detail: EvolutionDetails) {
       if (keysToReplace.includes(key.toString())) {
         const prefix =
           key === "known_move" &&
-          detail.trigger &&
-          ["agile-style-move", "strong-style-move"].includes(
-            detail.trigger.name
-          )
+            detail.trigger &&
+            ["agile-style-move", "strong-style-move"].includes(
+              detail.trigger.name
+            )
             ? "Master "
             : "";
         return `${prefix}${value.name.replace(/-/g, " ")}`;
@@ -178,9 +178,8 @@ export function getEvolutionDetail(detail: EvolutionDetails) {
 
     if (detail.trigger && triggerFormats[detail.trigger.name]) {
       if (detail.trigger.name === "use-item" && detail.item?.name) {
-        description = `${
-          triggerFormats[detail.trigger.name]
-        } ${detail.item.name.replace(/-/g, " ")} ${description}`;
+        description = `${triggerFormats[detail.trigger.name]
+          } ${detail.item.name.replace(/-/g, " ")} ${description}`;
       } else if (
         !["agile-style-move", "strong-style-move"].includes(detail.trigger.name)
       ) {
@@ -218,7 +217,12 @@ async function formatData(
     cries,
   } = pokemonData;
 
-  const englishFlavourText = [...(speciesData?.flavor_text_entries ?? [])].reverse().find((entry) => entry.language.name === "en");
+
+  const englishFlavourText = [...(speciesData?.flavor_text_entries ?? [])].reverse().find((entry) => {
+    const isLegendsArceus = entry.version?.name === "legends-arceus";
+    const isHisui = name.toLowerCase().endsWith("-hisui");
+    return entry.language.name === "en" && (isHisui || !isLegendsArceus);
+  })
 
   const englishGenusEntry = speciesData?.genera?.find((entry) => entry.language.name === "en");
 
@@ -292,80 +296,80 @@ export async function getPokemonPageData(slug: string) {
 }
 
 export async function getAbilityData(slug: string) {
-	const controller = new AbortController();
-	const signal = controller.signal;
+  const controller = new AbortController();
+  const signal = controller.signal;
 
-	const data = await fetch(`${baseURL}/ability/${slug}`, { signal });
-	const {effect_changes, effect_entries, flavor_text_entries, name, pokemon} = await data.json() as DetailedAbility;
-	const englishFlavourText = [...(flavor_text_entries ?? [])].reverse().find((entry) => entry.language.name === "en");
-	const englishEffectEntry = [...(effect_entries ?? [])].reverse().find((entry) => entry.language.name === "en"); 
+  const data = await fetch(`${baseURL}/ability/${slug}`, { signal });
+  const { effect_changes, effect_entries, flavor_text_entries, name, pokemon } = await data.json() as DetailedAbility;
+  const englishFlavourText = [...(flavor_text_entries ?? [])].reverse().find((entry) => entry.language.name === "en");
+  const englishEffectEntry = [...(effect_entries ?? [])].reverse().find((entry) => entry.language.name === "en");
 
-	const pokemonData = await Promise.all(pokemon.map(async (poke) => {
-		const response = await fetch(poke.pokemon.url, { signal });
-		const {sprites} = await response.json() as DetailedPokemon;
+  const pokemonData = await Promise.all(pokemon.map(async (poke) => {
+    const response = await fetch(poke.pokemon.url, { signal });
+    const { sprites } = await response.json() as DetailedPokemon;
 
-		return {
-			name: poke.pokemon.name,
-			is_hidden: poke.is_hidden,
-			sprites: {
-				front_default: sprites.front_default,
-				front_shiny: sprites.front_shiny,
-				other: {
-				home: {
-					front_default: sprites.other.home.front_default,
-					front_shiny: sprites.other.home.front_shiny,
-				},
-				}
-			}
-		}
-	}))
+    return {
+      name: poke.pokemon.name,
+      is_hidden: poke.is_hidden,
+      sprites: {
+        front_default: sprites.front_default,
+        front_shiny: sprites.front_shiny,
+        other: {
+          home: {
+            front_default: sprites.other.home.front_default,
+            front_shiny: sprites.other.home.front_shiny,
+          },
+        }
+      }
+    }
+  }))
 
-  const ability: CompletedAbility = {effect_changes, effect_entries: englishEffectEntry?.effect, flavor_text: englishFlavourText?.flavor_text, name, pokemon: pokemonData}
+  const ability: CompletedAbility = { effect_changes, effect_entries: englishEffectEntry?.effect, flavor_text: englishFlavourText?.flavor_text, name, pokemon: pokemonData }
   return ability;
 }
 
 export async function getMoveData(slug: string) {
-    const controller = new AbortController();
-    const signal = controller.signal;
+  const controller = new AbortController();
+  const signal = controller.signal;
 
-    const data = await fetch(`${baseURL}move/${slug}`, { signal });
-	const {accuracy, contest_combos, contest_effect, contest_type, damage_class, effect_chance, effect_entries, flavor_text_entries, learned_by_pokemon, meta, name, power, pp, priority, stat_changes, super_contest_effect, target, type} = await data.json() as DetailedMove;
-	const englishFlavourText = [...(flavor_text_entries ?? [])].reverse().find((entry) => entry.language.name === "en");
+  const data = await fetch(`${baseURL}move/${slug}`, { signal });
+  const { accuracy, contest_combos, contest_type, damage_class, effect_entries, flavor_text_entries, learned_by_pokemon, meta, name, power, pp, priority, target, type } = await data.json() as DetailedMove;
+  const englishFlavourText = [...(flavor_text_entries ?? [])].reverse().find((entry) => entry.language.name === "en");
 
-	const pokemonData = await Promise.all(learned_by_pokemon.map(async (poke) => {
-		const response = await fetch(poke.url, { signal });
-		const {sprites} = await response.json() as DetailedPokemon;
+  const pokemonData = await Promise.all(learned_by_pokemon.map(async (poke) => {
+    const response = await fetch(poke.url, { signal });
+    const { sprites } = await response.json() as DetailedPokemon;
 
-		return {
-			name: poke.name,
-			sprites: {
-				front_default: sprites.front_default,
-				front_shiny: sprites.front_shiny,
-				other: {
-					home: {
-						front_default: sprites.other.home.front_default,
-						front_shiny: sprites.other.home.front_shiny,
-					},
-				}
-			}
-		}
-	}))
+    return {
+      name: poke.name,
+      sprites: {
+        front_default: sprites.front_default,
+        front_shiny: sprites.front_shiny,
+        other: {
+          home: {
+            front_default: sprites.other.home.front_default,
+            front_shiny: sprites.other.home.front_shiny,
+          },
+        }
+      }
+    }
+  }))
 
-	const move: CompletedMove = {
-		flavor_text: englishFlavourText?.flavor_text, name,
-		pokemon: pokemonData,
-		accuracy,
-		power,
-		pp,
-		type: type.name,
-		contest_combos,
-		effect_entries: effect_entries[0]?.effect,
-		meta,
-		priority,
-		target: target.name,
-		contest_type: contest_type?.name,
-		damage_class: damage_class?.name
-	}
+  const move: CompletedMove = {
+    flavor_text: englishFlavourText?.flavor_text, name,
+    pokemon: pokemonData,
+    accuracy,
+    power,
+    pp,
+    type: type.name,
+    contest_combos,
+    effect_entries: effect_entries[0]?.effect,
+    meta,
+    priority,
+    target: target.name,
+    contest_type: contest_type?.name,
+    damage_class: damage_class?.name
+  }
 
-  	return move;
+  return move;
 }
