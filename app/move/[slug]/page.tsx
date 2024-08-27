@@ -4,10 +4,8 @@ import Link from "next/link";
 import Image from "next/image";
 
 export default async function page({params: {slug}}: {params: {slug: string}}) {
-    const {flavor_text, pokemon, accuracy, power, pp, type, contest_combos, effect_entries, meta: {ailment, ailment_chance, category: {name: cat_name}, crit_rate, drain, flinch_chance, healing, max_hits, max_turns,stat_chance, min_hits, min_turns}, priority, target, contest_type, damage_class, name} = await getMoveData(slug.toLowerCase());
+    const {flavor_text, pokemon, accuracy, power, pp, type, effect_entries, meta: {ailment, ailment_chance, category: {name: cat_name}, crit_rate, drain, flinch_chance, healing, max_hits, max_turns,stat_chance, min_hits, min_turns}, priority, target, damage_class, name} = await getMoveData(slug.toLowerCase());
 
-    //console.log(effect_changes, accuracy, power, pp, type, contest_combos, machines, meta, priority, target, contest_type, damage_class)
-    console.log(damage_class)
     return (
 		<main className="custom-grid ability-move">
 			<section className="ability-move-details">
@@ -117,7 +115,7 @@ export default async function page({params: {slug}}: {params: {slug: string}}) {
 						<li key={poke.name}>
 							<Link href={`/pokemon/${poke.name}`} className="sprite-link">
 								<div className="pokemon-img-wrapper">
-									<Sprites sprites={[{src: poke.sprites.other.home?.front_default ?? poke.sprites?.other.home.front_default ?? poke.sprites?.front_default, alt: `${poke.name} sprite`}, {src: poke.sprites.other.home?.front_shiny ?? poke.sprites?.other.home.front_shiny ?? poke.sprites?.front_shiny, alt: `${poke.name} shiny sprite`}]} name={poke.name} height={100} width={100} />
+									<Sprites sprites={[{src: poke.sprites.front_default, alt: `${poke.name} sprite`}, {src: poke.sprites.front_shiny, alt: `${poke.name} shiny sprite`}]} name={poke.name} height={100} width={100} />
 								</div>
 								<h3>{poke.name}</h3>
 							</Link>

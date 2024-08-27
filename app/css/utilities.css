@@ -64,14 +64,11 @@ main:not(.pokemon-list) {
 }
 
 .sprite-link:hover,
-.sprite-link:focus,
-.sprite-link:hover,
 .sprite-link:focus {
     text-decoration: underline;
 }
 
-.sprite-link:hover .sprites-wrapper img:first-of-type,
-.sprite-link:focus .sprites-wrapper img:first-of-type,
+
 .sprite-link:hover .sprites-wrapper img:first-of-type,
 .sprite-link:focus .sprites-wrapper img:first-of-type {
     opacity: 0;

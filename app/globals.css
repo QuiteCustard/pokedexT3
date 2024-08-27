@@ -1,3 +1,13 @@
 @import "./css/root.css";
 @import "./css/typography.css";
 @import "./css/utilities.css";
+
+.list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2rem 3rem;
+    list-style: none;
+    justify-content: center;
+    margin: auto;
+    min-height: auto;
+}

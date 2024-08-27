@@ -32,14 +32,18 @@ export type Cries = {
 }
 
 export type Sprites = {
-    front_default: string,
-    front_shiny: string,
-    other: {
-        home: {
-            front_default: string,
-            front_shiny: string,
+    front_default?: string | null,
+    front_shiny?: string | null,
+    other?: {
+        home?: {
+            front_default?: string | null,
+            front_shiny?: string | null,
         }
-    }
+        'official-artwork'?: {
+            front_default?: string | null,
+            front_shiny?: string | null,
+        }
+    },
 }
 
 type PokemonType = {
@@ -101,7 +105,7 @@ type GrowthRate = {
     url: string
 }
 
-export type VersionGroupDetails =  {
+export type VersionGroupDetails = {
     level_learned_at: number,
     move_learn_method: {
         name: string,
@@ -331,7 +335,7 @@ export type EvolutionChainData = {
 export type DescriptionFormats = Record<string, string>;
 
 export type TriggerFormats = Record<string, string>;
-  
+
 export interface Detail {
     trigger?: {
         name: string;
@@ -406,7 +410,7 @@ type Machine = {
 export type DetailedMove = {
     accuracy: number | null,
     contest_combos: contest_combos | null,
-    contest_effect: {url: string} | null,
+    contest_effect: { url: string } | null,
     contest_type: NameUrlPair | null,
     damage_class: NameUrlPair,
     effect_chance: number | null,

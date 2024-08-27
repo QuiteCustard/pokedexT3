@@ -99,13 +99,8 @@ async function getEvolutionChain(url: string) {
         name,
         id,
         sprites: {
-          front_default: pokemonData.sprites.front_default,
-          other: {
-            home: {
-              front_default: pokemonData.sprites.other.home.front_default,
-              front_shiny: pokemonData.sprites.other.home.front_shiny,
-            },
-          }
+          front_default: pokemonData.sprites.other?.["official-artwork"]?.front_default ?? pokemonData.sprites.other?.home?.front_default ?? pokemonData.sprites.front_default,
+          front_shiny: pokemonData.sprites.other?.["official-artwork"]?.front_shiny ?? pokemonData.sprites.other?.home?.front_shiny ?? pokemonData.sprites.front_shiny,
         } as Sprites,
         ...(details.length > 0 && { evolution_details: details }),
       };
@@ -128,13 +123,8 @@ export async function getVariationData(variety: Variety) {
       name: variety.pokemon.name,
       id,
       sprites: {
-        front_default: pokemonData.sprites?.front_default,
-        other: {
-          home: {
-            front_default: pokemonData.sprites.other.home?.front_default,
-            front_shiny: pokemonData.sprites.other.home?.front_shiny,
-          },
-        }
+        front_default: pokemonData.sprites.other?.["official-artwork"]?.front_default ?? pokemonData.sprites.other?.home?.front_default ?? pokemonData.sprites.front_default,
+        front_shiny: pokemonData.sprites.other?.["official-artwork"]?.front_shiny ?? pokemonData.sprites.other?.home?.front_shiny ?? pokemonData.sprites.front_shiny,
       } as Sprites,
     } as FilteredVariety;
   }
@@ -198,7 +188,7 @@ export async function getPokemonData(slug: string, signal: AbortSignal) {
   return (await d.json()) as DetailedPokemon;
 }
 
-async function formatData(
+export async function formatData(
   pokemonData: DetailedPokemon,
   speciesData: DetailedPokemon
 ) {
@@ -216,7 +206,6 @@ async function formatData(
     weight,
     cries,
   } = pokemonData;
-
 
   const englishFlavourText = [...(speciesData?.flavor_text_entries ?? [])].reverse().find((entry) => {
     const isLegendsArceus = entry.version?.name === "legends-arceus";
@@ -252,7 +241,10 @@ async function formatData(
     location_area_encounters: location_area_encounters,
     moves: moves,
     name: name,
-    sprites: sprites,
+    sprites: {
+      front_default: sprites.other?.["official-artwork"]?.front_default ?? sprites.other?.home?.front_default ?? sprites.front_default,
+      front_shiny: sprites.other?.["official-artwork"]?.front_shiny ?? sprites.other?.home?.front_shiny ?? sprites.front_shiny,
+    },
     stats: stats,
     types: types,
     weight: weight,
@@ -312,14 +304,8 @@ export async function getAbilityData(slug: string) {
       name: poke.pokemon.name,
       is_hidden: poke.is_hidden,
       sprites: {
-        front_default: sprites.front_default,
-        front_shiny: sprites.front_shiny,
-        other: {
-          home: {
-            front_default: sprites.other.home.front_default,
-            front_shiny: sprites.other.home.front_shiny,
-          },
-        }
+        front_default: sprites.other?.["official-artwork"]?.front_default ?? sprites.other?.home?.front_default ?? sprites.front_default,
+        front_shiny: sprites.other?.["official-artwork"]?.front_shiny ?? sprites.other?.home?.front_shiny ?? sprites.front_shiny,
       }
     }
   }))
@@ -332,25 +318,17 @@ export async function getMoveData(slug: string) {
   const controller = new AbortController();
   const signal = controller.signal;
 
-  const data = await fetch(`${baseURL}move/${slug}`, { signal });
-  const { accuracy, contest_combos, contest_type, damage_class, effect_entries, flavor_text_entries, learned_by_pokemon, meta, name, power, pp, priority, target, type } = await data.json() as DetailedMove;
+  const data = await fetch(`${baseURL}move/${slug.replace(/%20/g, '-')}`, { signal });
+  const { accuracy, contest_combos, damage_class, effect_entries, flavor_text_entries, learned_by_pokemon, meta, name, power, pp, priority, target, type } = await data.json() as DetailedMove;
   const englishFlavourText = [...(flavor_text_entries ?? [])].reverse().find((entry) => entry.language.name === "en");
-
   const pokemonData = await Promise.all(learned_by_pokemon.map(async (poke) => {
     const response = await fetch(poke.url, { signal });
     const { sprites } = await response.json() as DetailedPokemon;
-
     return {
       name: poke.name,
       sprites: {
-        front_default: sprites.front_default,
-        front_shiny: sprites.front_shiny,
-        other: {
-          home: {
-            front_default: sprites.other.home.front_default,
-            front_shiny: sprites.other.home.front_shiny,
-          },
-        }
+        front_default: sprites.other?.["official-artwork"]?.front_default ?? sprites.other?.home?.front_default ?? sprites.front_default,
+        front_shiny: sprites.other?.["official-artwork"]?.front_shiny ?? sprites.other?.home?.front_shiny ?? sprites.front_shiny,
       }
     }
   }))
@@ -367,7 +345,6 @@ export async function getMoveData(slug: string) {
     meta,
     priority,
     target: target.name,
-    contest_type: contest_type?.name,
     damage_class: damage_class?.name
   }
 

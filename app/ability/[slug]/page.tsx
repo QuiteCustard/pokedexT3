@@ -3,7 +3,7 @@ import { getAbilityData } from "@/helpers/pokemon-getter"
 import Link from "next/link";
 
 export default async function page({params: {slug}}: {params: {slug: string}}) {
-	const {effect_changes, effect_entries, flavor_text, name, pokemon} = await getAbilityData(slug.toLowerCase())
+	const {effect_entries, flavor_text, name, pokemon} = await getAbilityData(slug.toLowerCase())
 
   	return (
 		<main className="custom-grid ability-move">
@@ -19,7 +19,7 @@ export default async function page({params: {slug}}: {params: {slug: string}}) {
 						<li key={poke.name}>
 							<Link href={`/pokemon/${poke.name}`} className="sprite-link">
 								<div className="pokemon-img-wrapper">
-									<Sprites sprites={[{src: poke.sprites.other.home?.front_default ?? poke.sprites?.other.home.front_default ?? poke.sprites?.front_default, alt: `${poke.name} sprite`}, {src: poke.sprites.other.home?.front_shiny ?? poke.sprites?.other.home.front_shiny ?? poke.sprites?.front_shiny, alt: `${poke.name} shiny sprite`}]} name={poke.name} height={100} width={100} />
+									<Sprites sprites={[{src: poke.sprites.front_default, alt: `${poke.name} sprite`}, {src: poke.sprites.front_shiny, alt: `${poke.name} shiny sprite`}]} name={poke.name} height={100} width={100} />
 								</div>
 								<h3>{poke.name}</h3>
 							</Link>
